@@ -1,0 +1,124 @@
+@charset "utf-8";
+	/**
+		* Description: CSS
+		* Version: 1.0.0
+		* Last update: 2017/08/20
+		* Author: Duc PM <minhducpham.it@gmail.com> - ducpm.com
+		*
+	    [Let press Ctrl + f and type of paste the key, then press Enter to search the content ] Title
+	    Example : You want Import Files => Title is Import Files, or Fonts => Title is Fonts
+
+		* Summary:
+		*
+			*	Styles for devices max 1200px
+			*	Styles for devices max 1200px
+			*	Styles for devices max 1024px
+			*	Styles for devices max 800px
+			*	Styles for devices min 768px
+			*	Styles for devices max 767px
+			*	Styles for devices max 667px
+			*	Styles for devices max 568px
+			*	Styles for devices max 480px
+			*	Styles for devices max 414px
+			*	Styles for devices max 320px
+	*/
+
+/*----------------
+[Styles for devices min 1200px
+*/
+
+.navbar-collapse.collapse.in {
+  display: block !important;
+}
+
+@media (min-width: 992px) {
+	.navbar>.container .navbar-brand, .navbar>.container-fluid .navbar-brand {
+	  margin-left: -15px;
+	}
+	.navbar-toggle {
+	  display: none;
+	}
+}
+
+@media (max-width: 991px) {
+	.section {
+	  padding-top: 15px;
+	  padding-bottom: 15px;
+	}
+	.navbar-collapse.collapse {
+		display: none !important;
+	}
+	#header {
+		background: #008cba;
+		min-height: 100px;
+	}
+	.navbar-brand {
+	  display: none;
+	}
+	.navbar-brand-min {
+	  display: block;
+	  padding-top: 15px;
+	}
+	.navbar-toggle {
+	  display: block;
+	}
+	#stepVisa .col-lg-3 > img {
+		margin: 0 auto;
+	}
+	#hdPage h2 {
+	  margin: 0;
+	  font-size: 30px;
+	}
+	.navbar-nav>li {
+	  float: none;
+	}
+	.navbar-nav {
+	  float: none;
+	  margin: 0;
+	}
+	.navbar-collapse .container {
+	  width: auto;
+	  padding: 0;
+	}
+	.navbar-nav {
+		position: unset;
+	}
+	.navbar-nav li.dropdown {
+		position: relative;
+	}
+	.navbar-nav .open .dropdown-menu {
+	  position: static;
+	  float: none;
+	  width: auto;
+	  margin-top: 0;
+	  background-color: transparent;
+	  border: 0;
+	  -webkit-box-shadow: none;
+	  box-shadow: none;
+	}
+	.navbar-nav li .dropdown-menu .container {
+	  padding: 15px;
+	}
+	.nav-service {
+	  margin-top: 15px;
+  	margin-bottom: 15px;
+	}
+	.container {
+	  width: auto;
+	}
+	#searchBox h3 {
+	  margin-bottom: 10px;
+	  font-size: 150%;
+	}
+	.hidden-xs {
+	  display: none !important;
+	}
+	.contactForm .inner {
+	  width: 100%;
+	  padding: 10px;
+	}
+	.contactForm .container {
+	  padding-right: 0;
+	  padding-left: 0;
+	}
+}
