@@ -2,14 +2,18 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Models\CateParent;
-use App\Models\Cate;
+use Hash;
 use App\Models\Settings;
-use App\Models\Color;
+use App\Models\ArticlesCate;
+use App\Models\Articles;
+use App\Models\District;
+use App\Models\CustomLink;
+use App\Models\Services;
+use App\Models\Menu;
+use App\Models\CateParent;
 use App\Models\Text;
-
-use Request, Auth;
-
+use App\Models\Product;
+use Auth, Session;
 class ViewComposerServiceProvider extends ServiceProvider
 {
 	/**
@@ -39,36 +43,50 @@ class ViewComposerServiceProvider extends ServiceProvider
 	 */
 	private function composerMenu()
 	{
+		
+		view()->composer( '*' , function( $view ){		
 			
-		view()->composer( '*' , function( $view ){
-			$cateArrByLoai = [];	
-			$cateParentList = CateParent::where(['status' => 1])->orderBy('display_order')->get();
-
-	        if( $cateParentList ){
-	            foreach ( $cateParentList as $key => $value) {	            	          		
-	            	$cateArrByLoai[$value->id] = Cate::where(['status' => 1, 'parent_id' => $value->id])
-	                    ->orderBy('display_order')
-	                    ->select('name', 'slug', 'id')
-	                    ->get();
-	            }
-	        }    
 	        $settingArr = Settings::whereRaw('1')->lists('value', 'name');
-	        $routeName = \Request::route()->getName();
-	  
-	        $colorList = Color::orderBy('display_order')->get();
+	        $articleCate = ArticlesCate::orderBy('display_order', 'desc')->get();	     
+	       
+	        $tinRandom = Articles::whereRaw(1);
+	        if($tinRandom->count() > 0){
+	        	$tinRandom = $tinRandom->limit(5)->get();
+	        }
+	        $footerLink = CustomLink::where('block_id', 1)->orderBy('display_order', 'asc')->get();	        	                	       	
+	       	$menuList = Menu::where('menu_id', 1)->orderBy('display_order', 'asc')->get();
+	       	$cateParentList = CateParent::orderBy('display_order')->get();       	
 
-	        $textList = Text::whereRaw('1')->lists('content', 'id');              
+	       	$textList = Text::whereRaw('1')->lists('content', 'id');
+	        $routeName = \Request::route()->getName();	      
 	        
-	        $isEdit = Auth::check();	    
+	        $isEdit = Auth::check();	        
+	        $servicesList = Services::getList();	        
+
+	        // cart
+	        $getlistProduct = $listProductId = [];
+	        $arrProductInfo = (object) [];
+	        if(Session::has('products') && !empty(Session::get('products'))){	            
+	        	$getlistProduct = Session::get('products');
+	        	$listProductId = array_keys($getlistProduct);
+	        	$arrProductInfo = Product::whereIn('product.id', $listProductId)->get();
+	        }
 			$view->with( [
-					'cateParentList' => $cateParentList, 
-					'settingArr' => $settingArr,
-					'cateArrByLoai' => $cateArrByLoai,
+					'settingArr' => $settingArr, 
+					'articleCate' => $articleCate, 
+					'tinRandom' => $tinRandom, 					
+					'footerLink' => $footerLink,					
+					'menuList' => $menuList,
+					'cateParentList' => $cateParentList,
 					'routeName' => $routeName,
-					'colorList' => $colorList,
 					'textList' => $textList,
-					'isEdit' => $isEdit
-					] );
+					'isEdit' => $isEdit,
+					'servicesList' => $servicesList,
+					'getlistProduct' => $getlistProduct,
+					'arrProductInfo' => $arrProductInfo,
+					'listProductId' => $listProductId
+			] );
+			
 		});
 	}
 	

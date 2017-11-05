@@ -40,34 +40,25 @@
                   </div>
               @endif              
                  <div class="form-group" style="margin-top:10px;margin-bottom:10px">  
-                  <label class="col-md-3 row">Banner 
-                  <?php 
+                  <label class="col-md-3 row">Banner <?php 
                   if($object_id == 1){
-                    echo "( 1349 x 400 px)";
-                  }elseif($object_id == 2){
+                    echo "( 1349 x 505 px)";
+                  }elseif($object_id == 5){
                     echo "( 1349 x 200 px)";
-                  }elseif($object_id == 3){
-                    echo "( 570 x 102 px)";
-                  }elseif($object_id == 4){
-                    echo "( 270 x 0 px)";
+                  }elseif($object_id == 2){
+                    echo "( 1150 x 60 px)";
                   }
-                  ?>
-                  </label>    
+                  ?></label>    
                   <div class="col-md-9">
-                    <img id="thumbnail_image_url" src="{{ old('image_url') ? Helper::showImage(old('image_url')) : URL::asset('public/admin/dist/img/img.png') }}" class="img-thumbnail" width="300">
+                    <img id="thumbnail_image" src="{{ old('image_url') ? Helper::showImage(old('image_url')) : URL::asset('public/admin/dist/img/img.png') }}" class="img-thumbnail" width="145" height="85">
+                    
+                    <input type="file" id="file-image" style="display:none" />
                  
-                    <button class="btn btn-default btn-sm btnSingleUpload" data-set="image_url" type="button"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Upload</button>
-                    <input type="hidden" name="image_url" id="image_url" value="{{ old('image_url') }}"/>          
+                    <button class="btn btn-default btn-sm" id="btnUploadImage" type="button"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Upload</button>
                   </div>
                   <div style="clear:both"></div>
-                </div>  
-                <div class="form-group">
-                  <label>Ẩn / Hiện</label>
-                  <select name="status" class="form-control" id="status">
-                  	<option value="1" {{ old('status') == 1  ? "selected" : "" }}>Hiện</option>
-                  	<option value="2" {{ old('status') == 2  ? "selected" : "" }}>Ẩn</option>
-                  </select>
-                </div>           
+                </div>                  
+                <input type="hidden" name="status" value="1">     
                 <!-- textarea -->
                 <div class="form-group">
                   <label>Loại banner</label>
@@ -80,14 +71,14 @@
                   <label>Liên kết</label>
                   <input type="text" name="ads_url" id="ads_url" value="{{ old('ads_url') }}" class="form-control">
                 </div>  
-      
-      
+                <input type="hidden" name="image_url" id="image_url" value="{{ old('image_url') }}"/>         
+            	
                 <input type="hidden" name="object_id" value="{{ $object_id }}">
                 <input type="hidden" name="object_type" value="{{ $object_type }}">
             </div>                        
             <div class="box-footer">
               <button type="submit" class="btn btn-primary btn-sm">Lưu</button>
-              <a class="btn btn-default btn-sm" href="{{ route('banner.index', ['object_id' => $object_id, 'object_type' => $object_type])}}">Hủy</a>
+              <a class="btn btn-default btn-sm" class="btn btn-primary btn-sm" href="{{ route('banner.index', ['object_id' => $object_id, 'object_type' => $object_type])}}">Hủy</a>
             </div>
             
         </div>
@@ -104,12 +95,26 @@
 </div>
 <input type="hidden" id="route_upload_tmp_image" value="{{ route('image.tmp-upload') }}">
 @stop
-@section('javascript_page')
+@section('js')
 <script type="text/javascript">
+var h = screen.height;
+var w = screen.width;
+var left = (screen.width/2)-((w-300)/2);
+var top = (screen.height/2)-((h-100)/2);
+function openKCFinder_singleFile() {
+      window.KCFinder = {};
+      window.KCFinder.callBack = function(url) {
+         $('#image_url').val(url);
+         $('#thumbnail_image').attr('src', $('#app_url').val() + url);
+          window.KCFinder = null;
+      };
+      window.open('{{ URL::asset("public/admin/dist/js/kcfinder/browse.php?type=images") }}', 'kcfinder_single','scrollbars=1,menubar=no,width='+ (w-300) +',height=' + (h-300) +',top=' + top+',left=' + left);
+  }
     $(document).ready(function(){
       
       $('#btnUploadImage').click(function(){        
-        $('#file-image').click();
+        //$('#file-image').click();
+        openKCFinder_singleFile();
       });      
       var files = "";
       $('#file-image').change(function(e){

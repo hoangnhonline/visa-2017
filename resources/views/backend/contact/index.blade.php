@@ -25,7 +25,7 @@
           <h3 class="panel-title">Bộ lọc</h3>
         </div>
         <div class="panel-body">
-          <form class="form-inline" role="form" method="GET" action="{{ route('contact.index') }}" id="frmContact">                                                
+          <form class="form-inline" role="form" method="GET" action="{{ route('contact.index') }}" id="frmContact">                                             
             <div class="form-group">
               <label for="name">Email :</label>
               <input type="text" class="form-control" name="email" value="{{ $email }}">
@@ -34,7 +34,7 @@
               <label for="name">&nbsp;&nbsp;Phone :</label>
               <input type="text" class="form-control" name="phone" value="{{ $phone }}">
             </div>
-            <button type="submit" class="btn btn-default">Lọc</button>
+            <button type="submit" class="btn btn-default btn-sm">Lọc</button>
           </form>         
         </div>
       </div>
@@ -45,13 +45,15 @@
         </div>
         
         <!-- /.box-header -->
-        <div class="box-body">        
+        <div class="box-body">
+        <!--<a href="{{ route('contact.export') }}" class="btn btn-info btn-sm" style="margin-bottom:5px;float:right" target="_blank">Export</a>-->
           <div style="text-align:center">
             {{ $items->appends( ['status' => $status, 'email' => $email, 'phone' => $phone, 'type' => $type] )->links() }}
           </div>  
           <table class="table table-bordered" id="table-list-data">
             <tr>
-              <th style="width: 1%">#</th>                            
+              <th style="width: 1%">#</th>
+             
               <th>Thông tin liên hệ</th>
               <th>Nội dung</th>
               <th width="10%">Thời gian tạo</th>
@@ -63,14 +65,13 @@
               @foreach( $items as $item )
                 <?php $i ++; ?>
               <tr id="row-{{ $item->id }}">
-                <td><span class="order">{{ $i }}</span></td>                       
-                <td>                  
-                  {{ $item->gender == 1 ? "Anh " : "Chị " }}
-                  @if($item->full_name != '')
-                  {{ $item->full_name }}</br>
+                <td><span class="order">{{ $i }}</span></td>                 
+                <td>                                    
+                  @if($item->fullname != '')
+                  {{ $item->fullname }}</br>
                   @endif
                   @if($item->email != '')
-                  <a href="{{ route( 'contact.edit', [ 'id' => $item->id ]) }}">{{ $item->email }}</a> -
+                  {{ $item->email }} -
                   @endif
                   @if($item->phone != '')
                   {{ $item->phone }}</br>
@@ -82,7 +83,7 @@
                 <td style="white-space:nowrap">{{ date('d-m-Y H:i', strtotime($item->created_at)) }}</td>
                 <td style="white-space:nowrap">                                  
                   
-                  <a onclick="return callDelete('{{ $item->email }}','{{ route( 'contact.destroy', [ 'id' => $item->id ]) }}');" class="btn btn-danger  btn-sm">Xóa</a>
+                  <a onclick="return callDelete('{{ $item->email }}','{{ route( 'contact.destroy', [ 'id' => $item->id ]) }}');" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></a>
                   
                 </td>
               </tr> 
@@ -108,7 +109,7 @@
 <!-- /.content -->
 </div>
 @stop
-@section('javascript_page')
+@section('js')
 <script type="text/javascript">
 function callDelete(name, url){  
   swal({

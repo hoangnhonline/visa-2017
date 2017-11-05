@@ -25,20 +25,15 @@ class OrderDetail extends Model  {
      */
     protected $fillable = [
         'order_id',
-        'product_id',
-        'amount',
-        'price',        
-        'total'
+        'sp_id',
+        'so_luong',
+        'don_gia',        
+        'tong_tien'
     ];
 
     public function product()
     {
-        return $this->hasOne('App\Models\Product', 'id', 'product_id');
-    }
-
-    public function order()
-    {
-        return $this->belongTos('App\Models\Orders', 'id', 'order_id');
+        return $this->hasOne('App\Models\Product', 'id', 'sp_id');
     }
         
 }

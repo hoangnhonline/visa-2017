@@ -15,7 +15,7 @@
 
   <!-- Main content -->
   <section class="content">
-    <a class="btn btn-default" href="{{ route('info-seo.index') }}" style="margin-bottom:5px">Quay lại</a>
+    <a class="btn btn-default btn-sm" href="{{ route('info-seo.index') }}" style="margin-bottom:5px">Quay lại</a>
     <form role="form" method="POST" action="{{ route('info-seo.update') }}">
     <input type="hidden" name="id" value="{{ $detail->id }}">
     <div class="row">
@@ -72,7 +72,7 @@
                     
                     <input type="file" id="file-image" style="display:none" />
                  
-                    <button class="btn btn-default" id="btnUploadImage" type="button"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Upload</button>
+                    <button class="btn btn-default btn-sm" id="btnUploadImage" type="button"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Upload</button>
                   </div>
                   <div style="clear:both"></div>
               </div>  <!--image-->
@@ -81,8 +81,8 @@
             <input type="hidden" name="image_url" id="image_url" value="{{ $detail->image_url }}"/>          
             <input type="hidden" name="image_name" id="image_name" value=""/>
             <div class="box-footer">
-              <button type="submit" class="btn btn-primary">Lưu</button>
-              <a class="btn btn-default" class="btn btn-primary" href="{{ route('info-seo.index')}}">Hủy</a>
+              <button type="submit" class="btn btn-primary btn-sm">Lưu</button>
+              <a class="btn btn-default btn-sm" class="btn btn-primary btn-sm" href="{{ route('info-seo.index')}}">Hủy</a>
             </div>
             
         </div>
@@ -99,7 +99,7 @@
 
 
 @stop
-@section('javascript_page')
+@section('js')
 
 <script type="text/javascript">
 $(document).ready(function(){  

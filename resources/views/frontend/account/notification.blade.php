@@ -1,8 +1,8 @@
 @extends('frontend.layout')
 @include('frontend.partials.meta')
 @section('header')
-    @include('frontend.partials.header')
-    
+    @include('frontend.partials.main-header')
+    @include('frontend.partials.home-menu')
   @endsection
 @section('content')
 <div class="columns-container">
@@ -48,8 +48,6 @@
                                       </div>
                                    </div>
                                    @endforeach
-                                   @else
-                                   <p style="margin: 20px;font-style: italic;">Không có dữ liệu</p>
                                    @endif
                                    <div class="list-pager">
                                    </div>
@@ -69,9 +67,7 @@
                                       </div>
                                    </div>
                                    @endforeach
-                                  @else
-                                   <p style="margin: 20px;font-style: italic;">Không có dữ liệu</p>
-                                   @endif
+                            @endif
                             </div>
                             </div>                            
                           </div>
@@ -100,8 +96,8 @@
 <div class="clearfix"></div>
 @endsection
 
-
-@section('javascript_page')
+@include('frontend.partials.footer')
+@section('javascript')
    <script type="text/javascript">
     $(document).ready(function() {
 

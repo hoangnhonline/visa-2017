@@ -26,7 +26,10 @@ class RouteServiceProvider extends ServiceProvider
     {
         //
         $router->pattern('id', '[0-9]+');
-        $router->pattern('slug', '[A-Za-z0-9\-]+');
+        $router->pattern('slug', '[A-Za-z0-9\-]+');             
+        $router->pattern('slugCateType', '[A-Za-z0-9\-]+');             
+        $router->pattern('slugCateParent', '[A-Za-z0-9\-]+');             
+        $router->pattern('slugCateChild', '[A-Za-z0-9\-]+');             
         parent::boot($router);
     }
 

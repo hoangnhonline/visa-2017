@@ -20,7 +20,7 @@
       @if(Session::has('message'))
       <p class="alert alert-info" >{{ Session::get('message') }}</p>
       @endif
-      <a href="{{ route('articles.create') }}" class="btn btn-info" style="margin-bottom:5px">Tạo mới</a>
+      <a href="{{ route('articles.create') }}" class="btn btn-info btn-sm" style="margin-bottom:5px">Tạo mới</a>
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">Bộ lọc</h3>
@@ -43,7 +43,7 @@
             <div class="form-group tuychon" {{ $date_type != "tuy-chon" ? "style=display:none" : ""}}>               
               <input type="text" class="form-control datetime" name="date_to" value="{{ $date_to }}" placeholder="Đến ngày">
             </div>
-            <button type="submit" class="btn btn-default">Xem</button>
+            <button type="submit" class="btn btn-default btn-sm">Xem</button>
           </form>         
         </div>
       </div>
@@ -57,7 +57,8 @@
 
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" id="tab-menu" role="tablist">
-              <li role="presentation" {{ $report_type == "don-hang" ? "class=active" : "" }}><a data-value="don-hang" href="#home" aria-controls="home" role="tab" >Đơn hàng</a></li>              
+              <li role="presentation" {{ $report_type == "don-hang" ? "class=active" : "" }}><a data-value="don-hang" href="#home" aria-controls="home" role="tab" >Đơn hàng</a></li>
+              <li role="presentation" {{ $report_type == "khach-hang" ? "class=active" : "" }}><a data-value="khach-hang" href="#profile" aria-controls="profile" role="tab" >Khách hàng</a></li>
               <li role="presentation" {{ $report_type == "doanh-thu" ? "class=active" : "" }}><a data-value="doanh-thu" href="#messages" aria-controls="messages" role="tab" >Doanh thu</a></li>
               <!--<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Sản phẩm</a></li>-->
             </ul>
@@ -68,7 +69,12 @@
                   @if($report_type =="don-hang")
                   <div id="charts-data" style="height: 500px; margin: 0 auto"></div>
                   @endif
-              </div>              
+              </div>
+              <div role="tabpanel" class="tab-pane {{ $report_type == "khach-hang" ? "active" : "" }}" id="profile">
+                @if($report_type =="khach-hang")
+                  <div id="charts-data" style="height: 500px; margin: 0 auto"></div>
+                  @endif
+              </div>
               <div role="tabpanel" class="tab-pane {{ $report_type == "doanh-thu" ? "active" : "" }}" id="messages">
                 @if($report_type =="doanh-thu")
                   <div id="charts-data" style="height: 600px; margin: 0 auto"></div>
@@ -93,16 +99,16 @@
 
 <style type="text/css">
   .nav-tabs {
-    border-bottom: 1px solid #444345 !important;
+    border-bottom: 1px solid #3c8dbc !important;
 }
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
-  border: 1px solid #444345 !important;
+  border: 1px solid #3c8dbc !important;
   border-bottom-color: transparent !important;
 }
 
 </style>
 @stop
-@section('javascript_page')
+@section('js')
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script type="text/javascript">
@@ -348,7 +354,7 @@ $(document).ready(function(){
                 strTemp = rows[i].id;
                 strOrder += strTemp.replace('row-','') + ";";
             }     
-            updateOrder("cate_parent", strOrder);
+            updateOrder("loai_sp", strOrder);
         }
     });
 });

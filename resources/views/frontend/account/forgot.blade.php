@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -12,11 +12,11 @@
 
       <td align="center" valign="top" style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#444;line-height:18px;font-weight:normal;text-align:left;padding-left:20px">
         <h2>Chào quý khách,</h2>
-        <p><span style="font-weight:bold">phukiencuoigiang.com</span> đã nhận được yêu cầu thay đổi mật khẩu của quý khách.</p>
+        <p><span style="font-weight:bold">DN</span> đã nhận được yêu cầu thay đổi mật khẩu của quý khách.</p>
         <p>Xin hãy click vào đường dẫn sau để đổi mật khẩu:</p>
         <a href="{{ route('reset-password', $key) }}" style="color:red; font-weight:bold" target="_blank" >{{ route('reset-password', $key) }}</a>
-        <p>Mọi thắc mắc và góp ý vui lòng liên hệ với chúng tôi qua email: <span style="color:red; font-weight:bold">support@phukiencuoigiang.com</span> hoặc số điện thoại <span style="color:red; font-weight:bold">1900 636 975</span> (8-21h cả T7,CN).</p>
-        <p>Trân trọng,<br> <span style="font-weight:bold">phukiencuoigiang.com</span></p>
+        <p>Mọi thắc mắc và góp ý vui lòng liên hệ với chúng tôi qua email: <span style="color:red; font-weight:bold">support@sanphamlamdepcaocap.com</span></p>
+        <p>Trân trọng,<br> <span style="font-weight:bold">DN</span></p>
         
       </td>
     </tr>    

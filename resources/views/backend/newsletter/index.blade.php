@@ -30,7 +30,7 @@
               <label for="name">Email :</label>
               <input type="text" class="form-control" name="email" value="{{ $email }}">
             </div>
-            <button type="submit" class="btn btn-default">Lọc</button>
+            <button type="submit" class="btn btn-default btn-sm">Lọc</button>
           </form>         
         </div>
       </div>
@@ -41,7 +41,8 @@
         </div>
         
         <!-- /.box-header -->
-        <div class="box-body">       
+        <div class="box-body">
+        <!--<a href="{{ route('newsletter.export') }}" class="btn btn-info btn-sm" style="margin-bottom:5px;float:right" target="_blank">Export</a>-->
           <div style="text-align:center">
             {{ $items->appends( ['status' => $status, 'email' => $email] )->links() }}
           </div>  
@@ -64,9 +65,9 @@
                 </td>
                 <td>{{ date('d-m-Y H:i', strtotime($item->created_at)) }}</td>
                 <td style="white-space:nowrap">                  
-                  <a href="{{ route( 'newsletter.edit', [ 'id' => $item->id ]) }}" class="btn btn-warning btn-sm">Chỉnh sửa</a>                 
+                  <a href="{{ route( 'newsletter.edit', [ 'id' => $item->id ]) }}" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>                 
                   
-                  <a onclick="return callDelete('{{ $item->email }}','{{ route( 'newsletter.destroy', [ 'id' => $item->id ]) }}');" class="btn btn-danger  btn-sm">Xóa</a>
+                  <a onclick="return callDelete('{{ $item->email }}','{{ route( 'newsletter.destroy', [ 'id' => $item->id ]) }}');" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></a>
                   
                 </td>
               </tr> 
@@ -92,7 +93,7 @@
 <!-- /.content -->
 </div>
 @stop
-@section('javascript_page')
+@section('js')
 <script type="text/javascript">
 function callDelete(name, url){  
   swal({

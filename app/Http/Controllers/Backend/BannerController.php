@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
-use App\Models\CateParent;
+use App\Models\CateType;
 use App\Models\Cate;
 use App\Models\LandingProjects;
 use Helper, File, Session, Auth;
@@ -20,16 +20,14 @@ class BannerController extends Controller
     * @return Response
     */
     public function index(Request $request)
-    {
-        if(Auth::user()->role == 1){
-            return redirect()->route('dashboard.index');
-        }
+    {      
+          
         $arrSearch['status'] = $status = isset($request->status) ? $request->status : null;
         $arrSearch['object_id'] = $object_id = $request->object_id;
         $arrSearch['object_type'] = $object_type = $request->object_type;
         $detail = (object) [];
         if( $object_type == 1){
-            $detail = CateParent::find( $object_id );
+            $detail = CateType::find( $object_id );
         }
         if( $object_type == 2){
             $detail = Cate::find( $object_id );
@@ -39,8 +37,14 @@ class BannerController extends Controller
             if( $object_id == 1){
                 $detail->name = "Slide trang chủ";
             }elseif( $object_id == 2){
-                $detail->name = "Banner giữa trang chủ ";
-            }      
+                $detail->name = "Banner trượt bên trái";
+            }elseif( $object_id == 3){
+                $detail->name = "Banner trượt bên phải";
+            }elseif( $object_id == 4){
+                $detail->name = "Banner top ( cạnh logo )";
+            }elseif($object_id == 5){
+                $detail->name = "Banner giữa trang";
+            }
         }
         if($object_type == 4){
             $detail = LandingProjects::find($object_id);
@@ -55,6 +59,7 @@ class BannerController extends Controller
         return view('backend.banner.index', compact( 'items', 'detail', 'arrSearch'));
     }
     public function lists(Request $request){
+          
         return view('backend.banner.list');   
     }
     /**
@@ -64,11 +69,12 @@ class BannerController extends Controller
     */
     public function create(Request $request)
     {
+          
         $detail = (object) [];
         $object_id = $request->object_id;
         $object_type = $request->object_type;
         if( $object_type == 1){
-            $detail = CateParent::find( $object_id );
+            $detail = CateType::find( $object_id );
         }
         if( $object_type == 2){
             $detail = Cate::find( $object_id );
@@ -77,11 +83,11 @@ class BannerController extends Controller
             if( $object_id == 1){
                 $detail->name = "Slide trang chủ";
             }elseif( $object_id == 2){
-                $detail->name = "Banner trang chủ - bên trái ";
+                $detail->name = "Banner trượt bên trái";
             }elseif( $object_id == 3){
-                $detail->name = "Banner trang chủ - bên phải";
+                $detail->name = "Banner trượt bên phải";
             }elseif( $object_id == 4){
-                $detail->name = "Banner sidebar trang tin tức";
+                $detail->name = "Banner top ( cạnh logo )";
             }elseif($object_id == 5){
                 $detail->name = "Banner giữa trang";
             }         
@@ -111,14 +117,15 @@ class BannerController extends Controller
             'slug.required' => 'Bạn chưa nhập slug',
         ]);
         */
-        $dataArr['status'] = isset($dataArr['status'])  ? 1 : 0;        
-       
+        $dataArr['status'] = isset($dataArr['status'])  ? 1 : 0;
+        
+        
         $dataArr['created_user'] = Auth::user()->id;
 
         $dataArr['updated_user'] = Auth::user()->id;
         Banner::create($dataArr);
 
-        Session::flash('message', 'Tạo mới thành công');
+        Session::flash('message', 'Tạo mới banner thành công');
 
         return redirect()->route('banner.index', ['object_id' => $dataArr['object_id'], 'object_type' => $dataArr['object_type']]);
     }
@@ -142,13 +149,14 @@ class BannerController extends Controller
     */
     public function edit(Request $request)
     {
+          
         $id = $request->id;
         $detailBanner = Banner::find($id);
         $detail = Banner::find($id);
         $object_id = $request->object_id;
         $object_type = $request->object_type;
         if( $object_type == 1){
-            $detail = CateParent::find( $object_id );
+            $detail = CateType::find( $object_id );
         }
         if( $object_type == 2){
             $detail = Cate::find( $object_id );
@@ -156,17 +164,6 @@ class BannerController extends Controller
         if($object_type == 4){
             $detail = LandingProjects::find($object_id);
         }
-        if( $object_id == 1){
-            $detail->name = "Slide trang chủ";
-        }elseif( $object_id == 2){
-            $detail->name = "Banner trang chủ - bên trái ";
-        }elseif( $object_id == 3){
-            $detail->name = "Banner trang chủ - bên phải";
-        }elseif( $object_id == 4){
-            $detail->name = "Banner sidebar trang tin tức";
-        }elseif($object_id == 5){
-            $detail->name = "Banner giữa trang";
-        }         
         return view('backend.banner.edit', compact( 'detail', 'detailBanner', 'object_id', 'object_type'));
     }
 
@@ -184,12 +181,14 @@ class BannerController extends Controller
         
         $dataArr['updated_user'] = Auth::user()->id;
         $dataArr['status'] = isset($dataArr['status'])  ? 1 : 0;
+
+       
         
         $model = Banner::find($dataArr['id']);
 
         $model->update($dataArr);
 
-        Session::flash('message', 'Cập nhật thành công');
+        Session::flash('message', 'Cập nhật banner thành công');
 
         return redirect()->route('banner.index', ['object_id' => $dataArr['object_id'], 'object_type' => $dataArr['object_type']]);
     }
@@ -202,12 +201,13 @@ class BannerController extends Controller
     */
     public function destroy($id)
     {
+          
         // delete
         $model = Banner::find($id);
         $model->delete();
 
         // redirect
-        Session::flash('message', 'Xóa thành công');
+        Session::flash('message', 'Xóa banner thành công');
         return redirect()->route('banner.index', ['object_type' => $model->object_type, 'object_id' => $model->object_id]);
     }
 }

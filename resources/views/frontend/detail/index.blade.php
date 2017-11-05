@@ -1,228 +1,355 @@
 @extends('frontend.layout')
 @include('frontend.partials.meta')
 @section('content')
-<div class="block block-breadcrumb">
-    <div class="container">
-        <ul class="breadcrumb">
-            <li><a href="{{ route('home') }}" title="Trở về trang chủ">Trang chủ</a></li>
-            <li><a href="{{ route('cate-parent', $loaiDetail->slug) }}" title="{!! $loaiDetail->name !!}">{!! $loaiDetail->name !!} </a></li>
-            <li><a href="{{ route('cate', [$loaiDetail->slug, $cateDetail->slug]) }}" title="{!! $cateDetail->name !!}">{!! $cateDetail->name !!} </a></li>
-            <li class="active">{!! $detail->name !!}</li>
-        </ul>
-    </div>
-</div><!-- /block-breadcrumb -->
-<div class="block block-two-col container">
-    <div class="row">
-        <div class="col-sm-9 col-xs-12 block-col-main">
-            <div class="block-title-commom block-detail">
-                <div class="block-content">
-                    <div class="block row">
-                        <div class="col-sm-5">
-                            <div class="block block-slide-detail">
-                                <!-- Place somewhere in the <body> of your page -->
-                                <div id="slider" class="flexslider">
-                                    <ul class="slides slides-large">
-                                        @foreach( $hinhArr as $hinh )
-                                        <li><img src="{{ Helper::showImage($hinh['image_url']) }}" alt=" hinh anh {!! $detail->name !!}" /></li>
-                                        @endforeach                                        
-                                    </ul>
-                                </div>
-                                <div id="carousel" class="flexslider">
-                                    <ul class="slides">
-                                        <?php $i = 0; ?>
-                                        @foreach( $hinhArr as $hinh )
-                                        <li><img src="{{ Helper::showImageThumb($hinh['image_url']) }}" alt="thumb {!! $detail->name !!}"  /></li>
-                                        <?php $i++; ?>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div><!-- /block-slide-detail -->
-                        </div>
-                        <div class="col-sm-7">
-                            <div class="block-page-common clearfix">
-                                <div class="block block-title">
-                                    <h1 class="title-main">{!! $detail->name !!}</h1>
-                                </div>
-                                <div class="block-content">
-
-                                    <div class="block block-product-options clearfix">
-                                        <div class="bl-modul-cm bl-code">
-                                            <p class="title">Mã sản phẩm:</p>
-                                            <p class="des">{!! $detail->code !!}</p>
-                                        </div>
-                                        @if( $detail->is_sale == 1)
-                                        <div class="bl-modul-cm bl-price">
-                                            <p class="title">Giá giảm:</p>
-                                            <p class="des">{!! number_format($detail->price_sale) !!}đ</p>
-                                        </div>
-                                        <div class="bl-modul-cm bl-price-old">
-                                            <p class="title">Giá gốc:</p>
-                                            <p class="des">{!! number_format($detail->price) !!}đ</p>
-                                        </div>
-                                        @else
-                                        <div class="bl-modul-cm bl-price">
-                                            <p class="title">Giá giảm:</p>
-                                            <p class="des">{!! number_format($detail->price) !!}đ</p>
-                                        </div>
-                                        @endif
-                                        <div class="bl-modul-cm bl-color">
-                                            <p class="title">Màu sản phẩm:</p>
-                                            <div class="des">
-                                                <ul class="cl-list">
-                                                    <li class="color_01" style="background:{!! $detail->color->color_code !!};"><a href="#"></a></li></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <?php 
-                                        $sessionArr = Session::get('products');
-                                        $quantity = isset($sessionArr[$detail->id]) ? $detail->inventory - $sessionArr[$detail->id] : $detail->inventory;    
-                                        ?>
-                                        @if( $quantity > 0 )
-                                        <div class="bl-modul-cm bl-qty">
-                                            <p class="title">Chọn số lượng:</p>
-                                            <div class="des">
-                                                <select name="" class="prod_qty" id="quantity">
-                                                    @for($i = 0; $i < $quantity ; $i++)
-                                                    <option value="{{ $i + 1 }}">{!! $i + 1 !!}</option>>
-                                                    @endfor
-                                                </select>
-                                            </div>
-                                        </div>
-                                        @endif
-                                        @if( $detail->description )
-                                        <div class="bl-modul-cm bl-desc">
-                                            <span class="lb-txt">Mô tả ngắn:</span>
-                                            {!! $detail->description !!}
-                                        </div>
-                                        @endif
-                                    </div><!-- /block-datail-if -->
-
-                                    <div class="block block-share" id="share-buttons">
-                                        <div class="share-item">
-                                            <div class="fb-like" data-href="{{ url()->current() }}" data-layout="button_count" data-action="like" data-size="small" data-show-faces="false" data-share="false"></div>
-                                        </div>
-                                        <div class="share-item" style="max-width: 65px;">
-                                            <div class="g-plus" data-action="share"></div>
-                                        </div>
-                                        <div class="share-item">
-                                            <a class="twitter-share-button" href="https://twitter.com/intent/tweet?text={!! $detail->title !!}"></a>
-                                        </div>
-                                        <div class="share-item">
-                                            <div class="addthis_inline_share_toolbox share-item"></div>
-                                        </div>
-                                    </div><!-- /block-share-->
-                                    <div class="block-btn-addtocart">
-                                        @if( $quantity > 0 && $detail->price > 0 )
-                                        <button type="button" data-id="{{ $detail->id }}" class="btn btn-addcart-product btn-main">MUA NGAY</button>
-                                        @else
-                                        <button type="button" class="btn btn-default btn-order-contact">LIÊN HỆ</button>
-                                        @endif
-                                    </div>
+<article class="mar-top20">
+	<div class="container">
+		<div class="breadcrumbs">
+	        <ul>
+	            <li><a href="{{ route('home') }}">Trang chủ</a></li>
+	            <li><a href="{{ route('cate-parent', [$detail->cateParent->slug]) }}">{!! $detail->cateParent->name !!}</a></li>
+	            <li><a href="{{ route('cate', [ $detail->cateParent->slug, $detail->cate->slug ]) }}">{!! $detail->cate->name !!}</a></li>
+				<li class="active">{!! $detail->name !!}</li>	           
+	        </ul>
+	    </div>
+	</div>
+    <section id="detail-product" class="marg40">
+        <div class="container marg40">
+            <div class="row">
+                <div class="col-md-6 feature-image">
+                    <img src="{{ Helper::showImage($detail->image_url) }}" alt="{!! $detail->name !!}">
+                </div>
+                <div class="col-md-6">                    
+                    <div class="title-section">
+                        {!! $detail->name !!}
+                    </div>
+                    <div class="price">
+                        <i class="fa fa-usd" aria-hidden="true"></i> 
+                        @if($detail->is_sale == 1 && $detail->price_sale > 0)
+                        	{{ number_format($detail->price_sale) }}đ
+                        @else
+                        	{{ number_format($detail->price) }}đ
+                        @endif
+                        
+                        @if($detail->is_sale == 1 && $detail->price_sale > 0)
+                        <small>{{ number_format($detail->price_sale) }}đ</small>
+                        @endif
+                    </div>
+                    <div class="social block-share">
+                        <div class="share-item">
+							<div class="fb-like" data-href="{{ url()->current() }}" data-layout="button_count" data-action="like" data-size="small" data-show-faces="false" data-share="false"></div>
+						</div>
+						<div class="share-item" style="max-width: 65px;">
+							<div class="g-plus" data-action="share"></div>
+						</div>
+						<div class="share-item">
+							<a class="twitter-share-button"
+						  href="https://twitter.com/intent/tweet?text={!! $detail->name !!}">
+						Tweet</a>
+						</div>
+                    </div>
+                    @if($detail->description)
+                    <p class="des">
+                        {!! $detail->description !!}
+                    </p>
+                    @endif
+                    <button type="button" data-id="{{ $detail->id }}" class="btn btn-yellow btn-flat @if(Session::has('login')) btn-order-main @endif" @if(!Session::has('login')) data-dismiss="modal" data-toggle="modal" data-target="#login-form" @endif> <i class="glyphicon glyphicon-shopping-cart"></i> ĐẶT HÀNG</button>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="bg-eaeaea">
+                <span>THỰC ĐƠN</span>
+                <a href="{{ route('cate-parent', $catePromotion->slug) }}">KHUYẾN MÃI</a>
+            </div>
+        </div>
+        <div class="container">
+            <div class="tabs-custom">
+                <div id="myScrollspy" class="col-tab-menu hidden-xs">
+                    <ul class="tab-menu affix-top">                        
+                        <li><a href="#tab01" data-target-id="">Sản phẩm hot</a></li>
+                        @foreach($cateList as $cate)
+                        <li><a href="#{{ $cate->slug }}" data-target-id="">{!! $cate->name !!}</a></li>
+                        @endforeach
+                    </ul>
+                </div>
+                <div class="col-tab-content admin-content">
+                    <p class="blockquote-promotion">
+                        <span>Giảm giá 30%</span> cho tất cả các sản phẩm dưới đây
+                    </p>                    
+                    <div class="list-box-items" id="tab01">
+                        <div class="title-admin-content">SẢN PHẨM HOT</div>                        
+                        @foreach($hotProductList as $product)
+                        <div class="box-item">
+                            <div class="image">
+                                <img src="{{ $product->image_url ? Helper::showImage($product->image_url) : URL::asset('public/assets/images/no-img.png') }}" alt="{!! $product->name !!}">
+                            </div>
+                            <p class="title-box-item">
+                                <a class="title-box-item" href="{{ route('product', [$product->slug, $product->id ]) }}" title="{!! $product->name !!}">{!! $product->name !!}</a>
+                                </p>
+                            <div class="box-price">
+                                <a href="javascript:;" class="@if(Session::has('login')) btn-order @endif" @if(!Session::has('login')) data-dismiss="modal" data-toggle="modal" data-target="#login-form" @endif data-id="{{ $product->id }}"><i class="fa fa-plus-square" aria-hidden="true"></i></a>
+                                <div class="price">
+                                    @if($product->is_sale == 1 && $product->price_sale > 0)
+                                        {{ number_format($product->price_sale) }}đ
+                                    @else
+                                        {{ number_format($product->price) }}đ
+                                    @endif
+                                    <!--<small>Giảm 10%</small>-->
                                 </div>
                             </div>
                         </div>
+                        @endforeach
                     </div>
-                    @if( $detail->content )
-                    <div class="block block-datail-atc block-page-common">
-                        <div class="block block-title">
-                            <h2 class="title-main">THÔNG TIN CHI TIẾT SẢN PHẨM</h2>
+                    @if($cateList)
+                    @foreach($cateList as $cate)
+                    @if(isset($productArr[$cate->id]) )
+                    <div class="list-box-items" id="{{ $cate->slug }}">
+                        
+                        <div class="title-admin-content">{!! $cate->name !!}</div>
+                        @foreach($productArr[$cate->id] as $product)
+                        <div class="box-item">
+                            <div class="image">
+                                <a href="{{ route('product', [$product->slug, $product->id ]) }}" title="{!! $product->name !!}">
+                                <img src="{{ $product->image_url ? Helper::showImage($product->image_url) : URL::asset('public/assets/images/no-img.png') }}" alt="{!! $product->name !!}"/></a>
+                            </div>
+                            <p class="title-box-item">
+                                <a class="title-box-item" href="{{ route('product', [$product->slug, $product->id ]) }}" title="{!! $product->name !!}">{!! $product->name !!}</a>
+                            </p>
+                            <div class="box-price">
+                                <a href="javascript:;" class="@if(Session::has('login')) btn-order @endif" @if(!Session::has('login')) data-dismiss="modal" data-toggle="modal" data-target="#login-form" @endif data-id="{{ $product->id }}"><i class="fa fa-plus-square" aria-hidden="true"></i></a>
+                                <div class="price">
+                                    @if($product->is_sale == 1 && $product->price_sale > 0)
+                                        {{ number_format($product->price_sale) }}đ
+                                    @else
+                                        {{ number_format($product->price) }}đ
+                                    @endif   
+                                    <!--<small>Giảm 10%</small>-->
+                                </div>
+                            </div>
                         </div>
-                        <div class="block-content block-editor-content">
-                           {!! $detail->content !!}
-                        </div>
+                        @endforeach
                     </div>
                     @endif
-                    @if ($otherList->count() > 0)
-                    <div class="block-datail-atc block-page-common">
-                        <div class="block block-title">
-                            <h2 class="title-main">SẢN PHẨM LIÊN QUAN</h2>
-                        </div>
-                        <div class="block-content product-list">
-                            <ul class="owl-carousel owl-theme owl-style2" data-nav="true" data-dots="false" data-autoplay="true" data-autoplayTimeout="500" data-loop="true" data-margin="30" data-responsive='{"0":{"items":1},"480":{"items":2},"600":{"items":2},"768":{"items":3},"800":{"items":3},"992":{"items":4}}'>
-                                <?php $i = 0;?>
-                                @foreach($otherList as $obj)
-                                <?php $i++; ?>
-                                <li class="product-item">
-                                    <div class="product-img">
-                                        <p class="box-ico">
-                                            @if( $obj->is_new == 1)
-                                            <span class="ico-new ico">NEW</span>
-                                            @endif
-                                            @if( $obj->is_sale == 1 && $obj->sale_percent > 0 )
-                                            <span class="ico-sales ico">-{{ $obj->sale_percent }}%</span>
-                                            @endif
-                                        </p>
-                                        <a href="{{ route('product', [$obj->slug]) }}" title="{!! $obj->name !!}">
-                                            <img src="{!! Helper::showImageThumb( $obj->image_url ) !!}" class="img-1" alt="{!! $obj->name !!}">
-                                        </a>
-                                    </div>
-                                    <div class="product-info">
-                                        <h2 class="title"><a href="{{ route('product', [$obj->slug]) }}" title="{!! $obj->name !!}">{!! $obj->name !!}</a></h2>
-                                        <div class="product-price">
-                                        <span class="label-txt">Giá:</span> <span class="price-new">
-                                            @if($obj->is_sale == 1 && $obj->price_sale > 0)
-                                            {{ number_format($obj->price_sale) }}đ
-                                            @else
-                                                {{ number_format($obj->price) }}đ
-                                            @endif  
-                                        </span>
-                                        @if( $obj->is_sale == 1)
-                                        <span class="price-old">{{ number_format($obj->price) }}đ</span>
-                                        @endif
-                                    </div>
-                                </li>                               
-                                @endforeach 
-                                         
-                                       
-                            </ul>
-                        </div>
-                    </div>
+                    @endforeach
                     @endif
                 </div>
-            </div><!-- /block-detail -->
-        </div><!-- /block-col-left -->
-        @include ('frontend.cate.sidebar')
+            </div><!--End tab custom-->
+            <div class="cart-info cart-side">
+                <div class="title-cart-info">THÔNG TIN GIỎ HÀNG</div>
+                <div class="content-cart-info">
+                    @if(!empty(Session::get('products')))
+                    <div class="list-items-cart">                        
+                        <?php $total = 0; ?>
+                        @if( $arrProductInfo->count() > 0)
+                            <?php $i = 0; ?>
+                          @foreach($arrProductInfo as $product)
+                          <?php 
+                          $i++;
+                          $price = $product->is_sale ? $product->price_sale : $product->price; 
 
-        
-
-    </div>
-</div><!-- /block_big-title -->
-
+                          $total += $total_per_product = ($getlistProduct[$product->id]*$price);
+                          
+                          ?>
+                        <div class="item-cart">
+                            <div class="info-qty">
+                                <a class="qty-up" data-id="{{ $product->id }}" href="javascript:;"><i class="fa fa-plus-square" aria-hidden="true"></i></a>
+                                <input step="1" name="quantity" value="{{ $getlistProduct[$product->id] }}" class="qty-val">
+                                <a class="qty-down" data-id="{{ $product->id }}" href="javascript:;"><i class="fa fa-minus-square" aria-hidden="true"></i></a>
+                            </div>
+                            <p class="title-item">{!! $product->name !!}</p>
+                            <div class="price clearfix" style="font-size:14px">   
+                                <p class="pull-left" >{{ $getlistProduct[$product->id] }}x{{ number_format($price) }}</p>                             
+                                <p class="pull-right">{!! number_format($total_per_product) !!}đ</p>
+                            </div>
+                        </div>   
+                        
+                        @endforeach
+                        @endif                     
+                    </div>
+                    <ul class="">
+                        <li>
+                            <span class="pull-left cl_666">Cộng</span>
+                            <span class="pull-right cl_333">{!! number_format($total) !!}đ</span>
+                        </li>
+                        <!--<li>
+                            <span class="pull-left cl_ea0000">Giảm 30% tổng bill</span>
+                            <span class="pull-right cl_ea0000">66.000đ</span>
+                        </li>-->
+                        <li>
+                            <span class="pull-left cl_666">Phí phục vụ<br><small>(10% trên tổng đơn hàng)</small></span>
+                            <span class="pull-right cl_333">{{ number_format($total*10/100) }}đ</span>
+                        </li>
+                        <li class="bg_fffdee">
+                            <span class="pull-left cl_666">Tạm tính<br><small>(Giá chưa bao gồm COD)</small></span>
+                            <span class="pull-right cl_ea0000">{!! number_format($total + $total*10/100) !!}đ</span>
+                            <div class="clearfix"></div>
+                            <div class="action-cart ">
+                                <a href="{{ route('address-info') }}" class="btn btn-yellow">Đặt hàng</a>
+                                <a href="{{ route('empty-cart') }}" onclick="return confirm('Quý khách có chắc chắn bỏ hết hàng ra khỏi giỏ?'); " class="btn btn-defaultyellow">Xoá</a>
+                            </div>
+                        </li>
+                    </ul>
+                    @else
+                    <p class="cart-empty">Chưa có sản phẩm nào.</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </section><!-- End product -->
+</article>
+<input type="hidden" id="rating-route" value="{{ route('rating') }}">
+<form id="rating-form">
+	{{ csrf_field() }}
+	<input type="hidden" id="object_id" name="object_id" value="{{ $detail->id }}">
+	<input type="hidden" id="object_type" name="object_type" value="1">
+	<input type="hidden" id="score" name="score" value="">
+</form>
 @stop
-@section('js')
-    <!-- Js zoom -->
-    <script src="{{ URL::asset('public/assets/lib/jquery.zoom.min.js') }}"></script>
-    <!-- Flexslider -->
-    <script src="{{ URL::asset('public/assets/lib/flexslider/jquery.flexslider-min.js') }}"></script>
-    <script type="text/javascript">
-    $(document).ready(function () {
-           // The slider being synced must be initialized first
-        $('#carousel').flexslider({
-            animation: "slide",
-            controlNav: false,
-            animationLoop: true,
-            slideshow: false,
-            itemWidth: 75,
-            itemMargin: 15,
-            nextText: "",
-            prevText: "",
-            asNavFor: '#slider'
-        });
+@section('js')    
+<script type="text/javascript">
+	$(document).ready(function(){
+		$.ajax({
+	        url : $('#rating-route').val(),
+	        type : 'POST',
+	        dataType : 'html',
+	        data : $('#rating-form').serialize(),
+	        success : function(data){
+	            $('#rating-summary').html(data);
+	            var $input = $('input.rating');
+	            if ($input.length) {
+	                $input.removeClass('rating-loading').addClass('rating-loading').rating();
+	            }
+	        }
+   		});
 
-        $('#slider').flexslider({
-            animation: "fade",
-            controlNav: false,
-            directionNav: false,
-            animationLoop: false,
-            slideshow: false,
-            animationSpeed: 500,
-            sync: "#carousel"
+        $(document).ready(function($){  
+          $('.btn-order').click(function() {
+            $(this).html('<i class="fa fa-spin fa-spinner" style="margin-left:5px"></i>');
+            var product_id = $(this).data('id');
+            addToCart(product_id);
+          });
+        $('.btn-order-main').click(function() {
+            $(this).html('<i class="fa fa-spin fa-spinner"></i>').attr('disabled', 'disabled');
+            var product_id = $(this).data('id');
+            addToCartMain(product_id);
+            
+          });
         });
+        $(document).on('change', '.change_quantity', function() {
+            var quantity = $(this).val();
+            var id = $(this).data('id');
+            updateQuantity(id, quantity, 'ajax');
+        });
+        $(document).on('click', '.qty-up', function(){
+            var obj = $(this);
+            var quantityObj = obj.parents('.item-cart').find('.qty-val');            
+            quantityObj.val(parseInt(quantityObj.val()) + 1);
+            updateQuantity(obj.data('id'), parseInt(quantityObj.val()), 'normal');
+        });
+        $(document).on('click', '.qty-down', function(){
+            var obj = $(this);
+            var quantityObj = obj.parents('.item-cart').find('.qty-val');   
+            var currQuantity = parseInt(quantityObj.val());         
+            if( currQuantity > 1){
+                quantityObj.val(currQuantity - 1);
+            }else if(currQuantity == 1){
+                obj.parents('.item-cart').remove();
+            }
+            updateQuantity(obj.data('id'), (currQuantity - 1), 'normal');
+        });
+        jQuery(document).ready(function () {
+                var voffset = jQuery("#myScrollspy").offset();
+                var vtop = voffset.top;
+                var vbot = jQuery("footer").height() + 160;
+                jQuery("#myScrollspy ul").affix({
+                    offset: {
+                        top: vtop,
+                        bottom: vbot
+                    }
+                });
+                // Add smooth scrolling on all links inside the navbar
+                $("#myScrollspy a").on('click', function (event) {
+                    // Make sure this.hash has a value before overriding default behavior
+                    if (this.hash !== "") {
+                        // Prevent default anchor click behavior
+                        event.preventDefault();
 
-        $('.slides-large li').each(function () {
-            $(this).zoom();
-        });
-        });
+                        // Store hash
+                        var hash = this.hash;
 
-    </script>
+                        // Using jQuery's animate() method to add smooth page scroll
+                        // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+                        $('html, body').animate({
+                            scrollTop: $(hash).offset().top
+                        }, 300, function () {
+
+                            // Add hash (#) to URL when done scrolling (default click behavior)
+                            window.location.hash = hash;
+                        });
+                    }  // End if
+                });
+            });
+
+	});	
+function addToCart(product_id) {
+  $.ajax({
+    url: $('#route-add-to-cart').val(),
+    method: "GET",
+    data : {
+      id: product_id
+    },
+    success : function(data){
+       window.location.reload();
+    }
+  });
+}
+function addToCartMain(product_id) {
+  $.ajax({
+    url: $('#route-add-to-cart').val(),
+    method: "GET",
+    data : {
+      id: product_id
+    },
+    success : function(data){
+       location.href="{{ route('cart') }}";
+    }
+  });
+}	
+function calTotalProduct() {
+    var total = 0;
+    $('.change_quantity ').each(function() {
+        total += parseInt($(this).val());
+    });
+    $('.order_total_quantity').html(total);
+}
+
+function updateQuantity(id, quantity, type) {
+    $.ajax({
+        url: $('#route-update-product').val(),
+        method: "POST",
+        data: {
+            id: id,
+            quantity: quantity
+        },
+        success: function(data) {
+            location.reload();
+            /*
+            $.ajax({
+                url: $('#route-short-cart').val(),
+                method: "GET",
+
+                success: function(data) {
+                    if (type == 'ajax') {
+                        $('#short-cart-content').html(data);
+                        calTotalProduct();
+                    } else {
+                        window.location.reload();
+                    }
+                }
+            });
+            */
+        }
+    });
+}
+</script>
 @stop

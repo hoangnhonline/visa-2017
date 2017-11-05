@@ -20,7 +20,7 @@
       @if(Session::has('message'))
       <p class="alert alert-info" >{{ Session::get('message') }}</p>
       @endif
-      <a href="{{ route('banner.create', ['object_id' => $arrSearch['object_id'], 'object_type' => $arrSearch['object_type']]) }}" class="btn btn-info btn-sm" style="margin-bottom:5px;{{ $arrSearch['object_type'] == 3 && in_array($arrSearch['object_id'], [2,3]) && $items->count() == 1 ? 'display:none' : '' }}" 
+      <a href="{{ route('banner.create', ['object_id' => $arrSearch['object_id'], 'object_type' => $arrSearch['object_type']]) }}" class="btn btn-info btn-sm" style="margin-bottom:5px;" 
 
       >Tạo mới</a>
       @if($arrSearch['object_type'] == 3)
@@ -38,7 +38,7 @@
             <tr>
               <th style="width: 1%">#</th>
               <th style="width: 1%;white-space:nowrap">Thứ tự</th>
-              <th style="width:400px">Banner</th>
+              <th style="width:500px">Banner</th>
               <th>Liên kết</th>
   
               <th width="1%;white-space:nowrap">Thao tác</th>
@@ -54,13 +54,13 @@
                   <img src="{{ URL::asset('public/admin/dist/img/move.png')}}" class="move img-thumbnail" alt="Cập nhật thứ tự"/>
                 </td>
                 <td>                  
-                  <img class="img-thumbnail banner" width="380" src="{{ $item->image_url ? Helper::showImage($item->image_url) : URL::asset('public/admin/dist/img/no-image.jpg') }}" />
+                  <img class="img-thumbnail banner" width="500" src="{{ $item->image_url ? Helper::showImage($item->image_url) : URL::asset('public/admin/dist/img/no-image.jpg') }}" />
                 </td>                                                             
                 <td>{{ $item->ads_url }}</td>
                 <td style="white-space:nowrap; text-align:right">                 
-                  <a href="{{ route( 'banner.edit', [ 'id' => $item->id , 'object_id' => $arrSearch['object_id'], 'object_type' => $arrSearch['object_type'] ]) }}" class="btn-sm btn btn-warning">Chỉnh sửa</a>                 
+                  <a href="{{ route( 'banner.edit', [ 'id' => $item->id , 'object_id' => $arrSearch['object_id'], 'object_type' => $arrSearch['object_type'] ]) }}" class="btn-sm btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></a>                 
                 
-                  <a onclick="return callDelete('{{ $item->name }}','{{ route( 'banner.destroy', [ 'id' => $item->id ]) }}');" class="btn-sm btn btn-danger">Xóa</a>
+                  <a onclick="return callDelete('{{ $item->name }}','{{ route( 'banner.destroy', [ 'id' => $item->id ]) }}');" class="btn-sm btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
                 
                 </td>
               </tr> 
@@ -83,7 +83,7 @@
 <!-- /.content -->
 </div>
 @stop
-@section('javascript_page')
+@section('js')
 <script type="text/javascript">
 function callDelete(name, url){  
   swal({

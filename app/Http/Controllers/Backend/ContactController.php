@@ -18,10 +18,14 @@ class ContactController extends Controller
     */
     public function index(Request $request)
     {
+        if(Auth::user()->role == 1 ){
+            return redirect()->route('product.index');
+        }
         $status = isset($request->status) ? $request->status : 0;
         $type = isset($request->type) ? $request->type : 0;
         $email = isset($request->email) && $request->email != '' ? $request->email : '';
         $phone = isset($request->phone) && $request->phone != '' ? $request->phone : '';
+        $project_id = isset($request->project_id) && $request->project_id != '' ? $request->project_id : null;
         
         $query = Contact::whereRaw('1')->orderBy('id', 'DESC');
 
@@ -39,12 +43,18 @@ class ContactController extends Controller
         if( $phone != ''){
             $query->where('phone', 'LIKE', '%'.$phone.'%');
         }
+        if( $project_id != ''){
+            $query->where('project_id', $project_id);
+        }
         $items = $query->orderBy('id', 'desc')->paginate(20);
         
-        return view('backend.contact.index', compact( 'items', 'email', 'status', 'phone', 'type'));
+        return view('backend.contact.index', compact( 'items', 'email', 'status', 'phone', 'type', 'project_id', 'proList'));
     }    
     public function download()
     {
+        if(Auth::user()->role == 1 ){
+            return redirect()->route('product.index');
+        }
         $contents = [];
         $query = Contact::whereRaw('1')->orderBy('id', 'DESC')->get();
         $i = 0;
@@ -53,6 +63,7 @@ class ContactController extends Controller
             $contents[] = [
                 'STT' => $i,
                 'Email' => $data->email,
+                'Nội dung' => $data->content,
                 'Ngày ĐK' => date('d-m-Y H:i', strtotime($data->created_at))
             ];
         }        
@@ -90,6 +101,9 @@ class ContactController extends Controller
     */
     public function edit($id)
     {
+        if(Auth::user()->role == 1 ){
+            return redirect()->route('product.index');
+        }
         $tagSelected = [];
 
         $detail = Contact::find($id);
@@ -106,6 +120,9 @@ class ContactController extends Controller
     */
     public function update(Request $request)
     {
+        if(Auth::user()->role == 1 ){
+            return redirect()->route('product.index');
+        }
         $dataArr = $request->all();
         
         $this->validate($request,[                              
@@ -135,6 +152,9 @@ class ContactController extends Controller
     */
     public function destroy($id)
     {
+        if(Auth::user()->role == 1 ){
+            return redirect()->route('product.index');
+        }
         // delete
         $model = Contact::find($id);
         $model->delete();

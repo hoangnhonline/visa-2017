@@ -69,8 +69,8 @@ class AccountController extends Controller
         
          $this->validate($request,[ 
             'old_pass' => 'required',
-            'new_pass' => 'required|between:6,30',
-            'new_pass_re' => 'required|same:new_pass|between:6,30'
+            'new_pass' => 'required|min:6',
+            'new_pass_re' => 'required|same:new_pass|min:6'
         ],
         [   
             'old_pass.required' => 'Bạn chưa nhập mật khẩu hiện tại',     
@@ -110,8 +110,8 @@ class AccountController extends Controller
          
         $this->validate($request,[            
             'email' => 'email|required|unique:users,email',
-            'password' => 'required|between:6,30',
-            're_password' => 'required|same:password|between:6,30',
+            'password' => 'required|min:6',
+            're_password' => 'required|same:password|min:6',
             'display_name' => 'required',
             'role' => 'required'
         ],
@@ -138,10 +138,10 @@ class AccountController extends Controller
         $rs = Account::create($dataArr);       
         /*
         if ( $rs->id > 0 ){
-            Mail::send('backend.account.mail', ['full_name' => $request->full_name, 'password' => $tmpPassword, 'email' => $request->email], function ($message) use ($request) {
+            Mail::send('backend.account.mail', ['fullname' => $request->fullname, 'password' => $tmpPassword, 'email' => $request->email], function ($message) use ($request) {
                 $message->from( config('mail.username'), config('mail.name'));
 
-                $message->to( $request->email, $request->full_name )->subject('Mật khẩu đăng nhập hệ thống');
+                $message->to( $request->email, $request->fullname )->subject('Mật khẩu đăng nhập hệ thống');
             });   
         }*/
 

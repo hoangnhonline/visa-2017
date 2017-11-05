@@ -23,32 +23,41 @@ class Orders extends Model  {
      *
      * @var array
      */
-    protected $fillable = [            
-      'total_bill',      
-      'total_product',
+    protected $fillable = [
+      'id',
+      'customer_id',
+      'tong_tien',      
+      'tong_sp',
       'status',
-      'method_id',      
-      'discount',
-      'total_payment',
-      'shipping_fee',      
-      'is_other_address',
-      'cod_fee',
+      'method_id',
+      'coupon_id',
+      'giam_gia',
+      'tien_thanh_toan',
+      'phi_van_chuyen',      
+      'phi_cod',
       'fullname',      
-      'is_pay',
-      'updated_user',
-      'other_fullname',
-      'other_address',
-      'other_phone',
-      'other_email',
-      'fullname',
-      'address',
-      'phone',
-      'email',
-      'payment_status'
+      'da_thanh_toan',
+      'address_id',
+      'branch_id'
     ];
 
     public function order_detail()
     {
         return $this->hasMany('App\Models\OrderDetail', 'order_id');
+    }
+
+    public function customer()
+    {
+        return $this->hasOne('App\Models\Customer', 'id', 'customer_id');
+    }
+
+    public function branch()
+    {
+        return $this->hasOne('App\Models\Branch', 'id', 'branch_id');
+    }
+
+    public function address()
+    {
+        return $this->hasOne('App\Models\CustomerAddress', 'id', 'address_id');
     }
 }

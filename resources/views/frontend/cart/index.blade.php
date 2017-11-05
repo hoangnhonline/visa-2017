@@ -2,136 +2,114 @@
 @include('frontend.partials.meta')
 @section('content')
 <?php $total = 0; ?>
-<div class="block block-breadcrumb">
-    <div class="container">
-      <ul class="breadcrumb">
-        <li><a class="home" href="{{ route('home') }}" title="Trở về trang chủ">Trang chủ</a></li>
-        <li class="active">Giỏ hàng</li>
-      </ul>
-    </div>
-  </div><!-- /block-breadcrumb -->
-  <div class="block block-two-col container">
-    <div class="block-page-common">
-      <div class="block block-title">
-        <h1 class="title-main">
-          <i class="fa fa-cart-arrow-down"></i>
-          GIỎ HÀNG
-        </h1>
+<article class="mar-top40">
+  <div class="container">
+      <div class="breadcrumbs">
+          <ul>
+              <li><a class="home" href="{{ route('home') }}" title="Trở về trang chủ">Trang chủ</a></li>             
+              <li>Giỏ hàng</li>
+          </ul>
       </div>
-    </div><!-- /block-page-common -->
-    <div class="row">
-      <div class="col-sm-8 col-xs-12 block-col-sidebar">
-        <div class="block-cart">
-          <div class="shopcart-ct">
-            <form action="#" method="POST" class="form-cart">
-              <div class="table cart-tbl">
-                <div class="table-row thead">
-                  <div class="table-cell product-col t-c">Sản phẩm</div>
-                  <div class="table-cell numb-col">Giá</div>
-                  <div class="table-cell total-col t-c">Số lượng</div>
-                </div><!-- table-row thead -->
-                <div class="tr-wrap">
-                  @if(!empty(Session::get('products')))
-                 <?php $total = 0; ?>
-                  @if( $arrProductInfo->count() > 0)
-                      <?php $i = 0; ?>
-                    @foreach($arrProductInfo as $product)
-                    <?php 
-                    $i++;
-                    $price = $product->is_sale ? $product->price_sale : $product->price; 
+  </div>
+  <section id="cart-page" class="marg40">
+      <div class="container">
+          <div class="title-section">
+              GIỎ HÀNG
+          </div>
+      </div>
+      <div class="container">
+          <div class="colleft">
+              <table class="table table-cart">
+                  <thead>
+                      <tr>
+                          <th>SẢN PHẨM</th>
+                          <th>GIÁ SẢN PHẨM</th>
+                          <th>SỐ LƯỢNG</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      @if(!empty(Session::get('products')))
+                       <?php $total = 0; ?>
+                        @if( $arrProductInfo->count() > 0)
+                            <?php $i = 0; ?>
+                          @foreach($arrProductInfo as $product)
+                          <?php 
+                          $i++;
+                          $price = $product->is_sale ? $product->price_sale : $product->price; 
 
-                    $total += $total_per_product = ($getlistProduct[$product->id]*$price);
-                    
-                    ?>
-                  <div class="table-row clearfix">
-                    <div class="table-cell product-col">
-                      <figure class="img-prod">
-                        <img alt="{!! $product->name !!}" src="{{ $product->image_url ? Helper::showImage($product->image_url) : URL::asset('public/assets/images/no-img.png') }}">
-                      </figure>
-                      <a href="{{ route('product', [ $product->slug ]) }}" class="prod-tit" target="_blank" title="{!! $product->name !!}">{!! $product->name !!}</a>
-                      
-                      <p>
-                        <span>Mã sản phẩm:</span>
-                        <span class="p-code">{!! $product->code !!}</span>
-                      </p>
-                      <p>
-                        <a href="javascript:void(0);" title="Xóa sản phẩm" data-id="{{ $product->id }}" class="p-del del_item">Xóa</a>
-                      </p>
-                    </div>
-                    <div class="table-cell total-col">                     
-                      @if( $product->is_sale == 1)
-                      <p class="p-price"><b>{!! number_format( $product->price_sale ) !!}đ</b></p>
-                      <p class="p-price-old">{!! number_format( $product->price ) !!}đ</p>
-                      <p class="p-price-dis"><span>-{!! number_format( $product->sale_percent ) !!}%</span></p>
+                          $total += $total_per_product = ($getlistProduct[$product->id]*$price);
+                          
+                          ?>
+                      <tr>
+                          <td class="pos_rel">
+                              <div class="image"><img src="{{ $product->image_url ? Helper::showImage($product->image_url) : URL::asset('public/assets/images/no-img.png') }}" alt="{!! $product->name !!}"/></div>
+                              <h3>{!! $product->name !!}</h3>
+                              <a class="product-remove" href="#">Xóa</a>
+                          </td>
+                          <td>
+                              <div class="price">
+                                  @if($product->is_sale == 1 && $product->price_sale > 0)
+                                      {{ number_format($product->price_sale) }}đ
+                                  @else
+                                      {{ number_format($product->price) }}đ
+                                  @endif 
+                                  <!--<br/><small>375.000đ</small>-->
+                              </div>
+                          </td>
+                          <td>
+                              <div class="info-qty">
+                                  <a class="qty-down" data-id="{{ $product->id }}" href="javascript:;">-</a>
+                                  <input name="quantity" value="{{ $getlistProduct[$product->id] }}" title="SL" class="qty-val">
+                                  <a class="qty-up" data-id="{{ $product->id }}" href="javascript:;">+</a>
+                              </div>
+                          </td>
+                      </tr>  
+                      @endforeach
+                        
+                        @endif   
                       @else
-                      <p class="p-price"><b>{!! number_format( $product->price ) !!}đ</b></p>
-                      @endif
-                    </div><!-- /table-cell total-col t-r -->
-                    <div class="table-cell numb-col t-c">
-                      <select data-id="{{ $product->id }}" size="1" class="change_quantity">
-                        @for($i = 1; $i <= $product->inventory ; $i ++) 
-                        <option value="{{ $i }}" @if( $getlistProduct[$product->id] == $i ) selected @endif>{{ $i }}</option>                 
-                        @endfor      
-                      </select>
-                    </div>
-                  </div><!-- table-row clearfix -->
-                  
-                
-              
-              @endforeach
-
-              @endif  
-
-              @endif
-              </div><!-- tr-wrap -->
-              </div><!-- table cart-tbl --> 
-              <div class="block-btn text-right">
-                <a href="{{ route('home') }}" title="Tiếp tục mua hàng" class="btn btn-main"><i class="fa fa-angle-left"></i> Tiếp tục mua hàng</a>
-                @if(!empty(Session::get('products')))
-               <a href="{{ route('empty-cart') }}" onclick="return confirm('Quý khách có chắc chắn bỏ hết hàng ra khỏi giỏ?'); " class="btn btn-default"><i class="fa fa-trash-o"></i> Xóa tất cả</a>
-               @endif
+                        <tr>
+                          <td colspan="3">Chưa có sản phẩm nào.</td>
+                        </tr>  
+                      @endif              
+                  </tbody>
+              </table>
+              <div class="clearfix text-right">
+                  <a href="{{ route('cate-parent', 'coffee') }}" class="btn btn-yellow"><i class="fa fa-long-arrow-left" aria-hidden="true" ></i> Tiếp tục mua hàng</a>
+                  @if(!empty(Session::get('products')))
+                  <a href="{{ route('empty-cart') }}" onclick="return confirm('Quý khách có chắc chắn bỏ hết hàng ra khỏi giỏ?'); " class="btn btn-grey"><i class="fa fa-trash-o" aria-hidden="true"></i> Xóa toàn bộ</a>
+                  @endif
               </div>
-            </form>
           </div>
-        </div>
-      </div><!-- /block-col-left -->
-      <div class="col-sm-4 col-xs-12 block-col-right">
-        <div class="block-billing-product">
-          <div class="block block-content">
-            <table class="table-billing-product">
-              <tbody>
-                <tr>
-                  <td>
-                    <strong>Tạm tính</strong>
-                  </td>
-                  <td>
-                    <p class="text-right">{{ number_format($total) }}đ</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>Tổng cộng</strong>
-                  </td>
-                  <td>
-                    <p class="cl-red text-right">{{ number_format($total) }}đ</p>
-                    <p class="text-small text-right">(Đã bao gồm VAT)</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2" class="text-center text-small text-italic fs12">
-                    (Chưa bao gồm phí vận chuyển nếu có)
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="colright">
+              <div class="total-bill">
+                  <table class="table">
+                      <tr>
+                          <td style="text-align: left" >Tạm tính:</th>
+                          <td class="text-left"><b>{{ number_format($total) }}đ</b></td>
+                      </tr>
+                      <tr>
+                          <td style="text-align: left" class="bd-bt-ffd900">Phí phục vụ (10%)</th>
+                          <td class="bd-bt-ffd900"><b>{{ number_format($total*10/100) }}đ</b></td>
+                      </tr>                     
+                      <tr>
+                          <th><b>Tổng cộng <small>(Giá chưa bao gồm COD)</small>:</b></th>
+                          <td>
+                              <b>{!! number_format($total + $total*10/100) !!}đ</b><br/>                            
+                          </td>
+                      </tr>
+                      <tr>
+                          <td colspan="2" class="text-center"><small>Chưa bao gồm phí vận chuyển nếu có</small></td>
+                      </tr>
+                  </table>
+              </div>
+              @if(!empty(Session::get('products')))
+              <button id="btnDatHang" data-href="{{ route('address-info') }}" class="btn btn-block btn-yellow">Tiến hành đặt hàng</button>
+              @endif
           </div>
-          @if(!empty(Session::get('products')))
-          <a href="{{ route('address-info') }}" title="Tiến hành đặt hàng" class="btn btn-main btn-pay">Tiến hành đặt hàng</a>
-          @endif
-        </div>
-      </div><!-- /block-col-right -->
-    </div>
-  </div><!-- /block_big-title -->
+      </div>
+  </section><!-- End product -->
+</article>
 @stop
 @section('js')
    <script type="text/javascript">
@@ -165,7 +143,24 @@
             var quantity = $(this).val();
             var id = $(this).data('id');
             updateQuantity(id, quantity, 'ajax');
-        });        
+        });
+        $(document).on('click', '.qty-up', function(){
+            var obj = $(this);
+            var quantityObj = obj.parents('.info-qty').find('.qty-val');            
+            quantityObj.val(parseInt(quantityObj.val()) + 1);
+            updateQuantity(obj.data('id'), parseInt(quantityObj.val()), 'normal');
+        });
+        $(document).on('click', '.qty-down', function(){
+            var obj = $(this);
+            var quantityObj = obj.parents('.info-qty').find('.qty-val');   
+            var currQuantity = parseInt(quantityObj.val());         
+            if( currQuantity > 1){
+                quantityObj.val(currQuantity - 1);
+            }else if(currQuantity == 1){
+                obj.parents('.item-cart').remove();
+            }
+            updateQuantity(obj.data('id'), (currQuantity - 1), 'normal');
+        });
         
   }); 
 function addToCart(product_id) {
@@ -197,8 +192,22 @@ function updateQuantity(id, quantity, type) {
             quantity: quantity
         },
         success: function(data) {
-            
-            location.reload();            
+            location.reload();
+            /*
+            $.ajax({
+                url: $('#route-short-cart').val(),
+                method: "GET",
+
+                success: function(data) {
+                    if (type == 'ajax') {
+                        $('#short-cart-content').html(data);
+                        calTotalProduct();
+                    } else {
+                        window.location.reload();
+                    }
+                }
+            });
+            */
         }
     });
 }

@@ -1,145 +1,164 @@
-@extends('frontend.layout')  
+@extends('frontend.layout')
 @include('frontend.partials.meta')
-@section('header')
-    @include('frontend.partials.header')
-    
-  @endsection
+
 @section('content')
-<div class="columns-container">
-    <div class="container" id="columns">
-        <!-- breadcrumb -->
-        <div class="breadcrumb clearfix">
-            <a class="home" href="{{ route('home') }}" title="trở về trang chủ">Trang chủ</a>
-            <span class="navigation-pipe">&nbsp;</span>
-            <a href="{{ route('order-history') }}" title="Đơn hàng của tôi">Đơn hàng </a>
-            <span class="navigation-pipe">&nbsp;</span>
-            <a href="#" title="Chi tiết">Chi tiết </a>
-        </div>
-        <!-- ./breadcrumb -->
-        
-          <!-- row -->
-          <div class="row">
-          
-              @include ('frontend.account.sidebar')              
-              <!-- Center colunm-->
-              <div class="center_column col-xs-12 col-sm-9" id="center_column">
-                  <!-- page heading-->
-                  <h2 class="page-heading">
-                      <span class="page-heading-title2">Đơn hàng #{{ $str_order_id }} - {{ $status[$order->status] }}</span>
-                  </h2>
-                  <!-- Content page -->
-                    
-                    <div class="account-order-detail">
-                    
-                      <p class="date mt10 mb20">Ngày đặt hàng:  {{ $ngay_dat_hang }}</p>
-                      
-                      <div class="address-1">
-                        <h4 class="mb20"> Địa chỉ người nhận </h4>
-                        <p style="font-weight:bold">{{ $customer->full_name }}</p>
-                        <p>{{ $customer->address }}, 
-                        @if(isset($customer->xa->name))
-                          {{$customer->xa->name}}
-                        @endif, 
-                        @if(isset($customer->huyen->name))
-                          {{$customer->huyen->name}},
-                        @endif
-                        @if(isset($customer->tinh->name))
-                          {{$customer->tinh->name}}
-                        @endif</p>
-                        <p>ĐT: {{ $customer->phone }}</p>
-                      </div>
-                      
-                      <div class="row mb20 mt20">
-                        <div class="col-sm-7">
-                          <div class="payment-1">
-                            <h4 class="mb20">Phương thức vận chuyển</h4>
-                            <p>Vận chuyển Tiết Kiệm (dự kiến giao hàng vào {{ $order->ngay_giao_du_kien }})</p>
-                            @if($order->phi_giao_hang > 0)
-                            <p>Phí vận chuyển : {{ number_format($order->phi_giao_hang)}}&nbsp;đ</p>
-                            @else
-                            Miễn phí vận chuyển
-                            @endif
+<article>
+  <div class="container">
+      <div class="breadcrumbs">
+          <ul>
+              <li><a href="/">Trang chủ</a></li>
+              <li>Thông tin đặt hàng</li>
+          </ul>
+      </div>
+  </div>
+  <section id="account" class="marg40">
+      <div class="container">
+          <div class="tabs-custom">
+              <div class="col-tab-menu">
+                  <div class="clearfix marg10 user-account">
+                      <div class="image"><img src="{{ URL::asset('public/assets/img/icon.png') }}" alt="avatar"/></div>
+                      <span>
+                          Tài khoản của<br/>
+                          <b>{!! $customer->fullname !!}</b>
+                      </span>
+                  </div>
+                  <ul class="tab-menu">
+                      <li ><a href="{{ route('account-info') }}"><i class="fa fa-user" aria-hidden="true"></i> Thông tin tài khoản</a></li>
+                      <li class="active"><a href="{{ route('order-history') }}"><i class="fa fa-list-alt" aria-hidden="true"></i> Quản lý đơn hàng</a></li>
+                      <li><a href="javascript:void(0)" ><i class="fa fa-home" aria-hidden="true"></i> Số địa chỉ</a></li>
+                      <li><a href="javascript:void(0)" ><i class="fa fa-star" aria-hidden="true"></i> Điểm tích luỹ</a></li>
+                  </ul>
+              </div>              
+              <div class="col-tab-content admin-content" id="all">
+                  <div class="title-section">
+                      CHI TIẾT ĐƠN HÀNG #{{ $str_order_id }} - {{ $status[$order->status] }}
+                  </div>                                    
+                  <div class="marg10">
+                      <!--<div class="little-title">THÔNG BÁO</div>
+                      <div class="well wll">
+                          <table>
+                              <tr>
+                                  <td>11:35:25</td>
+                                  <td>20/08/2017</td>
+                                  <td>Chúng tôi vừa bàn giao đơn hàng của quý khách đến đối tác vận chuyển KAFFEE Team. Dự kiến giao hàng vào Thứ 2 - 21/08/2017 Thứ 2 - 21/08/2017</td> 
+                              </tr>
+                          </table>
+                      </div>-->
+                      <div class="row clearfix">
+                          <div class="col-md-6">
+                              <div class="little-title">ĐỊA CHỈ NGƯỜI NHẬN</div>
+                              <div class="well wll">
+                                  <p>
+                                      Tên người nhận: <b>{{ $order->address->fullname }}</b>
+                                  </p>
+                                  <p>
+                                      Địa chỉ: <b>{{ $order->address->address }}, {{ $order->address->ward->name }}, {{ $order->address->district->name }}, {{ $order->address->city->name }}</b>
+                                  </p>
+                                  <p>
+                                      Điện thoại: <b>{{ $order->address->phone }}</b>
+                                  </p>
+                                  @if($order->address->email)
+                                  Email: <b>{{ $order->address->email }}</b>
+                                  @endif
+                              </div>
                           </div>
-  
-                        </div>
-                        <div class="col-sm-5">
-                          <div class="payment-2 has-padding">
-                            <h4 class="mb20">Phương thức thanh toán</h4>
-                            @if($order->method_id == 1)
-                            <p>Giao hàng và thu tiền tại nhà </p>                            
-                            @else
-                            <p>Chuyển khoản ngân hàng</p>                           
-                            @endif
+                          <div class="col-md-6">
+                              <div class="little-title">HÌNH THỨC THANH TOÁN</div>
+                              <div class="well wll">
+                                  @if($order->method_id == 1)
+                                    COD
+                                  @elseif($order->method_id == 2)
+                                    Thanh toán bằng thẻ của K KAFFEE
+                                  @endif
+                              </div>
                           </div>
-                        </div>
                       </div>
-                    </div>
-                    
-                    <h4 class="mb10">Sản phẩm mua</h4>
-                    
-                    <div class="table-responsive">
-                      <table class="table table-bordered dashboard-order">
-                        <thead>
-                          <tr class="default">
-                            <th class="text-nowrap"> <span class="hidden-xs hidden-sm hidden-md">Tên sản phẩm</span> <span class="hidden-lg">Sản phẩm</span> </th>                           
-                            <th class="text-nowrap">Giá</th>
-                            <th class="text-nowrap">Số lượng</th>                          
-                            <th class="text-nowrap">Tổng cộng</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          @foreach($orderDetail as $rowOrder)                          
-                          <tr>
-                            <td><a href="{{ route('product', $detailArr[$rowOrder->product_id]->slug) }}" target="_blank" class="link">{{ $detailArr[$rowOrder->product_id]->name }}</a> </td>
-                           
-                            <td><strong class="hidden-lg hidden-md">Giá: </strong>{{ number_format($rowOrder->don_gia) }}&nbsp;₫</td>
-                            <td><strong class="hidden-lg hidden-md">Số lượng: </strong>{{ $rowOrder['so_luong'] }} </td>
-                           
-                            <td><strong class="hidden-lg hidden-md">Tổng cộng: </strong>{{ number_format($rowOrder->tong_tien) }}&nbsp;₫</td>
-                          </tr>
-                          @endforeach                         
-                        </tbody>
-                        <tfoot>
-                                                
-                          <tr>
-                            <td colspan="3" class="text-right"><strong>Chi phí vận chuyển</strong></td>
-                            <td><strong>{{ $order->phi_giao_hang > 0 ? number_format($order->phi_giao_hang)."&nbsp;₫" : "Miễn phí" }}</strong></td>
-                          </tr>
-                          @if($order->phi_cod > 0)
-                          <tr>
-                            <td colspan="3" class="text-right"><strong>Phí Thu Hộ</strong></td>
-                            <td><strong>{{ $order->phi_cod > 0 ? number_format($order->phi_cod)."&nbsp;₫" : "Miễn phí" }}</strong></td>
-                          </tr>
-                          @endif
-                          <tr>
-                            <td colspan="3" class="text-right"><strong>Tổng cộng</strong></td>
-                            <td><strong>{{ number_format($order->tong_tien)}}&nbsp;₫</strong></td>
-                          </tr>
-                        </tfoot>
+                  </div>
+                  <div class="clearfix">
+                      <div class="little-title">SẢN PHẨM ĐƯỢC ĐẶT</div>
+                      <table class="table booked">
+                          <thead>
+                              <tr>
+                                  <th>Sản phẩm</th>
+                                  <th>Giá</th>
+                                  <th>Số lượng</th>
+                                  <th>Coupon giảm giá</th>
+                                  <th>Tạm tính</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                            <?php 
+                              $totalTamTinh = 0;
+                            ?>
+                              @foreach($orderDetail as $rowOrder)
+                              <?php 
+                                $totalTamTinh += $rowOrder->tong_tien;
+                              ?>
+                              <tr>
+                                  <td>
+                                      <div class="image"><img src="{{ Helper::showImage($rowOrder->product->image_url) }}" alt="{!! $rowOrder->product->name !!}"/></div>
+                                      <div class="title">
+                                          {!! $rowOrder->product->name !!}
+                                          <a href="javascript:;" data-id="{{ $rowOrder->sp_id }}" class="btn btn-order">Mua lại</a>
+                                      </div>
+                                  </td>
+                                  <td class="cl_ea0000">{{ number_format($rowOrder->don_gia) }}đ</td>
+                                  <td>
+                                      <b>{{ $rowOrder['so_luong'] }}</b>
+                                  </td>
+                                  <td></td>
+                                  <td><strong>{{ number_format($rowOrder->tong_tien) }}đ</strong></td>
+                              </tr>
+                               @endforeach
+                             
+                          </tbody>
+                          <tfoot>
+                              <tr>
+                                  <td></td>
+                                  <td colspan="2" class="text-left"><b>Tổng phụ</b></td>
+                                  <td></td>
+                                  <td class="text-right"><b>{!! number_format($totalTamTinh) !!}đ</b></td>
+                              </tr>
+                              <tr>
+                                  <td></td>
+                                  <td colspan="2" class="text-left"><b>Phí vận chuyển</span></b></td>
+                                  
+                                  <td></td>
+                                  <td class="text-right"><b>{{ number_format($order->phi_van_chuyen) }}đ</b></td>
+                              </tr>
+                              <tr>
+                                  <td></td>
+                                  <td colspan="2" class="text-left"><b>Phí phục vụ</b><br/><small>(<span class="cl_ea0000">10%</span> trên tổng đơn hàng)</small></td>
+                                  
+                                  <td></td>
+                                  <td class="text-right"><b>{{ number_format($totalTamTinh*10/100) }}đ</b></td>
+                              </tr>
+                              <tr>
+                                  <td></td>
+                                  <td colspan="2" class="text-left"><b>Tổng cộng</b></td>
+                                  
+                                  <td></td>
+                                  <td class="text-right"><b class="cl_ea0000">{{ number_format($order->tien_thanh_toan) }}đ</b></td>
+                              </tr>
+                          </tfoot>
                       </table>
-                    </div>                    
-                    <a href="{{ route('order-history')}}" class="btn btn-info btn-back"><i class="fa fa-caret-left"></i> Quay về đơn hàng của tôi</a>
-                    @if($order->status == 0)
-                    <button id="btnHuy" class="btn btn-danger" style="float:right"><i class="fa fa-times"></i> Hủy đơn hàng</button>
-                    @endif
-                     </div>
-
+                      @if($order->status == 0)
+                      <button id="btnHuy" class="btn btn-danger btn-sm" style="float:right"><i class="fa fa-times"></i>  Hủy đơn hàng</button>
+                      @endif
+                  </div>
               </div>
-              <!-- ./ Center colunm -->
-              
-          </div>
-          <!-- ./row-->   
-    </div>
-</div>
-<div class="clearfix"></div>
+          </div><!--End tab custom-->
+      </div>
+    </section><!-- End News -->
+</article>
 @endsection
-
-@section('javascript_page')
+@section('js')
    <script type="text/javascript">
     $(document).ready(function() {
+
       $('#btnHuy').click(function(){ 
         var obj = $(this);       
-        if(confirm('Quý khách chắc chắn muốn hủy đơn hàng này?')){
+        if(confirm('Chắc chắn hủy đơn hàng?')){
           $.ajax({
             url : '{{ route('order-cancel') }}',
             type  : 'POST',
@@ -147,12 +166,28 @@
               id : {{ $order->id }}
             },
             success : function(){
-              swal({ title: '', text: 'Đã hủy đơn hàng #{{ $str_order_id }}', type: 'success' });
+              swal({ title: '', text: 'Hủy đơn hàng #{{ $str_order_id }}', type: 'success' });
               obj.remove();
             }
           });
         }
       });
+       $('.btn-order').click(function() {
+          var product_id = $(this).data('id');
+          addToCart(product_id);          
+        });
     });
+    function addToCart(product_id) {
+      $.ajax({
+        url: $('#route-add-to-cart').val(),
+        method: "GET",
+        data : {
+          id: product_id
+        },
+        success : function(data){
+           window.location.reload();
+        }
+      });
+    } 
   </script>
 @endsection

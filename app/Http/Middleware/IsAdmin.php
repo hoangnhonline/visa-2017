@@ -15,7 +15,7 @@ class IsAdmin {
 	public function handle($request, Closure $next)
 	{
 		if ( Auth::check() )
-        {
+        {   
             return $next($request);
         }
 		return redirect()->route('backend.login-form');

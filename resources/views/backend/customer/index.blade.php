@@ -27,7 +27,7 @@
         <div class="panel-body">
           <form class="form-inline" role="form" method="GET" action="{{ route('customer.index') }}" id="frmContact">  <div class="form-group">
               <label for="name">Họ tên :</label>
-              <input type="text" class="form-control" name="full_name" value="{{ $full_name }}">
+              <input type="text" class="form-control" name="fullname" value="{{ $fullname }}">
             </div>                                                 
             <div class="form-group">
               <label for="name">Email :</label>
@@ -37,7 +37,7 @@
               <label for="name">&nbsp;&nbsp;Điện thoại :</label>
               <input type="text" class="form-control" name="phone" value="{{ $phone }}">
             </div>
-            <button type="submit" class="btn btn-default">Lọc</button>
+            <button type="submit" class="btn btn-default btn-sm">Lọc</button>
           </form>         
         </div>
       </div>
@@ -51,7 +51,7 @@
         <div class="box-body">        
           <a href="{{ route('customer.export') }}" class="btn btn-info btn-sm" style="margin-bottom:5px;float:left" target="_blank">Export</a>
           <div style="text-align:center">
-            {{ $items->appends( ['status' => $status, 'email' => $email, 'phone' => $phone, 'full_name' => $full_name] )->links() }}
+            {{ $items->appends( ['status' => $status, 'email' => $email, 'phone' => $phone, 'fullname' => $fullname] )->links() }}
           </div>  
           <table class="table table-bordered" id="table-list-data">
             <tr>
@@ -68,8 +68,8 @@
               <tr id="row-{{ $item->id }}">
                 <td><span class="order">{{ $i }}</span></td>                       
                 <td>                  
-                  @if($item->full_name != '')
-                  {{ $item->full_name }}</br>
+                  @if($item->name != '')
+                  {{ $item->name }}</br>
                   @endif
                   @if($item->email != '')
                   <a href="{{ route( 'customer.edit', [ 'id' => $item->id ]) }}">{{ $item->email }}</a> -
@@ -81,7 +81,7 @@
                 <td>{{ date('d-m-Y H:i', strtotime($item->created_at)) }}</td>
                 <td style="white-space:nowrap">                                  
                   
-                  <a onclick="return callDelete('{{ $item->email }}','{{ route( 'customer.destroy', [ 'id' => $item->id ]) }}');" class="btn btn-danger">Xóa</a>
+                  <a onclick="return callDelete('{{ $item->email }}','{{ route( 'customer.destroy', [ 'id' => $item->id ]) }}');" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></a>
                   
                 </td>
               </tr> 
@@ -95,7 +95,7 @@
           </tbody>
           </table>
           <div style="text-align:center">
-            {{ $items->appends( ['status' => $status, 'email' => $email, 'phone' => $phone, 'full_name' => $full_name] )->links() }}
+            {{ $items->appends( ['status' => $status, 'email' => $email, 'phone' => $phone, 'fullname' => $fullname] )->links() }}
           </div>  
         </div>        
       </div>
@@ -107,7 +107,7 @@
 <!-- /.content -->
 </div>
 @stop
-@section('javascript_page')
+@section('js')
 <script type="text/javascript">
 function callDelete(name, url){  
   swal({

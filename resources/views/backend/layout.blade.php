@@ -4,13 +4,14 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="csrf-token" content="{{ csrf_token() }}" />
-  <title>DASHBOARD | Dashboard</title>
+  <title>K KAFFEE | Dashboard</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="stylesheet" href="{{ URL::asset('http://code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css') }}">
+  
   
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="{{ URL::asset('public/admin/bootstrap/css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ URL::asset('http://code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css') }}">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
@@ -22,6 +23,7 @@
   <link rel="stylesheet" href="{{ URL::asset('public/admin/dist/css/skins/_all-skins.min.css') }}">
   <!-- iCheck -->
   <link rel="stylesheet" href="{{ URL::asset('public/admin/plugins/iCheck/flat/blue.css') }}">
+  <link rel="stylesheet" href="{{ URL::asset('public/admin/plugins/colorpicker/bootstrap-colorpicker.min.css') }}">
   <link rel="stylesheet" href="{{ URL::asset('public/admin/dist/css/select2.min.css') }}">
   <link rel="stylesheet" href="{{ URL::asset('public/admin/dist/css/sweetalert2.min.css') }}">  
 
@@ -33,15 +35,15 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini" >
 <div class="wrapper">
   @include('backend.partials.header')
-  @if(Auth::user()->email != "huongll@DASHBOARD" && \Request::route()->getName() != "compare.index" )
-    @include('backend.partials.sidebar')
-  @endif
+  
+  @include('backend.partials.sidebar')
+  
 
   <!-- Content Wrapper. Contains page content -->
-  @yield('content')
+  @yield('content')  
   <div style="display: none" id="box_uploadimages">
     <div class="upload_wrapper block_auto">
         <div class="note" style="text-align:center;">Nhấn <strong>Ctrl</strong> để chọn nhiều hình.</div>
@@ -63,9 +65,9 @@
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
-      <b>Version</b> 4.0.0
+      <b>Version</b> 2.3.5
     </div>
-    <strong>Copyright &copy; 2016-2020 <a href="mailto:hoangnhonline@gmail.com">hoangnhonline@gmail.com</a>.</strong> All rights
+    <strong>Copyright &copy; 2014-2016 <a href="mailto:hoangnhonline@gmail.com">hoangnhonline@gmail.com</a>.</strong> All rights
     reserved.
   </footer>
 
@@ -76,7 +78,7 @@
 <input type="hidden" id="url_open_kc_finder" value="{{ URL::asset('public/admin/dist/js/kcfinder/browse.php?type=images') }}">
   <div class="control-sidebar-bg"></div>
 </div>
-<input type="hidden" id="upload_url" value="{{ config('phukien.upload_url') }}">
+<input type="hidden" id="upload_url" value="{{ config('kkaffee.upload_url') }}">
 <input type="hidden" id="app_url" value="{{ env('APP_URL') }}">
 <!-- ./wrapper -->
 
@@ -99,9 +101,6 @@
 <script src="{{ URL::asset('public/admin/dist/js/select2.min.js') }}"></script>
 <script src="{{ URL::asset('public/admin/dist/js/es6-promise.min.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-
-<!-- Slimscroll -->
-<script src="{{ URL::asset('public/admin/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ URL::asset('public/admin/dist/js/app.min.js') }}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
@@ -109,36 +108,25 @@
 <!-- AdminLTE for demo purposes -->
 <script src="{{ URL::asset('public/admin/dist/js/demo.js') }}"></script>
 <script src="{{ URL::asset('public/admin/dist/js/lazy.js') }}"></script>
-<script src="{{ URL::asset('public/admin/dist/js/jquery.number.min.js') }}"></script>
 <script src="{{ URL::asset('public/admin/dist/js/ckeditor/ckeditor.js') }}"></script>
 
 <script type="text/javascript" type="text/javascript">
 
 $(document).ready(function(){
   $('img.lazy').lazyload();
-  $('input.number').number( true, 0 );
   $.ajaxSetup({
       headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       }
   });
-
-  
 });
-
-
 </script>
 <style type="text/css">
   .pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover{
     z-index: 1 !important;
-  }
-  @if(\Request::route()->getName() == "compare.index")
-.content-wrapper, .main-footer{
-  margin-left: 0px !important;
-}
-@endif
+  } 
 </style>
 
-@yield('javascript_page')
+@yield('js')
 </body>
 </html>

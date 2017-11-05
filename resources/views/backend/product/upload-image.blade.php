@@ -6,7 +6,7 @@
 		<input type="hidden" name="image_tmp_url[]" value="{{ $tmp['image_path'] }}">
 		<input type="hidden" name="image_tmp_name[]" value="{{ $tmp['image_name'] }}">
 	    <label><input type="radio" name="thumbnail_id" class="thumb" value="{{ $tmp['image_path'] }}"> Ảnh đại diện </label>
-	    <button class="btn btn-danger btn-sm remove-image" type="button" data-value="{{ $tmp['image_path'] }}" data-id="" >Xóa</button>
+	    <button class="btn btn-danger btn-sm remove-image" type="button" data-value="{{ $tmp['image_path'] }}" data-id="" ><span class="glyphicon glyphicon-trash"></span></button>
 	  </div>
 	</div>
 	@endforeach

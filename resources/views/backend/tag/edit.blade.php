@@ -7,7 +7,7 @@
     <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
       <li><a href="{{ route('tag.index') }}">Tags</a></li>
-      <li class="active"><span class="glyphicon glyphicon-pencil"></span></li>
+      Cập nhật
     </ol>
   </section>
 
@@ -41,9 +41,8 @@
               <div class="form-group">
                 <label for="email">Loại </label>
                 <select class="form-control" name="type" id="type">                                
-                  <option value="1" {{ 1 ==  old('type', $detail->type) ? "selected" : "" }}>BĐS</option>
-                  <option value="2" {{ 2 ==  old('type', $detail->type) ? "selected" : "" }}>Bài viết</option>
-                  <option value="3" {{ 3 ==  old('type', $detail->type) ? "selected" : "" }}>Tiện ích</option>
+                  <option value="1" {{ 1 ==  old('type', $detail->type) ? "selected" : "" }}>Sản phẩm</option>
+                  <option value="2" {{ 2 ==  old('type', $detail->type) ? "selected" : "" }}>Tin tức</option>                  
                 </select>
               </div>              
                <!-- text input -->
@@ -110,7 +109,7 @@
 </div>
 
 @stop
-@section('javascript_page')
+@section('js')
 <script type="text/javascript">
   $(document).ready(function(){    
     $('#name').change(function(){

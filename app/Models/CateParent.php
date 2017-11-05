@@ -23,42 +23,12 @@ class CateParent extends Model  {
      *
      * @var array
      */
-    protected $fillable = [
-                            'name', 
-                            'slug', 
-                            'alias',           
-                            'is_hot', 
-                            'status',
-                            'image_url',
-                            'display_order', 
-                            'description',                 
-                            'meta_id',                            
-                            'is_hover',
-                            'created_user',
-                            'updated_user'
-                        ];
-    public static function getList($params = []){
-        $query = self::where('status', 1);
-        
-        if( isset($params['is_hot']) && $params['is_hot'] ){
-            $query->where('is_hot', $params['is_hot']);
-        }
-        $query->orderBy('is_hot', 'desc')->orderBy('display_order');
-        if(isset($params['limit']) && $params['limit']){
-            return $query->limit($params['limit'])->get();
-        }
-        if(isset($params['pagination']) && $params['pagination']){
-            return $query->paginate($params['pagination']);
-        }                
-    }
+    protected $fillable = [ 'name', 'alias', 'slug', 'description', 'image_url', 'display_order', 'meta_id', 'is_hot', 'status', 'created_user', 'updated_user', 'is_widget'];
+
     public function cates()
     {
         return $this->hasMany('App\Models\Cate', 'parent_id');
     }
-
-    public function banners()
-    {
-        return $this->hasMany('App\Models\Banner', 'object_id')->where('object_type', 1);
-    }
+    
 
 }

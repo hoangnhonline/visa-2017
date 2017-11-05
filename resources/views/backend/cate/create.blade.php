@@ -15,7 +15,7 @@
 
   <!-- Main content -->
   <section class="content">
-    <a class="btn btn-default" href="{{ route('cate.index') }}" style="margin-bottom:5px">Quay lại</a>
+    <a class="btn btn-default btn-sm" href="{{ route('cate.index') }}" style="margin-bottom:5px">Quay lại</a>
     <form role="form" method="POST" action="{{ route('cate.store') }}">
     <div class="row">
       <!-- left column -->
@@ -38,16 +38,18 @@
                           @endforeach
                       </ul>
                   </div>
-              @endif
+              @endif               
                 <div class="form-group">
-                  <label>Danh mục cha</label>
-                  <select class="form-control" name="parent_id" id="parent_id">                  
-                    <option value="0" {{ old('parent_id') == 0 ? "selected" : "" }}>--chọn--</option>
-                    @foreach( $cateParentList as $value )
-                    <option value="{{ $value->id }}" {{ ( old('parent_id') == $value->id || $parent_id == $value->id ) ? "selected" : "" }}>{{ $value->name }}</option>
-                    @endforeach
-                  </select>
-                </div> 
+                    <label for="email">Danh mục cha <span class="red-star">*</span></label>
+                    <select class="form-control req" name="parent_id" id="parent_id">
+                        <option value="">-- chọn --</option>
+                        @foreach( $cateParentList as $value )
+                        <option value="{{ $value->id }}"
+                        {{ old('parent_id', $parent_id) == $value->id ? "selected" : "" }}                           
+                        >{{ $value->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
                  <!-- text input -->
                 <div class="form-group">
                   <label>Tên danh mục <span class="red-star">*</span></label>
@@ -57,12 +59,41 @@
                   <label>Slug <span class="red-star">*</span></label>
                   <input type="text" class="form-control" readonly="readonly" name="slug" id="slug" value="{{ old('slug') }}">
                 </div>
+                  <div class="clearfix"></div>
+                <div class="form-group">
+                  <div class="checkbox col-md-3" >
+                    <label>
+                      <input type="checkbox" name="is_hot" value="1" {{ old('is_hot') == 1 ? "checked" : "" }}>
+                      HOT
+                    </label>
+                  </div>                  
+                  <div class="checkbox col-md-3" >
+                    <label>
+                      <input type="checkbox" name="is_widget" value="1" {{ old('is_widget') == 1 ? "checked" : "" }}>
+                      WIDGET
+                    </label>
+                  </div>     
+                </div>
+                <div class="clearfix"></div>
                 <!-- textarea -->
                 <div class="form-group">
                   <label>Mô tả</label>
                   <textarea class="form-control" rows="4" name="description" id="description">{{ old('description') }}</textarea>
-                </div>            
+                </div> 
                 
+                <div class="form-group" style="margin-top:10px;margin-bottom:10px">  
+                  <label class="col-md-3 row">Ảnh đại diện (1349 x 300px)</label>    
+                  <div class="col-md-9">
+                    <img id="thumbnail_image" src="{{ old('image_url') ? Helper::showImage(old('image_url')) : URL::asset('public/admin/dist/img/img.png') }}" class="img-thumbnail" width="500">
+                    
+                    <input type="file" id="file-image" style="display:none" />
+                 
+                    <button class="btn btn-default btn-sm" id="btnUploadImage" type="button"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Upload</button>
+                  </div>
+                  <div style="clear:both"></div>
+                </div> 
+
+              
                 <div class="form-group">
                   <label>Ẩn/hiện</label>
                   <select class="form-control" name="status" id="status">                  
@@ -70,11 +101,13 @@
                     <option value="1" {{ old('status') == 1 || old('status') == NULL ? "selected" : "" }}>Hiện</option>                  
                   </select>
                 </div>                
-            </div>          
-        
+            </div>
+            <!-- /.box-body -->            
+            <input type="hidden" name="image_url" id="image_url" value="{{ old('image_url') }}"/>          
+            
             <div class="box-footer">
-              <button type="submit" class="btn btn-primary">Lưu</button>
-              <a class="btn btn-default" class="btn btn-primary" href="{{ route('cate.index')}}">Hủy</a>
+              <button type="submit" class="btn btn-primary btn-sm">Lưu</button>
+              <a class="btn btn-default btn-sm" class="btn btn-primary btn-sm" href="{{ route('cate.index')}}">Hủy</a>
             </div>
             
         </div>
@@ -113,21 +146,76 @@
 
       </div>
       <!--/.col (left) -->      
-    </div>   
+    </div>
     </form>
     <!-- /.row -->
   </section>
   <!-- /.content -->
 </div>
+<style type="text/css">
+  .checkbox+.checkbox, .radio+.radio{
+    margin-top: 10px !important;
+  }
+</style>
 <input type="hidden" id="route_upload_tmp_image" value="{{ route('image.tmp-upload') }}">
 @stop
-@section('javascript_page')
+@section('js')
 <script type="text/javascript">
-    $(document).ready(function(){    
+var h = screen.height;
+var w = screen.width;
+var left = (screen.width/2)-((w-300)/2);
+var top = (screen.height/2)-((h-100)/2);
+function openKCFinder_singleFile() {
+      window.KCFinder = {};
+      window.KCFinder.callBack = function(url) {
+         $('#image_url').val(url);
+         $('#thumbnail_image').attr('src', $('#app_url').val() + url);
+          window.KCFinder = null;
+      };
+      window.open('{{ URL::asset("public/admin/dist/js/kcfinder/browse.php?type=images") }}', 'kcfinder_single','scrollbars=1,menubar=no,width='+ (w-300) +',height=' + (h-300) +',top=' + top+',left=' + left);
+  }
+
+    $(document).ready(function(){
+            
+      $('#btnUploadImage').click(function(){        
+        //$('#file-image').click();
+        openKCFinder_singleFile();
+      });     
+      
+      var files = "";
+      $('#file-image').change(function(e){
+         files = e.target.files;
+         
+         if(files != ''){
+           var dataForm = new FormData();        
+          $.each(files, function(key, value) {
+             dataForm.append('file', value);
+          });   
+          
+          dataForm.append('date_dir', 1);
+          dataForm.append('folder', 'tmp');
+
+          $.ajax({
+            url: $('#route_upload_tmp_image').val(),
+            type: "POST",
+            async: false,      
+            data: dataForm,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+              if(response.image_path){
+                $('#thumbnail_image').attr('src',$('#upload_url').val() + response.image_path);
+                $( '#image_url' ).val( response.image_path );
+                $( '#image_name' ).val( response.image_name );
+              }
+            }
+          });
+        }
+      });
       
       $('#name').change(function(){
          var name = $.trim( $(this).val() );
-         if( name != '' && $('#slug').val() == ''){
+        
             $.ajax({
               url: $('#route_get_slug').val(),
               type: "POST",
@@ -139,17 +227,8 @@
                 if( response.str ){                  
                   $('#slug').val( response.str );
                 }                
-              },
-              error: function(response){                             
-                  var errors = response.responseJSON;
-                  for (var key in errors) {
-                    
-                  }
-                  //$('#btnLoading').hide();
-                  //$('#btnSave').show();
               }
-            });
-         }
+            });        
       });
 
     });

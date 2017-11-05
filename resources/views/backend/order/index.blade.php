@@ -91,30 +91,20 @@
 
                 ?>
                 #{{ str_pad($order->id, 6,'0', STR_PAD_LEFT) }}</a> 
-                <span style="color:#555"> bởi {{$order->fullname}}</span>
+                <span style="color:#555"> bởi {{$order->customer->fullname}}</span>
                 <br>
-                <a href="mailto:">{{ $order->email }}</a>
+                <a href="mailto:">{{ $order->customer->email }}</a>
                 <br>
-                {{ $order->phone }}
+                {{ $order->customer->phone }}
                 </td>
                 <td style="text-align:center;width:150px;white-space:nowrap">{{ date('d-m-Y H:i ', strtotime($order->created_at))}}</td>
-                <td>                
-                @if( $order->is_other_address == 0 )
-                <a href="http://maps.google.com/maps?&q={{ $order->address }}" target="_blank"> 
-                {{ $order->fullname }}<br> {{ $order->address }} <br> {{ $order->phone }}
-                <br>
-                {{ $order->email }}
-                </a>
-                @else
-                <a href="http://maps.google.com/maps?&q={{ $order->other_address }}" target="_blank"> 
-                {{ $order->other_fullname }}<br> {{ $order->other_address }} <br> {{ $order->other_phone }}
-                <br>
-                {{ $order->other_email }}
-                </a>
-                @endif
+                <td>
+                  <strong>{{ $order->address->fullname }} - {{ $order->address->phone }}</strong>
+                <a href="http://maps.google.com/maps?&q={{ $order->address->address }}, {{ $order->address->ward_id ? Helper::getName($order->address->ward_id, 'ward') : "" }}, {{ $order->address->district_id ? Helper::getName($order->address->district_id, 'district') : "" }}, {{ $order->city_id ? Helper::getName($order->address->city_id, 'city') : "" }}" target="_blank"> 
+                <br> {{ $order->address->address }}, {{ $order->address->ward_id ? Helper::getName($order->address->ward_id, 'ward') : "" }}, {{ $order->address->district_id ? Helper::getName($order->address->district_id, 'district') : "" }}, {{ $order->address->city_id ? Helper::getName($order->address->city_id, 'city') : "" }}</a>
                 </td>
                              
-                <td style="text-align:right;width:100px">{{ number_format($order->total_payment) }}</td>
+                <td style="text-align:right;width:100px">{{number_format($order->tong_tien)}}</td>
                 <td>
                   <select class="select-change-status form-control" order-id="{{$order->id}}" customer-id="{{$order->customer_id}}" >
                     @foreach($list_status as $index => $status)
@@ -126,8 +116,10 @@
                     @endforeach
                   </select>
                 </td>
-                <td style="text-align:right">                 
-                  <a href="{{ route('order.detail', $order->id)}}?status={{ $s['status'] }}&name={{ $s['name'] }}&date_from={{ $s['date_from'] }}&date_to={{ $s['date_to'] }}" class="btn btn-info btn-sm">Chi tiết</a> 
+                <td style="text-align:right">                   
+                  <a href="{{route('order.detail', $order->id)}}?status={{ $s['status'] }}&name={{ $s['name'] }}&date_from={{ $s['date_from'] }}&date_to={{ $s['date_to'] }}" class="btn btn-info btn-sm">Chi tiết</a>
+                                 
+               
                 </td>
                 </tr>
                 @endforeach
@@ -151,7 +143,7 @@
 <!-- /.content -->
 </div>
 @stop
-@section('javascript_page')
+@section('js')
 <script type="text/javascript">
 
 $(document).ready(function(){

@@ -37,7 +37,7 @@ class SocialAuthController extends Controller
             }
 
             $customer = new Customer;
-            $customer->full_name = $providerUser->getName();
+            $customer->fullname = $providerUser->getName();
             $customer->email = $providerUser->getEmail();
             $customer->facebook_id = $providerUser->getId();
             $customer->save();
@@ -46,7 +46,7 @@ class SocialAuthController extends Controller
             Session::put('login', true);
             Session::put('userId', $customer->id);
             Session::put('facebook_id', $customer->facebook_id);
-            Session::put('username', $customer->full_name);
+            Session::put('username', $customer->fullname);
             Session::put('avatar', $customer->image_url);
             Session::put('new-register', true);
             Session::forget('vanglai');
@@ -57,7 +57,7 @@ class SocialAuthController extends Controller
         } else {
             Session::put('login', true);
             Session::put('userId', $getCustomer->id);
-            Session::put('username', $getCustomer->full_name);
+            Session::put('username', $getCustomer->fullname);
             Session::put('facebook_id', $customer->facebook_id);
             Session::put('avatar', $getCustomer->image_url);
             Session::forget('vanglai');
@@ -134,7 +134,7 @@ class SocialAuthController extends Controller
             }
 
             $customer = new Customer;
-            $customer->full_name    =  $facebook['name'];
+            $customer->fullname    =  $facebook['name'];
             $customer->email        =  $facebook['email'];
             $customer->facebook_id  =  $facebook['id'];
             $customer->image_url    =  $facebook['avatar'];
@@ -144,7 +144,7 @@ class SocialAuthController extends Controller
             Session::put('login', true);
             Session::put('userId', $customer->id);
             Session::put('facebook_id', $customer->facebook_id);
-            Session::put('username', $customer->full_name);
+            Session::put('username', $customer->fullname);
             Session::put('new-register', true);
             Session::flash('new-register-fb', 'true');
             return response()->json([
@@ -162,7 +162,7 @@ class SocialAuthController extends Controller
             Session::put('login', true);
             Session::put('userId', $getCustomer->id);
             Session::put('facebook_id', $getCustomer->facebook_id);
-            Session::put('username', $getCustomer->full_name);
+            Session::put('username', $getCustomer->fullname);
             Session::put('avatar', $getCustomer->image_url);
             
             return response()->json([

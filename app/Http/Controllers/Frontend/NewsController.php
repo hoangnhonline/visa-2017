@@ -7,9 +7,10 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\ArticlesCate;
 use App\Models\Articles;
+use App\Models\CateParent;
+use App\Models\Cate;
+use App\Models\Settings;
 use App\Models\Product;
-use App\Models\Color;
-use App\Models\PriceRange;
 use App\Models\MetaData;
 
 use Helper, File, Session, Auth;
@@ -19,48 +20,38 @@ class NewsController extends Controller
 {
     public function newsList(Request $request)
     {
-       Helper::counter(1, 3);
-        $page = $request['page'] ? $request['page'] : 1;       
-        $cateArr = [];
         $slug = $request->slug;
-        $cateDetail = ArticlesCate::where('slug', $slug)->first();
-
-        if( $cateDetail ){ 
-            $title = trim($cateDetail->meta_title) ? $cateDetail->meta_title : $cateDetail->name;
-
-            $articlesList = Articles::where('cate_id', $cateDetail->id)->orderBy('id', 'desc')->paginate(20);
-
-            $hotArr = Articles::where( ['cate_id' => $cateDetail->id, 'is_hot' => 1] )->orderBy('id', 'desc')->limit(5)->get();
-            $seo['title'] = $cateDetail->meta_title ? $cateDetail->meta_title : $cateDetail->title;
-            $seo['description'] = $cateDetail->meta_description ? $cateDetail->meta_description : $cateDetail->title;
-            $seo['keywords'] = $cateDetail->meta_keywords ? $cateDetail->meta_keywords : $cateDetail->title;
-            $socialImage = $cateDetail->image_url;
-
-            $kmHot = Articles::getList(['is_hot' => 1, 'cate_id' => 2, 'limit' => 5]);   
-            $colorList = Color::all(); 
-            $priceList = PriceRange::all();
-
-            return view('frontend.news.index', compact('title', 'hotArr', 'articlesList', 'cateDetail', 'seo', 'socialImage', 'page', 'kmHot', 'colorList', 'priceList'));
-        }else{
+        $cateArr = [];
+       
+        $cateDetail = ArticlesCate::where('slug' , $slug)->first();
+        if(!$cateDetail){
             return redirect()->route('home');
         }
+        $title = trim($cateDetail->meta_title) ? $cateDetail->meta_title : $cateDetail->name;
+        $settingArr = Helper::setting();
+        $articlesArr = Articles::where('cate_id', $cateDetail->id)->where('status', 1)->orderBy('is_hot', 'desc')->orderBy('id', 'desc')->paginate($settingArr['articles_per_page']);
+
+        $hotArr = Articles::where( ['cate_id' => $cateDetail->id, 'is_hot' => 1] )->orderBy('id', 'desc')->limit(5)->get();
+        $seo['title'] = $cateDetail->meta_title ? $cateDetail->meta_title : $cateDetail->title;
+        $seo['description'] = $cateDetail->meta_description ? $cateDetail->meta_description : $cateDetail->title;
+        $seo['keywords'] = $cateDetail->meta_keywords ? $cateDetail->meta_keywords : $cateDetail->title;
+        $socialImage = $cateDetail->image_url; 
+             
+        return view('frontend.news.index', compact('title', 'hotArr', 'articlesArr', 'cateDetail', 'seo', 'socialImage'));
     }      
 
      public function newsDetail(Request $request)
     { 
-        Helper::counter(1, 3);
         $id = $request->id;
 
-        $detail = Articles::where( 'id', $id )
-                ->select('id', 'title', 'slug', 'description', 'image_url', 'content', 'meta_id', 'created_at', 'cate_id')
-                ->first();
+        $detail = Articles::find($id);
         
         if( $detail ){           
 
-            $hotArr = Articles::where( ['cate_id' => $detail->cate_id, 'is_hot' => 1] )->where('id', '<>', $id)->orderBy('id', 'desc')->limit(5)->get();
-            $otherArr = Articles::where( ['cate_id' => $detail->cate_id] )->where('id', '<>', $id)->orderBy('id', 'desc')->limit(4)->get();
-           
-           if( $detail->meta_id > 0){
+            $title = trim($detail->meta_title) ? $detail->meta_title : $detail->title;
+            $settingArr = Helper::setting();
+            $otherList = Articles::where( ['cate_id' => $detail->cate_id] )->where('status', 1)->where('id', '<>', $id)->orderBy('is_hot', 'desc')->orderBy('id', 'desc')->limit($settingArr['article_related'])->get();            
+            if( $detail->meta_id > 0){
                $meta = MetaData::find( $detail->meta_id )->toArray();
                $seo['title'] = $meta['title'] != '' ? $meta['title'] : $detail->name;
                $seo['description'] = $meta['description'] != '' ? $meta['description'] : $detail->name;
@@ -72,14 +63,12 @@ class NewsController extends Controller
           
             $tagSelected = Articles::getListTag($id);
             $cateDetail = ArticlesCate::find($detail->cate_id);
-
-            $kmHot = Articles::getList(['is_hot' => 1, 'cate_id' => 2, 'limit' => 5]);   
-            $colorList = Color::all(); 
-            $priceList = PriceRange::all();
-
-            return view('frontend.news.news-detail', compact('title',  'hotArr', 'detail', 'otherArr', 'seo', 'socialImage', 'tagSelected', 'cateDetail',  'kmHot', 'colorList', 'priceList'));
+            Helper::counter($id, 2);
+            
+            return view('frontend.news.news-detail', compact('title',  'otherList', 'detail', 'otherArr', 'seo', 'socialImage', 'tagSelected', 'cateDetail'));
+        
         }else{
-            return redirect()->route('home');
+            return view('erros.404');
         }
     }
 }

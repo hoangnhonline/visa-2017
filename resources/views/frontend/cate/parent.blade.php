@@ -1,79 +1,111 @@
 @extends('frontend.layout')
 @include('frontend.partials.meta')
 @section('content')
-<div class="block block-breadcrumb">
+<article class="mar-top20">
     <div class="container">
-        <ul class="breadcrumb">
-           <li><a href="{{ route('home') }}">Trang chủ</a></li>        
-            <li class="active">{!! $parentDetail->name !!}</li>
-        </ul>
+        <div class="breadcrumbs">
+            <ul>
+               	<li><a href="{{ route('home') }}">Trang chủ</a></li>		
+				<li>{!! $parentDetail->name !!}</li>
+            </ul>
+        </div>
     </div>
-</div><!-- /block-breadcrumb -->
-<div class="block block-two-col container">
-    <div class="row">
-        <div class="col-xs-12 block-col-main">
-            <div class="block-page-common clearfix">
-                <div class="block block-title tit-more">
-                    <h1 class="title-main">{!! $parentDetail->name !!}</h1>
-                    @if($parentDetail->description)
-                    <p class="desc text-center">
-                       {!! $parentDetail->description !!}
-                    </p>
-                    @endif
-                </div>
-                @if($cateList)
-                @foreach($cateList as $cate)
-                @if(isset($productArr[$cate->id]) && count($productArr[$cate->id]) > 0 )
-                <div class="block-content">
-                    <div class="box-title-cate-prod">
-                        <i class="fa fa-heart"></i> <h3>{!! $cate->name !!}</h3>                        
-                        <a href="{{ route('cate', [ $parentDetail->slug, $cate->slug ]) }}" class="readmore btn-main">Xem chi tiết <i class="fa fa-long-arrow-right"></i></a>
-                    </div>
-                    <div class="product-list">
-
-                        <div class="owl-carousel owl-theme owl-style2" data-nav="true" data-margin="30" data-items='5' data-autoplayTimeout="500" data-autoplay="false" data-loop="false" data-navcontainer="true" data-responsive='{"0":{"items":1},"480":{"items":2},"600":{"items":2},"768":{"items":3},"800":{"items":3},"992":{"items":5}}'>
-                            @foreach($productArr[$cate->id] as $obj)
-                            <div class="product-item">
-                                <div class="product-img">
-                                    <p class="box-ico">
-                                        @if( $obj->is_new == 1)
-                                        <span class="ico-new ico">NEW</span>
-                                        @endif
-                                        @if( $obj->is_sale == 1 && $obj->sale_percent > 0 )
-                                        <span class="ico-sales ico">-{{ $obj->sale_percent }}%</span>
-                                        @endif
-                                    </p>
-                                    <a href="{{ route('product', [$obj->slug]) }}" title="{!! $obj->name !!}">
-                                        <img src="{!! Helper::showImageThumb( $obj->image_url ) !!}" class="img-1" alt="{!! $obj->name !!}">
-                                    </a>
-                                </div>
-                                <div class="product-info">
-                                    <h2 class="title"><a href="{{ route('product', [$obj->slug]) }}" title="{!! $obj->name !!}">{!! $obj->name !!}</a></h2>
-                                    <div class="product-price">
-                                        <span class="label-txt">Giá:</span> <span class="price-new">
-                                            @if($obj->is_sale == 1 && $obj->price_sale > 0)
-                                            {{ number_format($obj->price_sale) }}đ
-                                            @else
-                                                {{ number_format($obj->price) }}đ
-                                            @endif  
-                                        </span>
-                                        @if( $obj->is_sale == 1)
-                                        <span class="price-old">{{ number_format($obj->price) }}đ</span>
-                                        @endif
-                                    </div>
+    <section id="product" class="marg40">
+        <div class="container">
+            <div class="title-section">
+                SẢN PHẨM HOT
+            </div>
+            <div class="list-products marg20 clearfix">
+                <div class="owl-carousel">
+                    @foreach($hotProductList as $product)
+                    <div class="box-product item">
+                        <div class="item-product">
+                            <div class="image"><a href="{{ route('product', [$product->slug, $product->id ]) }}" title="{!! $product->name !!}">
+                                <img src="{{ $product->image_url ? Helper::showImage($product->image_url) : URL::asset('public/assets/images/no-img.png') }}" alt="{!! $product->name !!}"/></a>
+                            </div>
+                            <div class="info-product">
+                                <h3><a href="{{ route('product', [$product->slug, $product->id ]) }}" title="{!! $product->name !!}">{!! $product->name !!}</a></h3>
+                                <div class="price">
+                                    Giá: 
+                                    <span>
+                                        @if($product->is_sale == 1 && $product->price_sale > 0)
+                                            {{ number_format($product->price_sale) }}đ
+                                        @else
+                                            {{ number_format($product->price) }}đ
+                                        @endif                                  
+                                    </span>
                                 </div>
                             </div>
-                            @endforeach
                         </div>
                     </div>
-
+                    @endforeach
+                    
                 </div>
-                @endif
-                @endforeach
-                @endif
-
-            </div>                      
-        </div><!-- /block-ct-news -->
-    </div><!-- /block-col-left -->
-</div><!-- /block_big-title -->
+                <!--<div class="viewmore-product"><a href="javascript:void(0)">Xem chi tiết</a></div>-->
+            </div>
+            @if($cateList)
+			@foreach($cateList as $cate)
+			@if(isset($productArr[$cate->id]) && count($productArr[$cate->id]) > 0 )
+            <div class="title-section">
+                {!! $cate->name !!}
+            </div>
+            <div class="list-products marg20 clearfix">
+                <div class="owl-carousel">
+		  			@foreach($productArr[$cate->id] as $product)
+                    <div class="box-product item">
+                        <div class="item-product">
+                            <div class="image"><a href="{{ route('product', [$product->slug, $product->id ]) }}" title="{!! $product->name !!}">
+                            	<img src="{{ $product->image_url ? Helper::showImage($product->image_url) : URL::asset('public/assets/images/no-img.png') }}" alt="{!! $product->name !!}"/></a>
+                            </div>
+                            <div class="info-product">
+                                <h3><a href="{{ route('product', [$product->slug, $product->id ]) }}" title="{!! $product->name !!}">{!! $product->name !!}</a></h3>
+                                <div class="price">
+                                    Giá: 
+                                    <span>
+                                    	@if($product->is_sale == 1 && $product->price_sale > 0)
+				                        	{{ number_format($product->price_sale) }}đ
+				                        @else
+				                        	{{ number_format($product->price) }}đ
+				                        @endif                                	
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                <div class="viewmore-product"><a href="{{ route('cate', [ $parentDetail->slug, $cate->slug ]) }}">Xem tất cả</a></div>
+            </div>
+            @endif
+			@endforeach
+			@endif
+        </div>
+    </section><!-- End product -->
+</article>
+@stop
+@section('js')
+<script src="{{ URL::asset('public/assets/lib/owlcarousel/dist/owl.carousel.min.js') }}"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		jQuery('.owl-carousel').owlCarousel({
+            loop: false,
+            margin: 0,
+            nav: true,
+            responsive: {
+                0:{
+                    items: 2
+                },
+                603:{
+                    items: 3
+                },
+                992: {
+                    items: 4
+                },
+                1200: {
+                    items: 5
+                }
+            }
+        });
+	});
+</script>
 @stop

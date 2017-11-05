@@ -60,7 +60,7 @@
                 </div>
                 <div class="form-group">
                   <label>Họ tên</label>
-                  <input type="text" class="form-control" name="full_name" id="full_name" value="{{ old('full_name') }}">
+                  <input type="text" class="form-control" name="fullname" id="fullname" value="{{ old('fullname') }}">
                 </div>             
                 <div class="form-group">
                   <label>Phân loại</label>
@@ -99,7 +99,7 @@
   <!-- /.content -->
 </div>
 @stop
-@section('javascript_page')
+@section('js')
 <script type="text/javascript">
     $(document).ready(function(){
       $('#formData').submit(function(){

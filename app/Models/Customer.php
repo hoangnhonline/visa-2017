@@ -25,25 +25,18 @@ class Customer extends Model  {
      */
     protected $fillable = [
       'id',
-      'full_name',
+      'fullname',
       'email',
-      'address',
-      'phone',
-      'hand_phone',
-      'company',
-      'tax_no',
       'username',
       'password',
       'type',
       'last_login',
-      'status',
-      'city_id',
-      'district_id',
-      'ward_id',
+      'status',     
       'facebook_id',
-      'address_type',
       'image_url',
-      'key_reset'
+      'key_reset',
+      'gender',
+      'phone'
     ];
 
     public function tinh()
@@ -58,5 +51,9 @@ class Customer extends Model  {
     public function xa()
     {
         return $this->hasOne('App\Models\Ward', 'id', 'ward_id');
+    }
+    public function customerAddress()
+    {
+        return $this->hasMany('App\Models\CustomerAddress', 'customer_id');
     }
 }

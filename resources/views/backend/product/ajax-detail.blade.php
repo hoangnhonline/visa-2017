@@ -15,11 +15,11 @@
   </div>
   <div class="form-group">
     <label for="pwd">Tồn kho</label>
-    <input type="text" class="form-control" id="inventory" autocomplete="off" name="inventory" value="{{ $detail->inventory }}">
+    <input type="text" class="form-control" id="so_luong_ton" autocomplete="off" name="so_luong_ton" value="{{ $detail->so_luong_ton }}">
   </div>
   <div style="text-align:right">
-  <button type="button" id="btnSaveAjax" class="btn btn-primary">Save</button>
-  <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+  <button type="button" id="btnSaveAjax" class="btn btn-primary btn-sm">Save</button>
+  <button class="btn btn-default btn-sm" data-dismiss="modal" type="button">Close</button>
   </div>
 </form>
 <script type="text/javascript">

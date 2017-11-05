@@ -35,12 +35,12 @@ class AuthenticationController extends Controller
 
         $customer = Customer::where('email', $request->email)->first();
         if(is_null($customer) || !password_verify($request->password, $customer->password) ) {
-        	Session::flash('error', 'Email hoặc mật khẩu không đúng.');
+            Session::flash('error', 'Email hoặc mật khẩu không đúng.');
         } else {
-        	Session::put('login', true);
+            Session::put('login', true);
             Session::put('userId', $customer->id);
             Session::put('facebook_id', $customer->facebook_id);
-            Session::put('username', $customer->full_name);
+            Session::put('username', $customer->fullname);
             Session::put('avatar', $customer->image_url);
             Session::forget('vanglai');
             Session::forget('is_vanglai');
@@ -60,7 +60,7 @@ class AuthenticationController extends Controller
             Session::put('login', true);
             Session::put('userId', $customer->id);
             Session::put('facebook_id', $customer->facebook_id);
-            Session::put('username', $customer->full_name);
+            Session::put('username', $customer->fullname);
             Session::put('avatar', $customer->image_url);
             return response()->json(['error' => 0]);
             Session::forget('vanglai');

@@ -15,10 +15,9 @@
 
 <!-- Main content -->
 <section class="content">
-
  <a class="btn btn-default btn-sm" href="{{ route('orders.index') }}?status={{ $s['status'] }}&name={{ $s['name'] }}&date_from={{ $s['date_from'] }}&date_to={{ $s['date_to'] }}" style="margin-bottom:5px">Quay lại</a>
- <button class="btn btn-info btn-sm" onclick="return printOrder();" style="margin-bottom:5px">In đơn hàng</button>
-  <div class="row" id="content-print">
+
+  <div class="row">
     <div class="col-md-12">
       @if(Session::has('message'))
       <p class="alert alert-info" >{{ Session::get('message') }}</p>
@@ -26,7 +25,7 @@
       <div class="box">
 
         <div class="box-header with-border">
-          <div class="col-md-4" style="width: 33%;float:left">
+          <div class="col-md-4">
               <h4>Chi tiết chung</h4>
             <p>
               <span>Thời gian đặt hàng :</span><br> {{ date('d-m-Y H:i', strtotime($order->created_at )) }} <br>
@@ -43,47 +42,37 @@
                 </select>                  
              <div class="clearfix" style="margin:5px"></div>
               <span>Khách hàng : <span><br>
-              <span>{{ $order->fullname }}( # {{ $order->email }})</span>
+              <span>{{ $order->customer->fullname }}( # {{ $order->customer->email }})</span>
               
             </p>
           </div>
-          <div class="col-md-4" style="width: 33%;float:left">
+          <div class="col-md-4">
             <h4>Thông tin thanh toán</h4>
             <p>
-              <span>Địa chỉ :</span><br> {{ $order->address }}<br>
+              <span>Địa chỉ :</span><br> {{ $order->customer->address }}, {{ $order->customer->ward_id ? Helper::getName($order->customer->ward_id, 'ward') : "" }}, {{ $order->customer->district_id ? Helper::getName($order->customer->district_id, 'district') : "" }}, {{ $order->customer->city_id ? Helper::getName($order->customer->city_id, 'city') : "" }}<br>
               <div class="clearfix" style="margin-bottom:5px"></div>
               <span>Email : </span><br />
-              <span>{{ $order->email }}</span>                  
+              <span>{{ $order->customer->email }}</span>                  
              <div class="clearfix" style="margin:5px"></div>
               <span>Điện thoại : <span><br>
-              <span>{{ $order->phone }}</span>
+              <span>{{ $order->customer->phone }}</span>
               
             </p>
           </div>
-          <div class="col-md-4" style="width: 34%;float:left">
+          <div class="col-md-4">
             <h4>Chi tiết giao nhận hàng</h4>
+            <strong>{{ $order->address->fullname }} - {{ $order->address->phone }}</strong>
             <p>
-              @if( $order->is_other_address == 0 )
-              <a href="http://maps.google.com/maps?&q={{ $order->address }}" target="_blank"> 
-              {{ $order->fullname }}<br> {{ $order->address }} <br> {{ $order->phone }}
-              <br>
-              {{ $order->email }}
-              </a>
-              @else
-              <a href="http://maps.google.com/maps?&q={{ $order->other_address }}" target="_blank"> 
-              {{ $order->other_fullname }}<br> {{ $order->other_address }} <br> {{ $order->other_phone }}
-              <br>
-              {{ $order->other_email }}
-              </a>
-              @endif
+              <span>Địa chỉ :</span><br> {{ $order->address->address }}, {{ $order->address->ward_id ? Helper::getName($order->address->ward_id, 'ward') : "" }}, {{ $order->address->district_id ? Helper::getName($order->address->district_id, 'district') : "" }}, {{ $order->address->city_id ? Helper::getName($order->address->city_id, 'city') : "" }}<br>         
+              
             </p>
           </div>
 
         </div>
-        <div style="clear:both"></div>
+
         <!-- /.box-header -->
         <div class="box-body">
-          <table class="table table-bordered" id="table-list-data" border="1" cellpadding="5" cellspacing="0">
+          <table class="table table-bordered" id="table-list-data">
             <tr>
               <th style="width:1%">No.</th>
               <th> Tên Sản phẩm </th>
@@ -97,10 +86,10 @@
             <?php $i++; ?>
               <tr>
                   <td style="text-align:center">{{ $i }}</td>
-                  <td class="product_name">{{ $detail->product->name }}</td>
-                  <td style="text-align:right">{{ $detail->amount }}</td>
-                  <td style="text-align:right">{{ number_format($detail->price) }} đ</td>
-                  <td style="text-align:right">{{ number_format($detail->total) }} đ</td>
+                  <td class="product_name">{{$detail->product->name}}</td>
+                  <td style="text-align:right">{{$detail->so_luong}}</td>
+                  <td style="text-align:right">{{number_format($detail->don_gia)}} đ</td>
+                  <td style="text-align:right">{{number_format($detail->tong_tien)}} đ</td>
                  
               </tr>
             @endforeach
@@ -109,7 +98,7 @@
                   <td></td>
                   <td></td>
                   <td style="text-align:right"><b>Phí vận chuyển</b></td>
-                  <td style="text-align:right">{{ number_format($order->shipping_fee) }} đ</td>
+                  <td style="text-align:right">{{number_format($order->phi_van_chuyen)}} đ</td>
               </tr>
               <tr>
                   <td></td>
@@ -117,7 +106,7 @@
                   <td></td>
                   <td style="text-align:right"><b>Tổng chi phí</b></td>
                   <td style="text-align:right">
-                    <strong>{{ number_format($order->total_payment) }}</strong> đ</td>
+                    <strong>{{number_format($order->tong_tien)}}</strong> đ</td>
               </tr>
           </tbody>
           </table>
@@ -131,17 +120,9 @@
 <!-- /.content -->
 </div>
 @stop
-@section('javascript_page')
+@section('js')
 <script type="text/javascript">
-function printOrder(){
-  var prtContent = document.getElementById("content-print");
-  var WinPrint = window.open('', '', 'width=900,height=650');
-  WinPrint.document.write(prtContent.innerHTML);
-  WinPrint.document.close();
-  WinPrint.focus();
-  WinPrint.print();
-  WinPrint.close();
-}
+
 $(document).ready(function(){
   $('.btn-delete-order-detail').click(function(){
     var order_detail_id = $(this).attr('order-detail-id');

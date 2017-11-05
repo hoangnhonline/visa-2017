@@ -12,7 +12,7 @@ class Product extends Model  {
 	 */
 	protected $table = 'product';
 
-	 /**
+	/**
      * Indicates if the model should be timestamped.
      *
      * @var bool
@@ -23,42 +23,23 @@ class Product extends Model  {
      *
      * @var array
      */
-    protected $fillable = [
-                    'code', 
-                    'name', 
-                    'alias',                     
-                    'slug',                     
-                    'thumbnail_id', 
-                    'is_hot', 
-                    'is_sale', 
-                    'is_new',
-                    'is_old',
-                    'price',
-                    'price_new',
-                    'price_sale',
-                    'parent_id', 
-                    'cate_id', 
-                    'description',                    
-                    'xuat_xu', 
-                    'khuyen_mai', 
-                    'content', 
-                    'bao_hanh', 
-                    'inventory', 
-                    'sale_percent', 
-                    'so_luong_ban', 
-                    'views', 
-                    'so_lan_mua',                     
-                    'display_order',                     
-                    'color_id',
-                    'status', 
-                    'created_user', 
-                    'updated_user', 
-                    'meta_id',
-                    'price_sell',
-                    'thong_tin_chung_id',
-                    'out_of_stock'
-                    ];
-    
+    protected $fillable = [                            
+                            'name',
+                            'alias',
+                            'slug', 
+                            'description',
+                            'parent_id', 
+                            'cate_id', 
+                            'file_url', 
+                            'content',                                        
+                            'status', 
+                            'meta_id',                       
+                            'is_hot',                           
+                            'display_order',
+                            'created_user',
+                            'updated_user'                            
+                        ];
+
     public static function getList($params = []){
         $query = self::where('status', 1);
         if( isset($params['parent_id']) && $params['parent_id'] ){
@@ -69,15 +50,7 @@ class Product extends Model  {
         }
         if( isset($params['is_hot']) && $params['is_hot'] ){
             $query->where('is_hot', $params['is_hot']);
-        }
-        if( isset($params['is_sale']) && $params['is_sale'] ){
-            $query->where('is_sale', $params['is_sale']);
-        }
-        if( isset($params['is_new']) && $params['is_new'] ){
-            $query->where('is_new', $params['is_new']);
-        }
-        $query->leftJoin('product_img', 'product_img.id', '=','product.thumbnail_id')            
-                            ->select('product_img.image_url', 'product.*');
+        }        
         $query->orderBy('product.is_hot', 'desc')->orderBy('product.id', 'desc');
         if(isset($params['limit']) && $params['limit']){
             return $query->limit($params['limit'])->get();
@@ -117,9 +90,5 @@ class Product extends Model  {
      public function updatedUser()
     {
         return $this->belongsTo('App\Models\Account', 'updated_user');
-    }
-    public function color()
-    {
-        return $this->belongsTo('App\Models\Color', 'color_id');
     }
 }

@@ -18,6 +18,10 @@ class NewsletterController extends Controller
     */
     public function index(Request $request)
     {
+        
+        if(Auth::user()->role == 1 ){
+            return redirect()->route('product.index');
+        }
         $status = isset($request->status) ? $request->status : 0;
 
         $email = isset($request->email) && $request->email != '' ? $request->email : '';
@@ -39,8 +43,11 @@ class NewsletterController extends Controller
     }    
     public function download()
     {
+        if(Auth::user()->role == 1 ){
+            return redirect()->route('product.index');
+        }
         $contents = [];
-        $query = Newsletter::whereRaw('1')->orderBy('id', 'DESC')->get();
+        $query = Newsletter::orderBy('id', 'desc')->get();
         $i = 0;
         foreach ($query as $data) {
             $i++;
@@ -50,7 +57,6 @@ class NewsletterController extends Controller
                 'Ngày ĐK' => date('d-m-Y H:i', strtotime($data->created_at))
             ];
         }        
-        
         Excel::create('newsletter_' . date('YmdHi'), function ($excel) use ($contents) {
             // Set sheets
             $excel->sheet('Email', function ($sheet) use ($contents) {
@@ -100,6 +106,9 @@ class NewsletterController extends Controller
     */
     public function update(Request $request)
     {
+        if(Auth::user()->role == 1 ){
+            return redirect()->route('product.index');
+        }
         $dataArr = $request->all();
         
         $this->validate($request,[                              

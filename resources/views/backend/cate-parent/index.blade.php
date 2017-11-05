@@ -12,7 +12,6 @@
     <li class="active">Danh sách</li>
   </ol>
 </section>
-
 <!-- Main content -->
 <section class="content">
   <div class="row">
@@ -20,60 +19,62 @@
       @if(Session::has('message'))
       <p class="alert alert-info" >{{ Session::get('message') }}</p>
       @endif
-      <a href="{{ route('cate-parent.create') }}" class="btn btn-info" style="margin-bottom:5px">Tạo mới</a>
+      <a href="{{ route('cate-parent.create') }}" class="btn btn-info btn-sm" style="margin-bottom:5px">Tạo mới</a>
       <div class="box">
 
         <div class="box-header with-border">
           <h3 class="box-title">Danh sách</h3>
-        </div>
-        
+        </div>          
         <!-- /.box-header -->
         <div class="box-body">
+
           <table class="table table-bordered" id="table-list-data">
             <tr>
               <th style="width: 1%">#</th>
               <th style="width: 1%;white-space:nowrap">Thứ tự</th>
               <th>Tên</th>
-              <th style="text-align:center">Danh mục con</th>            
-              <th width="1%;white-space:nowrap">Thao tác</th>
+              <th style="text-align:center">Danh mục con</th>
+              
+              <th style="width:1%;white-space:nowrap">Thao tác</th>
             </tr>
             <tbody>
             @if( $items->count() > 0 )
               <?php $i = 0; ?>
               @foreach( $items as $item )
-                <?php $i ++; ?>
+                <?php $i ++;
+
+                 ?>
               <tr id="row-{{ $item->id }}">
                 <td><span class="order">{{ $i }}</span></td>
                 <td style="vertical-align:middle;text-align:center">
                   <img src="{{ URL::asset('public/admin/dist/img/move.png')}}" class="move img-thumbnail" alt="Cập nhật thứ tự"/>
                 </td>
-                <td>  
-                  <div class="col-md-3">
-                    <img class="img-thumbnail" src="{{ Helper::showImage($item->image_url)}}" width="150">
-                  </div>                
-                  <div class="col-md-9">
-                    <a href="{{ route( 'cate-parent.edit', [ 'id' => $item->id ]) }}">{{ $item->name }}</a>
+                <td>                  
+                  <a href="{{ route( 'cate-parent.edit', [ 'id' => $item->id ]) }}">{{ $item->name }}</a>
                   
                   @if( $item->is_hot == 1 )
-                  <img class="img-thumbnail" src="{{ URL::asset('public/admin/dist/img/star.png')}}" alt="Nổi bật" title="Nổi bật" />
-                  @endif                   
-                  <p>{{ $item->description }}</p>
-                  </div>                
+                  <label class="label label-danger">HOT</label>
+                  @endif
+                  @if($item->is_widget == 1)
+                  <label class="label label-primary">WIDGET</label>
+                  @endif
                   
+                  <p>{{ $item->description }}</p>
                 </td>
-                <td style="text-align:center"><a class="btn btn-info" href="{{ route('cate.index', [$item->id])}}">{{ $item->cates->count() }}</a></td>               
+                <td style="text-align:center"><a class="btn btn-info btn-sm" href="{{ route('cate.index', ['parent_id' => $item->id])}}">{{ $item->cates->count() }}</a></td>
+                
                 <td style="white-space:nowrap; text-align:right">
                 <a class="btn btn-default btn-sm" href="{{ route('cate-parent', $item->slug ) }}" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i> Xem</a>                 
-                  <a href="{{ route( 'cate-parent.edit', [ 'id' => $item->id ]) }}" class="btn-sm btn btn-warning">Chỉnh sửa</a>                 
+                  <a href="{{ route( 'cate-parent.edit', [ 'id' => $item->id ]) }}" class="btn-sm btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></a>                 
                   @if( $item->cates->count() == 0)
-                  <a onclick="return callDelete('{{ $item->name }}','{{ route( 'cate-parent.destroy', [ 'id' => $item->id ]) }}');" class="btn-sm btn btn-danger">Xóa</a>
+                  <a onclick="return callDelete('{{ $item->name }}','{{ route( 'cate-parent.destroy', [ 'id' => $item->id ]) }}');" class="btn-sm btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
                   @endif
                 </td>
               </tr> 
               @endforeach
             @else
             <tr>
-              <td colspan="9">Không có dữ liệu.</td>
+              <td colspan="6">Không có dữ liệu.</td>
             </tr>
             @endif
 
@@ -89,7 +90,7 @@
 <!-- /.content -->
 </div>
 @stop
-@section('javascript_page')
+@section('js')
 <script type="text/javascript">
 function callDelete(name, url){  
   swal({
@@ -105,7 +106,7 @@ function callDelete(name, url){
   })
   return flag;
 }
-$(document).ready(function(){
+$(document).ready(function(){  
   $('#table-list-data tbody').sortable({
         placeholder: 'placeholder',
         handle: ".move",
@@ -124,7 +125,7 @@ $(document).ready(function(){
                 strTemp = rows[i].id;
                 strOrder += strTemp.replace('row-','') + ";";
             }     
-            updateOrder("cate_parent", strOrder);
+            updateOrder("loai_sp", strOrder);
         }
     });
 });

@@ -21,7 +21,7 @@ class CustomerController extends Controller
     {
         $status = isset($request->status) ? $request->status : 0;
 
-        $full_name = isset($request->full_name) && $request->full_name != '' ? $request->full_name : '';
+        $fullname = isset($request->fullname) && $request->fullname != '' ? $request->fullname : '';
         $email = isset($request->email) && $request->email != '' ? $request->email : '';
         $phone = isset($request->phone) && $request->phone != '' ? $request->phone : '';
         
@@ -32,8 +32,8 @@ class CustomerController extends Controller
         if( $status > 0){
             $query->where('status', $status);
         }
-        if( $full_name != ''){
-            $query->where('full_name', 'LIKE', '%'.$full_name.'%');
+        if( $fullname != ''){
+            $query->where('fullname', 'LIKE', '%'.$fullname.'%');
         }
         if( $phone != ''){
             $query->where('phone', 'LIKE', '%'.$phone.'%');
@@ -43,7 +43,7 @@ class CustomerController extends Controller
         }
         $items = $query->orderBy('id', 'desc')->paginate(20);
         
-        return view('backend.customer.index', compact( 'items', 'email', 'status' , 'phone', 'full_name'));
+        return view('backend.customer.index', compact( 'items', 'email', 'status' , 'phone', 'fullname'));
     }    
     public function download()
     {
@@ -54,7 +54,7 @@ class CustomerController extends Controller
             $i++;
             $contents[] = [
                 'STT' => $i,
-                'Họ tên' => $data->full_name,
+                'Họ tên' => $data->fullname,
                 'Email' => $data->email,                
                 'Điện thoại' => $data->phone                
             ];

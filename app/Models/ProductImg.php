@@ -23,10 +23,6 @@ class ProductImg extends Model  {
      *
      * @var array
      */
-    protected $fillable = [
-                    'product_id', 
-                    'image_url', 
-                    'display_order'
-                ];
+    protected $fillable = ['product_id', 'image_url', 'display_order'];
     
 }

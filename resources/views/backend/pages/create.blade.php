@@ -16,7 +16,7 @@
   <!-- Main content -->
   <section class="content">
     <a class="btn btn-default btn-sm" href="{{ route('pages.index') }}" style="margin-bottom:5px">Quay lại</a>
-    <form role="form" method="POST" action="{{ route('pages.store') }}" id="dataForm">
+    <form role="form" method="POST" action="{{ route('pages.store') }}">
     <div class="row">
       <!-- left column -->
 
@@ -53,8 +53,11 @@
                 <div class="form-group" style="margin-top:10px;margin-bottom:10px">  
                   <label class="col-md-3 row">Thumbnail </label>    
                   <div class="col-md-9">
-                    <img id="thumbnail_image" src="{{ old('image_url') ? Helper::showImage(old('image_url')) : URL::asset('public/admin/dist/img/img.png') }}" class="img-thumbnail" width="145" height="85">                 
-                    <button class="btn btn-default btn-sm btnSingleUpload" data-set="image_url" data-image="thumbnail_image"  type="button"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Upload</button>
+                    <img id="thumbnail_image" src="{{ old('image_url') ? Helper::showImage(old('image_url')) : URL::asset('public/admin/dist/img/img.png') }}" class="img-thumbnail" width="145" height="85">
+                    
+                    <input type="file" id="file-image" style="display:none" />
+                 
+                    <button class="btn btn-default btn-sm" id="btnUploadImage" type="button"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Upload</button>
                   </div>
                   <div style="clear:both"></div>
                 </div>
@@ -130,4 +133,133 @@
 <input type="hidden" id="route_upload_tmp_image" value="{{ route('image.tmp-upload') }}">
 
 
+@stop
+@section('js')
+<script type="text/javascript">
+var h = screen.height;
+var w = screen.width;
+var left = (screen.width/2)-((w-300)/2);
+var top = (screen.height/2)-((h-100)/2);
+function openKCFinder_singleFile() {
+      window.KCFinder = {};
+      window.KCFinder.callBack = function(url) {
+         $('#image_url').val(url);
+         $('#thumbnail_image').attr('src', $('#app_url').val() + url);
+          window.KCFinder = null;
+      };
+      window.open('{{ URL::asset("public/admin/dist/js/kcfinder/browse.php?type=images") }}', 'kcfinder_single','scrollbars=1,menubar=no,width='+ (w-300) +',height=' + (h-300) +',top=' + top+',left=' + left);
+  }
+    $(document).ready(function(){
+      $(".select2").select2();
+      var editor = CKEDITOR.replace( 'content');
+      $('#btnUploadImage').click(function(){        
+        //$('#file-image').click();
+        openKCFinder_singleFile();
+      });      
+      var files = "";
+      $('#file-image').change(function(e){
+         files = e.target.files;
+         
+         if(files != ''){
+           var dataForm = new FormData();        
+          $.each(files, function(key, value) {
+             dataForm.append('file', value);
+          });   
+          
+          dataForm.append('date_dir', 1);
+          dataForm.append('folder', 'tmp');
+
+          $.ajax({
+            url: $('#route_upload_tmp_image').val(),
+            type: "POST",
+            async: false,      
+            data: dataForm,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+              if(response.image_path){
+                $('#thumbnail_image').attr('src',$('#upload_url').val() + response.image_path);
+                $( '#image_url' ).val( response.image_path );
+                $( '#image_name' ).val( response.image_name );
+              }
+              console.log(response.image_path);
+                //window.location.reload();
+            },
+            error: function(response){                             
+                var errors = response.responseJSON;
+                for (var key in errors) {
+                  
+                }
+                //$('#btnLoading').hide();
+                //$('#btnSave').show();
+            }
+          });
+        }
+      });
+      
+      
+      $('#title').change(function(){
+         var name = $.trim( $(this).val() );
+         if( name != '' && $('#slug').val() == ''){
+            $.ajax({
+              url: $('#route_get_slug').val(),
+              type: "POST",
+              async: false,      
+              data: {
+                str : name
+              },              
+              success: function (response) {
+                if( response.str ){                  
+                  $('#slug').val( response.str );
+                }                
+              },
+              error: function(response){                             
+                  var errors = response.responseJSON;
+                  for (var key in errors) {
+                    
+                  }
+                  //$('#btnLoading').hide();
+                  //$('#btnSave').show();
+              }
+            });
+         }
+      });
+      $('#parent_id').change(function(){
+        $.ajax({
+            url: $('#route_get_cate_by_parent').val(),
+            type: "POST",
+            async: false,
+            data: {          
+                parent_id : $(this).val(),
+                type : 'list'
+            },
+            success: function(data){
+                $('#cate_id').html(data).select2('refresh');                      
+            }
+        });
+      });
+      $('#btnLoadMovies').click(function(){
+        if( $('#url').val() != '' ){
+          $('#spanLoad').removeClass('glyphicon glyphicon-download-alt').addClass('fa fa-spin fa-spinner');
+          $.ajax({
+              url: $('#route_get_movies_external').val(),
+              type: "POST",
+              async: true,
+              data: {          
+                  url : $('#url').val()                
+              },              
+              success: function(response){      
+                  $('#title').val(response.title);
+                  $('#slug').val(response.slug);
+                  $('#thumbnail_image').attr('src', response.image_url);
+                  $('#image_url').val(response.image_url);                
+                  $('#spanLoad').removeClass('fa fa-spinner fa-spin').addClass('glyphicon glyphicon-download-alt');              
+                                      
+              }
+          });
+        }
+      });
+    });
+    
+</script>
 @stop

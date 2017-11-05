@@ -8,13 +8,10 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\CateParent;
 use App\Models\MetaData;
-use App\Models\LoaiThuocTinh;
-use App\Models\ThuocTinh;
 
+use Helper, File, Session, Auth, DB;
 
-use Helper, File, Session, Auth;
-
-class CateParentController extends Controller
+class CateParentController  extends Controller
 {
     /**
     * Display a listing of the resource.
@@ -22,9 +19,10 @@ class CateParentController extends Controller
     * @return Response
     */
     public function index(Request $request)
-    {
+    {   
+             
         $items = CateParent::where('status', 1)->orderBy('display_order', 'asc')->get();
-        return view('backend.cate-parent.index', compact( 'items' ));
+        return view('backend.cate-parent.index', compact( 'items'));
     }
 
     /**
@@ -32,11 +30,13 @@ class CateParentController extends Controller
     *
     * @return Response
     */
-    public function create()
-    {
+    public function create(Request $request)
+    {   
+          
         return view('backend.cate-parent.create');
     }
 
+    
     /**
     * Store a newly created resource in storage.
     *
@@ -49,18 +49,22 @@ class CateParentController extends Controller
         
         $this->validate($request,[
             'name' => 'required',
-            'slug' => 'required'            
+            'slug' => 'required',
         ],
         [
-            'name.required' => 'Bạn chưa nhập tên',
-            'slug.required' => 'Bạn chưa nhập slug'            
+            'name.required' => 'Bạn chưa nhập tên danh mục',
+            'slug.required' => 'Bạn chưa nhập slug',           
         ]);
-        
+
+        $dataArr['is_hot'] = isset($dataArr['is_hot']) ? 1 : 0; 
+        $dataArr['is_widget'] = isset($dataArr['is_widget']) ? 1 : 0;    
+         if($dataArr['is_widget'] == 1){
+            DB::table('cate_parent')->update(['is_widget' => 0]);
+            DB::table('cate')->update(['is_widget' => 0]);
+        }
+           
         $dataArr['created_user'] = Auth::user()->id;
-
         $dataArr['updated_user'] = Auth::user()->id;
-
-        $dataArr['display_order'] = Helper::getNextOrder('cate_parent');
         $rs = CateParent::create($dataArr);
         $id = $rs->id;
 
@@ -90,13 +94,13 @@ class CateParentController extends Controller
     */
     public function edit($id)
     {
+          
         $detail = CateParent::find($id);
 
         $meta = (object) [];
         if ( $detail->meta_id > 0){
             $meta = MetaData::find( $detail->meta_id );
-        }
-
+        }        
         return view('backend.cate-parent.edit', compact( 'detail', 'meta'));
     }
 
@@ -113,13 +117,23 @@ class CateParentController extends Controller
         
         $this->validate($request,[
             'name' => 'required',
-            'slug' => 'required'            
+            'slug' => 'required',           
         ],
         [
-            'name.required' => 'Bạn chưa nhập tên',
-            'slug.required' => 'Bạn chưa nhập slug'          
+            'name.required' => 'Bạn chưa nhập tên danh mục',
+            'slug.required' => 'Bạn chưa nhập slug',            
         ]);
-       
+
+     
+
+        $dataArr['updated_user'] = Auth::user()->id;
+        $dataArr['is_hot'] = isset($dataArr['is_hot']) ? 1 : 0;    
+        $dataArr['is_widget'] = isset($dataArr['is_widget']) ? 1 : 0;
+        if($dataArr['is_widget'] == 1){
+            DB::table('cate_parent')->update(['is_widget' => 0]);
+            DB::table('cate')->update(['is_widget' => 0]);
+        }
+
         $model = CateParent::find($dataArr['id']);
         $model->update($dataArr);
 
@@ -153,6 +167,7 @@ class CateParentController extends Controller
     */
     public function destroy($id)
     {
+          
         // delete
         $model = CateParent::find($id);
         $model->delete();
@@ -162,15 +177,4 @@ class CateParentController extends Controller
         return redirect()->route('cate-parent.index');
     }
 
-    public function destroyThuocTinh($id)
-    {
-        // delete
-        $model = HoverInfo::find($id);
-        $parent_id = $model->parent_id;
-        $model->delete();
-
-        // redirect
-        Session::flash('message', 'Xóa thành công');
-        return redirect()->route('cate-parent.list-thuoc-tinh', ['parent_id' => $parent_id]);
-    }
 }

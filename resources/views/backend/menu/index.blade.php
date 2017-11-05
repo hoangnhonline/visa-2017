@@ -24,13 +24,26 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Danh sách</h3>
                     </div>
+
                     <!-- /.box-header -->
-                    <button class="btn btn-info btn-sm btnAddMenu" data-parent="0" style="margin-top:5px;margin-left:10px">Thêm menu cha</button>
+                   
+
                     <form action="{{ route('menu.store-order') }}" method="POST">
+
+                      <div class="form-group col-md-12" style="margin-top:10px">                        
+                        <select id="menu_id" name="menu_id" class="form-control">
+                            <option value="">---Chọn menu---</option>
+                            <option value="1" {{ old('menu_id', $menu_id) == 1 ? "selected" : "" }}>Menu chính</option>
+                            <option value="2" {{ old('menu_id', $menu_id) == 2 ? "selected" : "" }}>Menu khu vực</option>
+                            <option value="3" {{ old('menu_id', $menu_id) == 3 ? "selected" : "" }}>Menu dịch vụ</option>
+                        </select>
+                      </div>
+                       <button class="btn btn-info btn-sm btnAddMenu" data-parent="0" style="margin-top:5px;margin-left:10px" type="button">Thêm menu @if($menu_id == 1) cha @endif</button>
                       {!! csrf_field() !!}
                       <div class="box-body">
+                        @if($menuLists->count() > 0)
                         <button type="submit" class="btn btn-warning btn-sm">Cập nhật thứ tự</button>
-                        
+                        @endif
 
                           <table class="table table-bordered table-hover" id="table-list-data">
                               <tr>                                
@@ -45,7 +58,9 @@
                                     <input type="hidden" name="id[]" value="{{ $menu->id }}">
                                         <p style="font-weight:bold;padding-top:5px;margin-left:10px;">{{ $menu->title }}</p></td>
                                     <td width="1%" style="white-space:nowrap">
+                                      @if($menu_id == 1)
                                       <button type="button" class="btn btn-info btn-sm btnAddMenu" data-parent="{{ $menu->id }}" >Thêm menu con</button>               
+                                      @endif
                                       <a onclick="return callDelete('{{ $menu->title }}','{{ route( 'menu.destroy', [ 'id' => $menu->id ]) }}');" class="btn-sm btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
                                     </td>
                                   </tr>  
@@ -145,7 +160,7 @@
   }
 </style>
 @stop
-@section('javascript_page')
+@section('js')
 <script type="text/javascript">
   $(document).on('click', 'input.menu_select', function(){
     var obj = $(this);
@@ -183,7 +198,8 @@
           url : "{{ route('menu.load-create') }}",
           type : 'GET',
           data : {
-            parent_id : parent_id
+            parent_id : parent_id,
+            menu_id : $('#menu_id').val()
           },
           success : function(data){
             $('#load-content-menu').html(data);
@@ -244,7 +260,9 @@
           });
         }
       });
-      
+      $('#menu_id').change(function(){
+        location.href="{{ route('menu.index') }}?menu_id=" + $('#menu_id').val();
+      });
     });
 </script>
 @stop

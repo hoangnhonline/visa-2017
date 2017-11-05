@@ -23,24 +23,10 @@ class Pages extends Model  {
      *
      * @var array
      */
-    protected $fillable = [
-                            'title', 
-                            'slug', 
-                            'alias', 
-                            'status', 
-                            'display_order', 
-                            'description', 
-                            'image_url', 
-                            'content', 
-                            'meta_title', 
-                            'meta_description', 
-                            'meta_keywords', 
-                            'custom_text', 
-                            'created_user', 
-                            'updated_user'
-                        ];
+    protected $fillable = ['title', 'slug', 'alias', 'status', 'display_order', 'description', 'image_url', 'content', 'meta_title', 'meta_description', 'meta_keywords', 'custom_text', 'created_user', 'updated_user'];
+
     public function account()
     {
         return $this->belongsTo('App\Models\Account', 'created_user');
-    }   
+    }    
 }

@@ -5,14 +5,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Contact extends Model  {
 
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'contact';	
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'contact';   
 
-	 /**
+     /**
      * Indicates if the model should be timestamped.
      *
      * @var bool
@@ -23,6 +23,6 @@ class Contact extends Model  {
      *
      * @var array
      */
-    protected $fillable = ['type', 'title', 'full_name', 'email', 'phone', 'content', 'status', 'updated_user', 'gender'];
+    protected $fillable = ['type', 'title', 'fullname', 'email', 'phone', 'content', 'status', 'updated_user', 'gender', 'project_id'];
     
 }

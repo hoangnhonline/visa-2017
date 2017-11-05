@@ -18,6 +18,9 @@ class InfoSeoController extends Controller
     */
     public function index(Request $request)
     {   
+        if(Auth::user()->role == 1){
+            return redirect()->route('product.index');
+        }
         $query = InfoSeo::whereRaw('1');
 
        
@@ -62,13 +65,13 @@ class InfoSeoController extends Controller
             
             $tmp = explode('/', $dataArr['image_url']);
 
-            if(!is_dir('public/uploads/'.date('Y/m/d'))){
-                mkdir('public/uploads/'.date('Y/m/d'), 0777, true);
+            if(!is_dir('uploads/'.date('Y'))){
+                mkdir('uploads/'.date('Y'), 0777, true);
             }
 
-            $destionation = date('Y/m/d'). '/'. end($tmp);
+            $destionation = date('Y'). '/'. end($tmp);
             
-            File::move(config('phukien.upload_path').$dataArr['image_url'], config('phukien.upload_path').$destionation);
+            File::move(config('houseland.upload_path').$dataArr['image_url'], config('houseland.upload_path').$destionation);
             
             $dataArr['image_url'] = $destionation;
         }                
@@ -130,13 +133,13 @@ class InfoSeoController extends Controller
             
             $tmp = explode('/', $dataArr['image_url']);
 
-            if(!is_dir('public/uploads/'.date('Y/m/d'))){
-                mkdir('public/uploads/'.date('Y/m/d'), 0777, true);
+            if(!is_dir('uploads/'.date('Y'))){
+                mkdir('uploads/'.date('Y'), 0777, true);
             }
 
-            $destionation = date('Y/m/d'). '/'. end($tmp);
+            $destionation = date('Y'). '/'. end($tmp);
             
-            File::move(config('phukien.upload_path').$dataArr['image_url'], config('phukien.upload_path').$destionation);
+            File::move(config('houseland.upload_path').$dataArr['image_url'], config('houseland.upload_path').$destionation);
             
             $dataArr['image_url'] = $destionation;
         }       

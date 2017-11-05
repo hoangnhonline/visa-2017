@@ -8,10 +8,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Cate;
 use App\Models\CateParent;
 use App\Models\Product;
-use App\Models\Articles;
 use App\Models\MetaData;
-use App\Models\Color;
-use App\Models\PriceRange;
+use App\Models\ArticlesCate;
+use App\Models\Articles;
 use Helper;
 
 class CateController extends Controller
@@ -36,7 +35,7 @@ class CateController extends Controller
 
         if($parentDetail){
             $parent_id = $parentDetail->id;
-            $cateList = Cate::getList(['parent_id' => $parent_id, 'limit' => 10]);
+            $cateList = Cate::getList($parent_id);
             
             if($cateList){
                 foreach($cateList as $cate){
@@ -53,7 +52,23 @@ class CateController extends Controller
             return view('frontend.cate.parent', compact('parent_id', 'parentDetail', 'cateList', 'productArr', 'seo', 'hotProductList'));
 
         }else{
-            return redirect()->route('home');       
+            $cateArr = [];
+       
+            $cateDetail = ArticlesCate::where('slug' , $slugCateParent)->first();
+            if(!$cateDetail){
+                return redirect()->route('home');
+            }
+            $title = trim($cateDetail->meta_title) ? $cateDetail->meta_title : $cateDetail->name;
+            $settingArr = Helper::setting();
+            $articlesArr = Articles::where('cate_id', $cateDetail->id)->where('status', 1)->orderBy('is_hot', 'desc')->orderBy('id', 'desc')->paginate($settingArr['articles_per_page']);
+
+            $hotArr = Articles::where( ['cate_id' => $cateDetail->id, 'is_hot' => 1] )->orderBy('id', 'desc')->limit(5)->get();
+            $seo['title'] = $cateDetail->meta_title ? $cateDetail->meta_title : $cateDetail->title;
+            $seo['description'] = $cateDetail->meta_description ? $cateDetail->meta_description : $cateDetail->title;
+            $seo['keywords'] = $cateDetail->meta_keywords ? $cateDetail->meta_keywords : $cateDetail->title;
+            $socialImage = $cateDetail->image_url; 
+                 
+            return view('frontend.news.index', compact('title', 'hotArr', 'articlesArr', 'cateDetail', 'seo', 'socialImage'));                
         }
         
     }
@@ -79,10 +94,8 @@ class CateController extends Controller
                 $seo['title'] = $seo['description'] = $seo['keywords'] = $cateDetail->name;
             }  
             $page = $request->page ? $request->page : 1;    
-            $kmHot = Articles::getList(['is_hot' => 1, 'cate_id' => 2, 'limit' => 5]);   
-            $colorList = Color::all(); 
-            $priceList = PriceRange::all();
-            return view('frontend.cate.child', compact('parent_id', 'cateDetail', 'productList', 'seo', 'page', 'kmHot', 'colorList', 'priceList'));
+            $hotProductList = Product::getList(['is_hot' => 1, 'cate_id' => $cate_id, 'limit' => 10]);    
+            return view('frontend.cate.child', compact('parent_id', 'cateDetail', 'productList', 'seo', 'page', 'hotProductList'));
             
         }else{
             return redirect()->route('home');   

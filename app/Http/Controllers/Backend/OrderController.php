@@ -100,9 +100,9 @@ class OrderController extends Controller
                     $product_id = $detail->product_id;                    
                     $so_luong = $detail->so_luong;
                     $modelProduct = Product::find($product_id);
-                    $inventory =  $modelProduct->inventory - $so_luong;
-                    $inventory  = $inventory > 0 ? $inventory : 0;
-                    $modelProduct->update(['inventory' => $inventory]);
+                    $so_luong_ton =  $modelProduct->so_luong_ton - $so_luong;
+                    $so_luong_ton  = $so_luong_ton > 0 ? $so_luong_ton : 0;
+                    $modelProduct->update(['so_luong_ton' => $so_luong_ton]);
                 }               
                 break;            
             case "4":

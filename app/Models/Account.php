@@ -5,14 +5,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Account extends Model  {
 
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
-    protected $table = 'users';
+	/**
+	 * The database table used by the model.
+	 *
+	 * @var string
+	 */
+	protected $table = 'users';
 
-     /**
+	 /**
      * Indicates if the model should be timestamped.
      *
      * @var bool
@@ -23,7 +23,7 @@ class Account extends Model  {
      *
      * @var array
      */
-    protected $fillable = ['full_name', 'email', 'password', 'status', 'changed_password', 'remember_token', 'role', 'leader_id', 'created_user', 'updated_user', 'display_name'];
+    protected $fillable = ['fullname', 'email', 'password', 'status', 'changed_password', 'remember_token', 'role', 'leader_id', 'created_user', 'updated_user', 'display_name'];
     
     public function articles()
     {

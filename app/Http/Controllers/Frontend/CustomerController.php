@@ -9,6 +9,7 @@ use App\Models\Orders;
 use App\Models\OrderDetail;
 use App\Models\Customer;
 use App\Models\City;
+use App\Models\Country;
 use App\Models\CustomerNotification;
 use Helper, File, Session, Auth, Hash, Validator;
 use Mail;
@@ -18,13 +19,10 @@ class CustomerController extends Controller
     public function update(Request $request)
     {
         $data = $request->all();
-
+        
         $customer_id = Session::get('userId');
-        if(isset($request->vang_lai) && $request->vang_lai == 1){
-            Session::set('vanglai', $data);
-        }else{
-            $customer = Customer::find($customer_id)->update($data);
-        }
+        
+        $customer = Customer::find($customer_id)->update($data);       
 
         if(Session::has('new-register')) {
           Session::forget('new-register');
@@ -42,7 +40,9 @@ class CustomerController extends Controller
           Session::forget('fb_id');
         }
 
-        return 'sucess';
+        Session::flash('message', 'Cập nhật thành công.');
+
+        return redirect()->route('account-info');
     }
 
     public function register(Request $request)
@@ -52,7 +52,7 @@ class CustomerController extends Controller
         $email = $request->email;
 
         $customer = Customer::where('email', $email)->first();
-        $full_name = $request->full_name;
+        $fullname = $request->fullname;
         $password = $request->password;
 
         if(!is_null($customer)) {
@@ -67,10 +67,8 @@ class CustomerController extends Controller
         //set Session user for login here
         Session::put('login', true);
         Session::put('userId', $customer->id);
-        Session::put('username', $customer->full_name);
+        Session::put('username', $customer->fullname);
         Session::put('new-register', true);
-        Session::forget('vanglai');
-        Session::forget('is_vanglai');
         return "1";
     }
     public function forgetPassword(Request $request){        
@@ -79,10 +77,10 @@ class CustomerController extends Controller
         ],[
             'email_reset.required' => 'Vui lòng nhập email.',
             'email_reset.email' => 'Vui lòng nhập email hợp lệ.',
-            'email_reset.exists' => 'Email không tồn tại trong hệ thống phukiencuoigiang.com.',
+            'email_reset.exists' => 'Email không tồn tại trong hệ thống DN.',
         ]);
         $email = $request->email_reset;
-        $key = md5($request->email_reset.time().'phukiencuoigiang.com');
+        $key = md5($request->email_reset.time().'iCho.vn');
         $customer = Customer::where('email', $email)->first();
         $customer->key_reset = $key;
         $customer->save();
@@ -93,8 +91,8 @@ class CustomerController extends Controller
             function($message) use ($email) {
                 $message->subject('Yêu cầu thay đổi mật khẩu');
                 $message->to($email);
-                $message->from('phukiencuoigiang.com@gmail.com', 'phukiencuoigiang.com');
-                $message->sender('phukiencuoigiang.com@gmail.com', 'phukiencuoigiang.com');
+                $message->from('icho.vn@gmail.com', 'iCho.vn');
+                $message->sender('icho.vn@gmail.com', 'iCho.vn');
         });
     }
     public function resetPassword(Request $request){
@@ -104,8 +102,8 @@ class CustomerController extends Controller
             return redirect()->route('home');
         }
         $seo['title'] = $seo['description'] = $seo['keywords'] = "Cập nhật mật khẩu mới";
-
-        return view('frontend.account.reset-password', compact('seo', 'detailCustomer'));
+        $lang = Session::get('locale') ? Session::get('locale') : 'vi';
+        return view('frontend.account.reset-password', compact('seo', 'detailCustomer', 'lang'));
     }
     public function registerAjax(Request $request)
     {
@@ -127,9 +125,7 @@ class CustomerController extends Controller
         Session::put('login', true);
         Session::put('userId', $customer->id);
         Session::put('new-register', true);
-        Session::put('username', $customer->full_name);
-        Session::forget('vanglai');
-        Session::forget('is_vanglai');
+        Session::put('username', $customer->fullname);
         return response()->json(['error' => 0]);
     }
 
@@ -149,8 +145,8 @@ class CustomerController extends Controller
             }
         }
         $seo['title'] = $seo['description'] = $seo['keywords'] = "Thông báo của tôi";
-
-        return view('frontend.account.notification', compact('notiSale', 'notiOrder', 'seo'));
+        $lang = Session::get('locale') ? Session::get('locale') : 'vi';
+        return view('frontend.account.notification', compact('notiSale', 'notiOrder', 'seo', 'lang'));
     }
     public function accountInfo(){
         if(!Session::get('userId')){
@@ -160,7 +156,8 @@ class CustomerController extends Controller
         $customer_id = Session::get('userId');
         $customer = Customer::find($customer_id);
         $listCity = City::orderBy('display_order')->get();
-        return view('frontend.account.update-info', compact('seo', 'customer', 'listCity'));
+        $listCountry = Country::orderBy('id')->get();        
+        return view('frontend.account.update-info', compact('seo', 'customer', 'listCity', 'listCountry'));
     }
     public function changePassword(Request $request){
         if(!Session::get('userId')){
@@ -174,7 +171,8 @@ class CustomerController extends Controller
         $seo['title'] = $seo['description'] = $seo['keywords'] = "Đổi mật khẩu";     
         $customer_id = Session::get('userId');
         $customer = Customer::find($customer_id);        
-        return view('frontend.account.change-password', compact('seo', 'customer'));
+        $lang = Session::get('locale') ? Session::get('locale') : 'vi';
+        return view('frontend.account.change-password', compact('seo', 'customer', 'lang'));
     }
     public function saveNewPassword(Request $request){        
         if(!Session::get('userId')){

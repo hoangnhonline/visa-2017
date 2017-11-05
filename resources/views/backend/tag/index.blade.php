@@ -30,9 +30,8 @@
             <div class="form-group">
               <label for="email">Loại :</label>
               <select class="form-control" name="type" id="type">                                
-                <option value="1" {{ 1 == $type ? "selected" : "" }}>BĐS</option>
-                <option value="2" {{ 2 == $type ? "selected" : "" }}>Bài viết</option>
-                <option value="3" {{ 3 ==  $type ? "selected" : "" }}>Tiện ích</option>              
+                <option value="1" {{ 1 == $type ? "selected" : "" }}>Sản phẩm</option>
+                <option value="2" {{ 2 == $type ? "selected" : "" }}>Tin tức</option>                       
               </select>
             </div>            
             <div class="form-group">
@@ -107,7 +106,7 @@
 </div>
 <input type="hidden" id="route_tag_index" value="{{ route('tag.index') }}">
 @stop
-@section('javascript_page')
+@section('js')
 <script type="text/javascript">
 function callDelete(name, url){  
   swal({
@@ -145,7 +144,7 @@ $(document).ready(function(){
                 strTemp = rows[i].id;
                 strOrder += strTemp.replace('row-','') + ";";
             }     
-            updateOrder("cate_parent", strOrder);
+            updateOrder("loai_sp", strOrder);
         }
     });
 });

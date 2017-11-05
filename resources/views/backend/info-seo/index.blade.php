@@ -20,7 +20,7 @@
       @if(Session::has('message'))
       <p class="alert alert-info" >{{ Session::get('message') }}</p>
       @endif
-      <a href="{{ route('info-seo.create') }}" class="btn btn-info" style="margin-bottom:5px">Tạo mới</a>    
+      <a href="{{ route('info-seo.create') }}" class="btn btn-info btn-sm" style="margin-bottom:5px">Tạo mới</a>    
       <div class="box">
 
         <div class="box-header with-border">
@@ -57,9 +57,9 @@
                 <td>{{ $item->description }}</td>
                 <td>{{ $item->keywords }}</td>
                 <td style="white-space:nowrap">                  
-                  <a href="{{ route( 'info-seo.edit', [ 'id' => $item->id ]) }}" class="btn btn-warning">Chỉnh sửa</a>                 
+                  <a href="{{ route( 'info-seo.edit', [ 'id' => $item->id ]) }}" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>                 
                   
-                  <a onclick="return callDelete('{{ $item->title }}','{{ route( 'info-seo.destroy', [ 'id' => $item->id ]) }}');" class="btn btn-danger">Xóa</a>
+                  <a onclick="return callDelete('{{ $item->title }}','{{ route( 'info-seo.destroy', [ 'id' => $item->id ]) }}');" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></a>
                   
                   
                 </td>
@@ -84,7 +84,7 @@
 <!-- /.content -->
 </div>
 @stop
-@section('javascript_page')
+@section('js')
 <script type="text/javascript">
 function callDelete(name, url){  
   swal({
@@ -135,7 +135,7 @@ $(document).ready(function(){
                 strTemp = rows[i].id;
                 strOrder += strTemp.replace('row-','') + ";";
             }     
-            updateOrder("cate_parent", strOrder);
+            updateOrder("loai_sp", strOrder);
         }
     });
 });

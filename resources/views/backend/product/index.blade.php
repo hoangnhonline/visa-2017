@@ -4,11 +4,11 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    Sản phẩm mới
+    Sản phẩm
   </h1>
   <ol class="breadcrumb">
     <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ route( 'product.index' ) }}">Sản phẩm mới</a></li>
+    <li><a href="{{ route( 'product.index' ) }}">Sản phẩm</a></li>
     <li class="active">Danh sách</li>
   </ol>
 </section>
@@ -28,8 +28,9 @@
         <div class="panel-body">
           <form class="form-inline" id="searchForm" role="form" method="GET" action="{{ route('product.index') }}">
            
-            <div class="form-group">
-             
+          
+            
+            <div class="form-group">              
               <select class="form-control" name="parent_id" id="parent_id">
                 <option value="">--Danh mục cha--</option>
                 @foreach( $cateParentList as $value )
@@ -38,25 +39,19 @@
               </select>
             </div>
               <div class="form-group">
-              
-
               <select class="form-control" name="cate_id" id="cate_id">
                 <option value="">--Danh mục con--</option>
-                @foreach( $cateArr as $value )
+                @foreach( $cateList as $value )
                 <option value="{{ $value->id }}" {{ $value->id == $arrSearch['cate_id'] ? "selected" : "" }}>{{ $value->name }}</option>
                 @endforeach
               </select>
             </div>
             <div class="form-group">              
-              <input type="text" class="form-control" name="name" value="{{ $arrSearch['name'] }}" placeholder="Tên sản phẩm...">
-            </div>           
+              <input type="text" class="form-control" name="name" placeholder="Tên..." value="{{ $arrSearch['name'] }}">
+            </div>            
             <div class="form-group">
-              <label><input type="checkbox" name="is_hot" value="1" {{ $arrSearch['is_hot'] == 1 ? "checked" : "" }}> Nổi bật</label>              
-            </div>
-            <div class="form-group">
-              <label><input type="checkbox" name="is_sale" value="1" {{ $arrSearch['is_sale'] == 1 ? "checked" : "" }}> SALE</label>              
-            </div>
-               
+              <label><input type="checkbox" name="is_hot" value="1" {{ $arrSearch['is_hot'] == 1 ? "checked" : "" }}> HOT</label>              
+            </div>                                   
             <button type="submit" style="margin-top:-5px" class="btn btn-primary btn-sm">Lọc</button>
           </form>         
         </div>
@@ -72,22 +67,14 @@
           <div style="text-align:center">
            {{ $items->appends( $arrSearch )->links() }}
           </div>  
-          <form action="{{ route('cap-nhat-thu-tu') }}" method="POST">
-           @if( $items->count() > 0 && $arrSearch['is_hot'] == 1 && $arrSearch['parent_id'] > 0) 
-          <button type="submit" class="btn btn-warning btn-sm">Cập nhật thứ tự</button>
-          @endif
-            {{ csrf_field() }}
-            <input type="hidden" name="table" value="product">
           <table class="table table-bordered" id="table-list-data">
             <tr>
               <th style="width: 1%">#</th>
-              @if($arrSearch['is_hot'] == 1 && $arrSearch['parent_id'] > 0)
+              @if($arrSearch['is_hot'] == 1 && $arrSearch['parent_id'] > 0 )
               <th style="width: 1%;white-space:nowrap">Thứ tự</th>
               @endif
-              <th width="100px">Hình ảnh</th>
-              <th style="text-align:left">Thông tin sản phẩm</th>                              
-              <th width="100px" style="text-align:center">Nổi bật</th>
-              <th width="100px" style="text-align:right">Số lượng</th>
+              <th width="210px">Hình ảnh</th>
+              <th style="text-align:center">Thông tin sản phẩm</th>                              
               <th width="1%;white-space:nowrap">Thao tác</th>
             </tr>
             <tbody>
@@ -101,18 +88,17 @@
                 <td><span class="order">{{ $i }}</span></td>
                 @if($arrSearch['is_hot'] == 1 && $arrSearch['parent_id'] > 0 )
                 <td style="vertical-align:middle;text-align:center">
-                 <input type="text" name="display_order[]" value="{{ $item->display_order}}" class="form-control" style="width:60px">
-                    <input type="hidden" name="id[]" value="{{ $item->id }}">
+                  <img src="{{ URL::asset('backend/dist/img/move.png')}}" class="move img-thumbnail" alt="Cập nhật thứ tự"/>
                 </td>
                 @endif
                 <td>
-                  <img class="img-thumbnail lazy" width="80" data-original="{{ $item->image_url ? Helper::showImage($item->image_url) : URL::asset('public/admin/dist/img/no-image.jpg') }}" alt="{{ $item->name }}" title="{{ $item->name }}" />
+                  <img class="img-thumbnail lazy" width="206" data-original="{{ $item->image_url ? Helper::showImage($item->image_url) : URL::asset('backend/dist/img/no-image.jpg') }}" alt="{{ $item->name }}" title="{{ $item->name }}" />
                 </td>
                 <td>                  
-                  {{ $item->code }} - <a style="color:#333;font-weight:bold" href="{{ route( 'product.edit', [ 'id' => $item->id ]) }}">{{ $item->name }}</a> &nbsp; @if( $item->is_hot == 1 )
+                  <a style="color:#333;font-weight:bold" href="{{ route( 'product.edit', [ 'id' => $item->id ]) }}">{{ $item->name }}</a> &nbsp; @if( $item->is_hot == 1 )
                   <label class="label label-danger">HOT</label>
                   @endif<br />
-                  <strong style="color:#337ab7;font-style:italic"> {{ $item->ten_loai }} / {{ $item->ten_cate }}</strong>
+                  <strong style="color:#337ab7;font-style:italic"> {{ $item->cate_parent_name }} / {{ $item->cate_name }}</strong>
                  <p style="margin-top:10px">
                     @if( $item->is_sale == 1)
                    <b style="color:red">                  
@@ -126,14 +112,11 @@
                     {{ number_format($item->price) }}
                    </b>
                     @endif 
-                  </p>                  
+                  </p>
+                  
                 </td>
-                <td style="text-align:center">
-                  <input type="checkbox" data-id="{{ $item->id }}" data-col="is_hot" data-table="product" class="change-value" value="1" {{ $item->is_hot == 1  ? "checked" : "" }}>
-                </td>
-                <td style="text-align:right">{{ number_format($item->inventory) }}</td>
                 <td style="white-space:nowrap; text-align:right">
-                  <a class="btn btn-default btn-sm" href="{{ route('product', [$item->slug] ) }}" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i> Xem</a>                  
+                  <a class="btn btn-default btn-sm" href="{{ route('product', [ $item->slug, $item->product_id ]) }}" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i> Xem</a>                 
                   <a href="{{ route( 'product.edit', [ 'id' => $item->id ]) }}" class="btn btn-warning btn-sm">Chỉnh sửa</a>                 
 
                   <a onclick="return callDelete('{{ $item->name }}','{{ route( 'product.destroy', [ 'id' => $item->id ]) }}');" class="btn btn-danger btn-sm">Xóa</a>
@@ -149,7 +132,6 @@
 
           </tbody>
           </table>
-          </form>
           <div style="text-align:center">
            {{ $items->appends( $arrSearch )->links() }}
           </div>  
@@ -168,7 +150,7 @@
 }
 </style>
 @stop
-@section('javascript_page')
+@section('js')
 <script type="text/javascript">
 function callDelete(name, url){  
   swal({
@@ -185,26 +167,6 @@ function callDelete(name, url){
   return flag;
 }
 $(document).ready(function(){
-  $('.change-value').change(function(){
-    var obj = $(this);
-    var val = 0;
-    if(obj.prop('checked') == true){
-      var val = 1;
-    }
-    $.ajax({
-      url : "{{ route('change-value') }}",
-      type :'POST',
-      data : {
-        id : obj.data('id'),
-        value : val,
-        column : obj.data('col'),
-        table : obj.data('table')
-      },
-      success : function(data){
-        console.log(data);
-      }
-    });
-  });
   $('input.submitForm').click(function(){
     var obj = $(this);
     if(obj.prop('checked') == true){
@@ -240,7 +202,7 @@ $(document).ready(function(){
                 strTemp = rows[i].id;
                 strOrder += strTemp.replace('row-','') + ";";
             }     
-            updateOrder("product", strOrder);
+            updateOrder("san_pham", strOrder);
         }
     });
 });

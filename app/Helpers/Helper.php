@@ -1,11 +1,13 @@
 <?php
 namespace App\Helpers;
+use App\Helpers\simple_html_dom;
 use App\Models\City;
+use App\Models\Price;
+use App\Models\Area;
 use App\Models\CounterValues;
 use App\Models\CounterIps;
 use App\Models\Settings;
-
-use DB;
+use DB, Image, Auth;
 
 class Helper
 {
@@ -15,80 +17,30 @@ class Helper
     {
         return strtoupper($string);
     }
-    public static function getNextOrder($table, $where = []){
-        return DB::table($table)->where($where)->max('display_order') + 1;
+    public static function accountAvai(){        
+        if( Auth::user()->status == 2 ){
+            echo "Tài khoản đã bị khóa. ";die();
+        }
+    }
+    public static function getChild($table, $column, $parent_id){
+        $listData = DB::table($table)->where($column, $parent_id)->get();
+        
+            echo '<option value="">--Chọn--</option>';
+        
+        if(!empty(  (array) $listData  )){
+            
+            foreach($listData as $data){
+                echo "<option value=".$data->id.">".$data->name."</option>";
+            }
+        }
     }
     public static function setting(){
         return Settings::whereRaw('1')->lists('value', 'name');
     }
-    public static function showImage($image_url, $type = 'original'){
-
-        //return strpos($image_url, 'http') === false ? config('phukien.upload_url') . $type . '/' . $image_url : $image_url;        
-        return strpos($image_url, 'http') === false ? env('APP_URL') . $image_url : $image_url;        
-
-    }
-    public static function showImageThumb($image_url, $object_type = 1, $folder = ''){             
-        // type = 1 : original 2 : thumbs
-        //object_type = 1 : product, 2 :article  3: project          
-        $tmpArrImg = explode('/', $image_url);
-                        
-        $image_url = config('phukien.upload_url_thumbs').end($tmpArrImg);           
-        if(strpos($image_url, 'http') === false){
-            if($object_type == 1){
-                return env('APP_URL') . $folder. $image_url;
-            }elseif($object_type == 2){
-                return env('APP_URL') . $folder. $image_url;
-            }else{
-                return env('APP_URL') . $folder. $image_url;
-            }    
-        }else{
-            return $image_url;
-        }
-        
-    }
-    public static function showImageThumb2($image_url, $object_type = 1, $folder = ''){             
-        // type = 1 : original 2 : thumbs
-        //object_type = 1 : product, 2 :article  3: project          
-        $tmpArrImg = explode('/', $image_url);
-                        
-        $image_url = config('phukien.upload_url_thumbs_2').end($tmpArrImg);           
-        if(strpos($image_url, 'http') === false){
-            if($object_type == 1){
-                return env('APP_URL') . $folder. $image_url;
-            }elseif($object_type == 2){
-                return env('APP_URL') . $folder. $image_url;
-            }else{
-                return env('APP_URL') . $folder. $image_url;
-            }    
-        }else{
-            return $image_url;
-        }
-        
-    }
-    public static function showImageThumb3($image_url, $object_type = 1, $folder = ''){             
-        // type = 1 : original 2 : thumbs
-        //object_type = 1 : product, 2 :article  3: project          
-        $tmpArrImg = explode('/', $image_url);
-                        
-        $image_url = config('phukien.upload_url_thumbs_3').end($tmpArrImg);           
-        if(strpos($image_url, 'http') === false){
-            if($object_type == 1){
-                return env('APP_URL') . $folder. $image_url;
-            }elseif($object_type == 2){
-                return env('APP_URL') . $folder. $image_url;
-            }else{
-                return env('APP_URL') . $folder. $image_url;
-            }    
-        }else{
-            return $image_url;
-        }
-        
-    }
-    public static function view($object_id, $object_type, $day_id = null){
+    public static function view($object_id, $object_type){
         $rs = CounterValues::where(['object_id' => $object_id, 'object_type' => $object_type])->first();
-
         if($rs){
-            return $day_id ? $rs->day_value : $rs->all_value;
+            return $rs->all_value;
         }else{
             return 0;
         }
@@ -204,6 +156,60 @@ class Helper
          
         }
     }
+    public static function xml_entities($string) {
+        return str_replace(
+                array("&", "<", ">", '"', "'"), array("&amp;", "&lt;", "&gt;", "&quot;", "&apos;"), $string
+        );
+    }
+    public static function getNextOrder($table, $where = []){
+        return DB::table($table)->where($where)->max('display_order') + 1;
+    }
+    public static function getPriceId($price, $price_unit_id, $type){
+        $rs = Price::where('value_from', '<=', $price)
+                    ->where('value_to', '>=', $price)
+                    ->where('price_unit_id', $price_unit_id)
+                    ->where('type', $type)
+                    ->first();
+        if($rs){
+            return $rs->id;    
+        }else{
+            return 0;
+        }        
+    }
+    public static function getAreaId($area){
+        $rs = Area::where('value_from', '<=', $area)
+                    ->where('value_to', '>=', $area)                   
+                    ->first();
+        if($rs){
+            return $rs->id;    
+        }else{
+            return 0;
+        }
+        
+    }
+    public static function showImage($image_url, $type = 'original'){
+
+        //return strpos($image_url, 'http') === false ? config('houseland.upload_url') . $type . '/' . $image_url : $image_url;        
+        return strpos($image_url, 'http') === false ? env('APP_URL') . $image_url : $image_url;        
+
+    }
+    public static function showImageThumb($image_url, $object_type = 1, $folder = ''){             
+        // type = 1 : original 2 : thumbs
+        //object_type = 1 : product, 2 :article  3: project 
+         $image_url = str_replace('/uploads/images/', '/uploads/images/thumbs/', $image_url);            
+        if(strpos($image_url, 'http') === false){
+            if($object_type == 1){
+                return env('APP_URL') . $folder. $image_url;
+            }elseif($object_type == 2){
+                return env('APP_URL') . $folder. $image_url;
+            }else{
+                return env('APP_URL') . $folder. $image_url;
+            }    
+        }else{
+            return $image_url;
+        }
+        
+    }
     public static function seo(){
         $seo = [];
         $arrTmpSeo = DB::table('info_seo')->get();
@@ -217,7 +223,7 @@ class Helper
           $seo = $arrSeo[url()->current()];
         }
         if(empty($seo)){
-          $seo['title'] = $seo['description'] = $seo['keywords'] = "Trang chủ phukiencuoigiang.com";
+          $seo['title'] = $seo['description'] = $seo['keywords'] = "Trang chủ NhaDat";
         }      
         return $seo;
     }
@@ -476,8 +482,8 @@ class Helper
 
         $basePath = $date_dir == true ? $basePath .= date('Y/m/d'). '/'  : $basePath = $basePath;        
         
-        $desPath = config('phukien.upload_path'). $basePath;
-
+        $desPath = config('houseland.upload_path'). $basePath;
+        $desThumbsPath = config('houseland.upload_thumbs_path'). $basePath;
         //set name for file
         $fileName = $file->getClientOriginalName();
         
@@ -494,8 +500,8 @@ class Helper
         $imgName = $imgName."-".time();
 
         $newFileName = "{$imgName}.{$imgExt}";
-       
-        if( $file->move($desPath, $newFileName) ){
+       //var_dump($desPath, $newFileName);die;
+        if( $file->move($desPath, $newFileName) ){            
             $imagePath = $basePath.$newFileName;
             $return['image_name'] = $newFileName;
             $return['image_path'] = $imagePath;
@@ -525,6 +531,8 @@ class Helper
         $str = str_replace(".", "", $str);
         $str = str_replace(".", "", $str);
         $str = str_replace("%", "", $str);
+        $str = str_replace("“", "", $str);
+        $str = str_replace("”", "", $str);
         return $str;
     }
 
