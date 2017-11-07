@@ -98,21 +98,8 @@
                   <a style="color:#333;font-weight:bold" href="{{ route( 'product.edit', [ 'id' => $item->id ]) }}">{{ $item->name }}</a> &nbsp; @if( $item->is_hot == 1 )
                   <label class="label label-danger">HOT</label>
                   @endif<br />
-                  <strong style="color:#337ab7;font-style:italic"> {{ $item->cate_parent_name }} / {{ $item->cate_name }}</strong>
-                 <p style="margin-top:10px">
-                    @if( $item->is_sale == 1)
-                   <b style="color:red">                  
-                    {{ number_format($item->price_sale) }}
-                   </b>
-                   <span style="text-decoration: line-through">
-                    {{ number_format($item->price) }}  
-                    </span>
-                    @else
-                    <b style="color:red">                  
-                    {{ number_format($item->price) }}
-                   </b>
-                    @endif 
-                  </p>
+                  <strong style="color:#337ab7;font-style:italic"> {{ $item->cate_parent_name }} / {{ $item->cate_name }}</strong>                
+
                   
                 </td>
                 <td style="white-space:nowrap; text-align:right">

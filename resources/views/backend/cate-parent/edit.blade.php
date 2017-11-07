@@ -60,12 +60,6 @@
                       <input type="checkbox" name="is_hot" value="1" {{ $detail->is_hot == 1 ? "checked" : "" }}>
                       HOT
                     </label>
-                  </div>  
-                  <div class="checkbox col-md-3" >
-                    <label>
-                      <input type="checkbox" name="is_widget" value="1" {{ $detail->is_widget == 1 ? "checked" : "" }}>
-                      WIDGET
-                    </label>
                   </div>                    
                 </div>
                 <div class="clearfix"></div>

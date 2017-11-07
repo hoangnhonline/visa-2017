@@ -68,7 +68,7 @@
                                   @if($order->method_id == 1)
                                     COD
                                   @elseif($order->method_id == 2)
-                                    Thanh toán bằng thẻ của K KAFFEE
+                                    Thanh toán bằng thẻ của VISA
                                   @endif
                               </div>
                           </div>

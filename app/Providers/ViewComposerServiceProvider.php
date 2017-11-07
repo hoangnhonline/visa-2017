@@ -11,6 +11,7 @@ use App\Models\CustomLink;
 use App\Models\Services;
 use App\Models\Menu;
 use App\Models\CateParent;
+use App\Models\Cate;
 use App\Models\Text;
 use App\Models\Product;
 use Auth, Session;
@@ -55,8 +56,8 @@ class ViewComposerServiceProvider extends ServiceProvider
 	        }
 	        $footerLink = CustomLink::where('block_id', 1)->orderBy('display_order', 'asc')->get();	        	                	       	
 	       	$menuList = Menu::where('menu_id', 1)->orderBy('display_order', 'asc')->get();
-	       	$cateParentList = CateParent::orderBy('display_order')->get();       	
-
+	       	$cateParentList = CateParent::orderBy('display_order')->get();  
+	       	$cateListDefault = Cate::orderBy('id')->get();
 	       	$textList = Text::whereRaw('1')->lists('content', 'id');
 	        $routeName = \Request::route()->getName();	      
 	        
@@ -84,7 +85,8 @@ class ViewComposerServiceProvider extends ServiceProvider
 					'servicesList' => $servicesList,
 					'getlistProduct' => $getlistProduct,
 					'arrProductInfo' => $arrProductInfo,
-					'listProductId' => $listProductId
+					'listProductId' => $listProductId,
+					'cateListDefault' => $cateListDefault
 			] );
 			
 		});

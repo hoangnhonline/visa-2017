@@ -77,7 +77,7 @@
                                         <img src="{{ URL::asset('public/admin/dist/img/move.png')}}" class="move img-thumbnail" alt="Cập nhật thứ tự"/>
                                     </td>
                                     <td>
-                                      <img class="img-thumbnail lazy" width="500" data-original="{{ $item->image_url ? Helper::showImage($item->image_url) : URL::asset('public/admin/dist/img/no-image.jpg') }}" alt="Nổi bật" title="Nổi bật" />
+                                      <img class="img-thumbnail lazy" width="500" data-original="{{ $item->image_url ? Helper::showImage($item->image_url) : URL::asset('public/admin/dist/img/no-img.jpg') }}" alt="Nổi bật" title="Nổi bật" />
                                     </td>
                                     <td>
                                         <a href="{{ route( 'cate.edit', [ 'id' => $item->id ]) }}">{{ $item->name }}</a>

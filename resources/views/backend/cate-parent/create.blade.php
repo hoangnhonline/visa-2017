@@ -56,12 +56,7 @@
                       <span style="color:red">HOT</span>
                     </label>
                   </div>
-                  <div class="checkbox col-md-3" >
-                    <label>
-                      <input type="checkbox" name="is_widget" value="1" {{ old('is_widget') == 1 ? "checked" : "" }}>
-                      WIDGET
-                    </label>
-                  </div> 
+                 
                 </div>
                 <div class="clearfix"></div>
                 <!-- textarea -->

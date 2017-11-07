@@ -110,7 +110,7 @@
                               <label><input type="radio" name="method_id" value="1" checked>COD</label>
                           </div>
                           <div class="radio">
-                              <label><input type="radio" name="method_id" value="2">Thanh toán bằng thẻ của K KAFFEE</label>
+                              <label><input type="radio" name="method_id" value="2">Thanh toán bằng thẻ của VISA</label>
                           </div>
                           <div class="form-group clearfix checkout-action">
                               <div class="pull-right" style="margin-left:5px"><button type="button" id="btnPayment" class="btn btn-yellow btn-flat">THANH TOÁN</button></div>

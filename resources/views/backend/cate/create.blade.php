@@ -84,7 +84,7 @@
                 <div class="form-group" style="margin-top:10px;margin-bottom:10px">  
                   <label class="col-md-3 row">Ảnh đại diện (1349 x 300px)</label>    
                   <div class="col-md-9">
-                    <img id="thumbnail_image" src="{{ old('image_url') ? Helper::showImage(old('image_url')) : URL::asset('public/admin/dist/img/img.png') }}" class="img-thumbnail" width="500">
+                    <img id="thumbnail_image" src="{{ old('image_url') ? Helper::showImage(old('image_url')) : URL::asset('public/admin/dist/img/no-img.jpg') }}" class="img-thumbnail" width="500">
                     
                     <input type="file" id="file-image" style="display:none" />
                  

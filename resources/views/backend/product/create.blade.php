@@ -21,7 +21,7 @@
     <div class="row">
       <!-- left column -->
 
-      <div class="col-md-8">
+      <div class="col-md-9">
         <!-- general form elements -->
         <div class="box box-primary">
           <div class="box-header with-border">
@@ -63,11 +63,7 @@
                         <option value="{{ $value->id }}" {{ $value->id == old('cate_id') || $value->id == $cate_id ? "selected" : "" }}>{{ $value->name }}</option>
                         @endforeach
                       </select>
-                    </div> 
-                     <div class="form-group" >                  
-                      <label>Mã sản phẩm <span class="red-star">*</span></label>
-                      <input type="text" class="form-control req" name="code" id="code" value="{{ old('code') }}">
-                    </div>
+                    </div>                     
                     <div class="form-group" >                  
                       <label>Tên <span class="red-star">*</span></label>
                       <input type="text" class="form-control req" name="name" id="name" value="{{ old('name') }}">
@@ -75,58 +71,32 @@
                     <div class="form-group">                  
                       <label>Slug <span class="red-star">*</span></label>                  
                       <input type="text" class="form-control req" readonly="readonly" name="slug" id="slug" value="{{ old('slug') }}">
+                    </div>
+                     <div class="form-group" >                  
+                      <label>File <span class="red-star">*</span></label>
+                      <input type="text" class="form-control req" name="file_url" id="file_url" value="{{ old('file_url') }}">
                     </div> 
                     <div class="col-md-4 none-padding">
                       <div class="checkbox">
                           <label><input type="checkbox" name="is_hot" value="1" {{ old('is_hot') == 1 ? "checked" : "" }}> HOT </label>
                       </div>                          
-                    </div>
-                    <div class="col-md-4 none-padding">
-                      <div class="checkbox">
-                          <label><input type="checkbox" name="is_sale" value="1" {{ old('is_sale') == 1 ? "checked" : "" }} id="is_sale">  SALE </label>
-                      </div>                          
-                    </div>                        
-                    <div class="clearfix"></div>
-                    <div class="form-group col-md-6 none-padding" >                  
-                        <label>Giá<span class="red-star">*</span></label>
-                        <input type="text" class="form-control req number" name="price" id="price" value="{{ old('price') }}">
-                    </div>
-                                       
-                     <div class="col-md-6">
-                      <label>Số lượng tồn</label>                  
-                      <input type="text" class="form-control number" name="inventory" id="inventory" value="{{ old('inventory') }}">                        
-                    </div>
-                    <div class="clearfix"></div>
-                     <div class="form-group col-md-6 none-padding" >
-                        <label>Giá SALE</label>
-                        <input type="text" class="form-control number" name="price_sale" id="price_sale" value="{{ old('price_sale') }}">
-                    </div>    
-                    <div class="form-group col-md-6 " >
-                        <label>Phần trăm (%) SALE</label>
-                        <input type="text" class="form-control number" name="sale_percent" id="sale_percent" value="{{ old('sale_percent') }}">
-                    </div>    
+                    </div>                                            
+                    <div class="clearfix"></div>                     
 
-                    <div class="clearfix"></div>
-                    <div class="form-group" style="margin-top:10px;margin-bottom:10px">  
-                      <label class="col-md-3 row">Thumbnail ( 560x316 px)</label>    
-                      <div class="col-md-9">
-                        <img id="thumbnail_image" src="{{ old('image_url') ? Helper::showImage(old('image_url')) : URL::asset('public/admin/dist/img/img.png') }}" class="img-thumbnail" width="206" height="116">
-                        
-                        <input type="file" id="file-image" style="display:none" />                    
-                        <button class="btn btn-default btn-sm" id="btnUploadImage" type="button"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Upload</button>
-                        <input type="hidden" name="image_url" id="image_url" value="{{ old('image_url') }}"/>
-                      </div>
-                      <div style="clear:both"></div>
-                    </div>
                     <div class="form-group">
                       <label>Mô tả</label>
                       <textarea class="form-control" rows="4" name="description" id="description">{{ old('description') }}</textarea>
                     </div>  
-                    <div class="form-group">
-                      <label>Chi tiết</label>
+                    <div class="row">
+                    <div class="form-group col-md-6">
+                      <label>Chi tiết trái</label>
                       <textarea class="form-control" rows="4" name="content" id="content">{{ old('content') }}</textarea>
+                    </div>                
+                    <div class="form-group col-md-6">
+                      <label>Chi tiết phải</label>
+                      <textarea class="form-control" rows="4" name="content_2" id="content_2">{{ old('content_2') }}</textarea>
                     </div>                                               
-                    
+                    </div>
                     <div class="clearfix"></div>                    
                 </div>
                   
@@ -141,7 +111,7 @@
         <!-- /.box -->     
 
       </div>
-      <div class="col-md-4">      
+      <div class="col-md-3">      
         <div class="box box-primary">
           <div class="box-header with-border">
             <h3 class="box-title">Thông tin SEO</h3>
@@ -193,25 +163,6 @@
 @stop
 @section('js')
 <script type="text/javascript">
-var h = screen.height;
-var w = screen.width;
-var left = (screen.width/2)-((w-300)/2);
-var top = (screen.height/2)-((h-100)/2);
-function openKCFinder_singleFile() {
-      window.KCFinder = {};
-      window.KCFinder.callBack = function(url) {
-         $('#image_url').val(url);
-         $('#thumbnail_image').attr('src', $('#app_url').val() + url);
-          window.KCFinder = null;
-      };
-      window.open('{{ URL::asset("public/admin/dist/js/kcfinder/browse.php?type=images") }}', 'kcfinder_single','scrollbars=1,menubar=no,width='+ (w-300) +',height=' + (h-300) +',top=' + top+',left=' + left);
-  }
-$(document).on('click', '.remove-image', function(){
-  if( confirm ("Bạn có chắc chắn không ?")){
-    $(this).parents('.col-md-3').remove();
-  }
-});
-
     $(document).ready(function(){
       $('#btnSave').click(function(){
         var errReq = 0;
@@ -229,53 +180,10 @@ $(document).on('click', '.remove-image', function(){
               scrollTop: $("#dataForm .req.error").eq(0).parents('div').offset().top
           }, 500);
           return false;
-        }
-        if( $('#image_url').val() == ""){
-          alert("Bạn chưa upload hình sản phẩm."); return false;
-        }
+        }       
 
       });
-       $('#is_sale').change(function(){
-        if($(this).prop('checked') == true){
-          $('#price_sale, #sale_percent').addClass('req');          
-        }else{
-          $('#price_sale, #sale_percent').val('').removeClass('req');
-        }
-      });
-      $('#price_sale').blur(function(){
-
-        var sale_percent = 0;
-        var price = parseInt($('#price').val());
-        var price_sale = parseInt($('#price_sale').val());
-        if(price_sale > 0){
-          $('#is_sale').prop('checked', true);          
-          if(price_sale > price){
-            price_sale = price;
-            $('#price_sale').val(price_sale);
-          }
-          if( price > 0 ){
-            sale_percent = 100 - Math.floor(price_sale*100/price);
-            $('#sale_percent').val(sale_percent);
-          }
-        }
-      }); 
-       $('#sale_percent').blur(function(){
-        var price_sale = 0;
-        var price = parseInt($('#price').val());
-        var sale_percent = parseInt($('#sale_percent').val());
-        sale_percent = sale_percent > 100 ? 100 : sale_percent;
-        if( sale_percent > 0){
-          $('#is_sale').prop('checked', true);
-        }
-        if(sale_percent > 100){
-          sale_percent = 100;
-          $('#sale_percent').val(100);
-        }
-        if( price > 0 ){
-          price_sale = Math.ceil((100-sale_percent)*price/100);
-          $('#price_sale').val(price_sale);
-        }
-      }); 
+      
       $('#dataForm .req').blur(function(){    
         if($(this).val() != ''){
           $(this).removeClass('error');
@@ -290,12 +198,13 @@ $(document).on('click', '.remove-image', function(){
       $('#dataForm').submit(function(){       
         $('#btnSave').htm('<i class="fa fa-spinner fa-spin"></i>').attr('disabled', 'disabled');
       });
-      var editor1 = CKEDITOR.replace( 'content',{
-          height : 300
+      
+      var editor2 = CKEDITOR.replace( 'content_2',{
+          height : 500
       });
-      $('#btnUploadImage').click(function(){        
-        openKCFinder_singleFile();
-      }); 
+      var editor3 = CKEDITOR.replace( 'description',{
+          height : 200
+      });      
       $('#name').change(function(){
          var name = $.trim( $(this).val() );
          if( name != ''){

@@ -11,16 +11,16 @@
 		* Summary:
 		*
 			*	Styles for devices max 1200px
-			*	Styles for devices max 1200px
-			*	Styles for devices max 1024px
-			*	Styles for devices max 800px
-			*	Styles for devices min 768px
-			*	Styles for devices max 767px
-			*	Styles for devices max 667px
-			*	Styles for devices max 568px
-			*	Styles for devices max 480px
-			*	Styles for devices max 414px
-			*	Styles for devices max 320px
+			*	
+			*	
+			*	
+			*	
+			*	
+			*	
+			*	
+			*	
+			*	
+			*	
 	*/
 
 /*----------------
@@ -120,5 +120,46 @@
 	.contactForm .container {
 	  padding-right: 0;
 	  padding-left: 0;
+	}
+	#footer li {
+	  width: 50%;
+	}
+}
+
+@media (max-width: 767px) {
+	.nav-service {
+		margin-left: -10px;
+		margin-right: -10px;
+		box-sizing: border-box;
+		background: transparent;
+	}
+	.nav-service li {
+	  width: 50% !important;
+	  padding-left: 10px;
+	  padding-right: 10px;
+	  border: none;
+	  box-sizing: border-box;
+	  margin-bottom: 10px;
+	  position: relative;
+	  min-height: 1px;
+	}
+	.nav-service li.active a {
+	  background: #fbb74d;
+	  color: #fff;
+	}
+	.nav-service li a {
+	  color: #000;
+	  text-align: center;
+	  border: 1px solid #ddd; */
+	}
+}
+
+
+@media (max-width: 375px) {
+	.nav-service li {
+		width: 100% !important;
+	}
+	.nav-service li:last-child {
+		margin-bottom: 0;
 	}
 }

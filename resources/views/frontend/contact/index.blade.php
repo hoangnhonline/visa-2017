@@ -23,7 +23,7 @@
         <div class="container">
             <div class="content-single">
                 <div class="marg40">
-                    <h3 class="title-contact">TẬP ĐOÀN SIÊU THỊ 24H LIÊN KẾT K KAFFEE</h3>
+                    <h3 class="title-contact">TẬP ĐOÀN SIÊU THỊ 24H LIÊN KẾT VISA</h3>
                     <p class="info-contact">
                         <b>Địa chỉ:</b> 216 Hoàng Văn Thụ, phường 4, quận Tân Bình, thành phố Hồ Chí Minh<br/>
                         <b>Điện thoại:</b> 0909 58 57 49<br/>

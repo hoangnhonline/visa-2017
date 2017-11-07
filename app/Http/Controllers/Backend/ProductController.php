@@ -29,36 +29,28 @@ class ProductController extends Controller
     public function index(Request $request)
     {   
         $arrSearch['parent_id'] = $parent_id = isset($request->parent_id) ? $request->parent_id : null;
-        $arrSearch['cate_id'] = $cate_id = isset($request->cate_id) ? $request->cate_id : null;        
-        $arrSearch['code'] = $code = isset($request->code) && trim($request->code) != '' ? trim($request->code) : '';
+        $arrSearch['cate_id'] = $cate_id = isset($request->cate_id) ? $request->cate_id : null;                
         $arrSearch['status'] = $status = isset($request->status) ? $request->status : 1;
-        $arrSearch['is_hot'] = $is_hot = isset($request->is_hot) ? $request->is_hot : null;
-        $arrSearch['is_sale'] = $is_sale = isset($request->is_sale) ? $request->is_sale : null;
-        $arrSearch['out_of_stock'] = $out_of_stock = isset($request->out_of_stock) ? $request->out_of_stock : null;
+        $arrSearch['is_hot'] = $is_hot = isset($request->is_hot) ? $request->is_hot : null;       
+       
         $arrSearch['name'] = $name = isset($request->name) && trim($request->name) != '' ? trim($request->name) : '';
         
         $query = Product::where('product.status', $status);
         if( $is_hot ){
             $query->where('product.is_hot', $is_hot);
         }
-        if( $is_sale ){
-            $query->where('product.is_sale', $is_sale);
-        }
+        
         if( $parent_id ){
             $query->where('product.parent_id', $parent_id);
         }
         if( $cate_id ){
             $query->where('product.cate_id', $cate_id);
         }
-        if( $out_of_stock ){
-            $query->where('product.out_of_stock', $out_of_stock);
-        }        
+          
         if( $name != ''){
             $query->where('product.alias', 'LIKE', '%'.$name.'%');           
         }
-        if( $code != ''){
-            $query->where('product.code', 'LIKE', '%'.$code.'%');           
-        }
+       
         $query->join('users', 'users.id', '=', 'product.created_user');
         $query->join('cate_parent', 'cate_parent.id', '=', 'product.parent_id');
         $query->join('cate', 'cate.id', '=', 'product.cate_id');        
@@ -156,27 +148,22 @@ class ProductController extends Controller
         
         $this->validate($request,[            
             'parent_id' => 'required',
-            'cate_id' => 'required',   
-            'code' => 'required',              
+            'cate_id' => 'required',                  
             'name' => 'required',
-            'slug' => 'required',            
-            'price' => 'required'                      
+            'slug' => 'required'   
         ],
         [   
             'parent_id.required' => 'Bạn chưa chọn danh mục cha',
-            'cate_id.required' => 'Bạn chưa chọn danh mục con',
-            'code.required' => 'Bạn chưa nhập mã sản phẩm',
+            'cate_id.required' => 'Bạn chưa chọn danh mục con',           
             'name.required' => 'Bạn chưa nhập tên sản phẩm',
-            'slug.required' => 'Bạn chưa nhập slug',
-            'price.required' => 'Bạn chưa nhập giá'           
+            'slug.required' => 'Bạn chưa nhập slug'         
         ]);
            
         $dataArr['slug'] = str_replace(".", "-", $dataArr['slug']);
         $dataArr['slug'] = str_replace("(", "-", $dataArr['slug']);
         $dataArr['slug'] = str_replace(")", "", $dataArr['slug']);
         $dataArr['alias'] = Helper::stripUnicode($dataArr['name']);
-        $dataArr['is_hot'] = isset($dataArr['is_hot']) ? 1 : 0;         
-        $dataArr['out_of_stock'] = isset($dataArr['out_of_stock']) ? 1 : 0;
+        $dataArr['is_hot'] = isset($dataArr['is_hot']) ? 1 : 0;                
         $dataArr['status'] = 1;
         $dataArr['created_user'] = Auth::user()->id;
         $dataArr['updated_user'] = Auth::user()->id;              
@@ -186,13 +173,7 @@ class ProductController extends Controller
         
         $this->storeMeta($product_id, 0, $dataArr);
         $this->processRelation($dataArr, $product_id);
-
-        // store Rating
-        for($i = 1; $i <= 5 ; $i++ ){
-            $amount = $i == 5 ? 1 : 0;
-            Rating::create(['score' => $i, 'object_id' => $product_id, 'object_type' => 1, 'amount' => $amount]);
-        }
-
+       
         Session::flash('message', 'Tạo mới thành công');
 
         return redirect()->route('product.index', ['parent_id' => $dataArr['parent_id'], 'cate_id' => $dataArr['cate_id']]);
@@ -280,28 +261,23 @@ class ProductController extends Controller
         
          $this->validate($request,[            
             'parent_id' => 'required',
-            'cate_id' => 'required',   
-            'code' => 'required',              
+            'cate_id' => 'required',               
             'name' => 'required',
             'slug' => 'required',            
-            'price' => 'required'
+            
         ],
         [   
             'parent_id.required' => 'Bạn chưa chọn danh mục cha',
-            'cate_id.required' => 'Bạn chưa chọn danh mục con',
-            'code.required' => 'Bạn chưa nhập mã sản phẩm',
+            'cate_id.required' => 'Bạn chưa chọn danh mục con',            
             'name.required' => 'Bạn chưa nhập tên sản phẩm',
-            'slug.required' => 'Bạn chưa nhập slug',
-            'price.required' => 'Bạn chưa nhập giá'
+            'slug.required' => 'Bạn chưa nhập slug',            
         ]);
            
         $dataArr['slug'] = str_replace(".", "-", $dataArr['slug']);
         $dataArr['slug'] = str_replace("(", "-", $dataArr['slug']);
         $dataArr['slug'] = str_replace(")", "", $dataArr['slug']);
         $dataArr['alias'] = Helper::stripUnicode($dataArr['name']);
-        $dataArr['is_hot'] = isset($dataArr['is_hot']) ? 1 : 0;    
-        $dataArr['is_sale'] = isset($dataArr['is_sale']) ? 1 : 0;     
-        $dataArr['out_of_stock'] = isset($dataArr['out_of_stock']) ? 1 : 0;             
+        $dataArr['is_hot'] = isset($dataArr['is_hot']) ? 1 : 0;            
         $dataArr['updated_user'] = Auth::user()->id;        
         
         $model = Product::find($dataArr['id']);

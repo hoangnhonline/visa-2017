@@ -52,7 +52,7 @@
                             if($method_id == 1) {
                               echo "COD";
                             }elseif( $method_id == 2){
-                              echo "Thanh toán bằng thẻ của K KAFFEE";
+                              echo "Thanh toán bằng thẻ của VISA";
                             }
                               ?>
                               </td>
