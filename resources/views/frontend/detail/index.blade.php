@@ -1,202 +1,201 @@
 @extends('frontend.layout')
 @include('frontend.partials.meta')
 @section('content')
-<article class="mar-top20">
-	<div class="container">
-		<div class="breadcrumbs">
-	        <ul>
-	            <li><a href="{{ route('home') }}">Trang chủ</a></li>
-	            <li><a href="{{ route('cate-parent', [$detail->cateParent->slug]) }}">{!! $detail->cateParent->name !!}</a></li>
-	            <li><a href="{{ route('cate', [ $detail->cateParent->slug, $detail->cate->slug ]) }}">{!! $detail->cate->name !!}</a></li>
-				<li class="active">{!! $detail->name !!}</li>	           
-	        </ul>
-	    </div>
-	</div>
-    <section id="detail-product" class="marg40">
-        <div class="container marg40">
-            <div class="row">
-                <div class="col-md-6 feature-image">
-                    <img src="{{ Helper::showImage($detail->image_url) }}" alt="{!! $detail->name !!}">
-                </div>
-                <div class="col-md-6">                    
-                    <div class="title-section">
-                        {!! $detail->name !!}
-                    </div>
-                    <div class="price">
-                        <i class="fa fa-usd" aria-hidden="true"></i> 
-                        @if($detail->is_sale == 1 && $detail->price_sale > 0)
-                        	{{ number_format($detail->price_sale) }}đ
-                        @else
-                        	{{ number_format($detail->price) }}đ
-                        @endif
-                        
-                        @if($detail->is_sale == 1 && $detail->price_sale > 0)
-                        <small>{{ number_format($detail->price_sale) }}đ</small>
-                        @endif
-                    </div>
-                    <div class="social block-share">
-                        <div class="share-item">
-							<div class="fb-like" data-href="{{ url()->current() }}" data-layout="button_count" data-action="like" data-size="small" data-show-faces="false" data-share="false"></div>
-						</div>
-						<div class="share-item" style="max-width: 65px;">
-							<div class="g-plus" data-action="share"></div>
-						</div>
-						<div class="share-item">
-							<a class="twitter-share-button"
-						  href="https://twitter.com/intent/tweet?text={!! $detail->name !!}">
-						Tweet</a>
-						</div>
-                    </div>
-                    @if($detail->description)
-                    <p class="des">
-                        {!! $detail->description !!}
-                    </p>
-                    @endif
-                    <button type="button" data-id="{{ $detail->id }}" class="btn btn-yellow btn-flat @if(Session::has('login')) btn-order-main @endif" @if(!Session::has('login')) data-dismiss="modal" data-toggle="modal" data-target="#login-form" @endif> <i class="glyphicon glyphicon-shopping-cart"></i> ĐẶT HÀNG</button>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="bg-eaeaea">
-                <span>THỰC ĐƠN</span>
-                <a href="{{ route('cate-parent', $catePromotion->slug) }}">KHUYẾN MÃI</a>
-            </div>
-        </div>
-        <div class="container">
-            <div class="tabs-custom">
-                <div id="myScrollspy" class="col-tab-menu hidden-xs">
-                    <ul class="tab-menu affix-top">                        
-                        <li><a href="#tab01" data-target-id="">Sản phẩm hot</a></li>
-                        @foreach($cateList as $cate)
-                        <li><a href="#{{ $cate->slug }}" data-target-id="">{!! $cate->name !!}</a></li>
-                        @endforeach
-                    </ul>
-                </div>
-                <div class="col-tab-content admin-content">
-                    <p class="blockquote-promotion">
-                        <span>Giảm giá 30%</span> cho tất cả các sản phẩm dưới đây
-                    </p>                    
-                    <div class="list-box-items" id="tab01">
-                        <div class="title-admin-content">SẢN PHẨM HOT</div>                        
-                        @foreach($hotProductList as $product)
-                        <div class="box-item">
-                            <div class="image">
-                                <img src="{{ $product->image_url ? Helper::showImage($product->image_url) : URL::asset('public/assets/images/no-img.png') }}" alt="{!! $product->name !!}">
-                            </div>
-                            <p class="title-box-item">
-                                <a class="title-box-item" href="{{ route('product', [$product->slug, $product->id ]) }}" title="{!! $product->name !!}">{!! $product->name !!}</a>
-                                </p>
-                            <div class="box-price">
-                                <a href="javascript:;" class="@if(Session::has('login')) btn-order @endif" @if(!Session::has('login')) data-dismiss="modal" data-toggle="modal" data-target="#login-form" @endif data-id="{{ $product->id }}"><i class="fa fa-plus-square" aria-hidden="true"></i></a>
-                                <div class="price">
-                                    @if($product->is_sale == 1 && $product->price_sale > 0)
-                                        {{ number_format($product->price_sale) }}đ
-                                    @else
-                                        {{ number_format($product->price) }}đ
-                                    @endif
-                                    <!--<small>Giảm 10%</small>-->
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
-                    @if($cateList)
-                    @foreach($cateList as $cate)
-                    @if(isset($productArr[$cate->id]) )
-                    <div class="list-box-items" id="{{ $cate->slug }}">
-                        
-                        <div class="title-admin-content">{!! $cate->name !!}</div>
-                        @foreach($productArr[$cate->id] as $product)
-                        <div class="box-item">
-                            <div class="image">
-                                <a href="{{ route('product', [$product->slug, $product->id ]) }}" title="{!! $product->name !!}">
-                                <img src="{{ $product->image_url ? Helper::showImage($product->image_url) : URL::asset('public/assets/images/no-img.png') }}" alt="{!! $product->name !!}"/></a>
-                            </div>
-                            <p class="title-box-item">
-                                <a class="title-box-item" href="{{ route('product', [$product->slug, $product->id ]) }}" title="{!! $product->name !!}">{!! $product->name !!}</a>
-                            </p>
-                            <div class="box-price">
-                                <a href="javascript:;" class="@if(Session::has('login')) btn-order @endif" @if(!Session::has('login')) data-dismiss="modal" data-toggle="modal" data-target="#login-form" @endif data-id="{{ $product->id }}"><i class="fa fa-plus-square" aria-hidden="true"></i></a>
-                                <div class="price">
-                                    @if($product->is_sale == 1 && $product->price_sale > 0)
-                                        {{ number_format($product->price_sale) }}đ
-                                    @else
-                                        {{ number_format($product->price) }}đ
-                                    @endif   
-                                    <!--<small>Giảm 10%</small>-->
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
-                    @endif
-                    @endforeach
-                    @endif
-                </div>
-            </div><!--End tab custom-->
-            <div class="cart-info cart-side">
-                <div class="title-cart-info">THÔNG TIN GIỎ HÀNG</div>
-                <div class="content-cart-info">
-                    @if(!empty(Session::get('products')))
-                    <div class="list-items-cart">                        
-                        <?php $total = 0; ?>
-                        @if( $arrProductInfo->count() > 0)
-                            <?php $i = 0; ?>
-                          @foreach($arrProductInfo as $product)
-                          <?php 
-                          $i++;
-                          $price = $product->is_sale ? $product->price_sale : $product->price; 
+<div class="main">
+            
+    <div id="hdPage">
+    <div class="text-center">
+    <ul class="breadcrumb">
+    <li><a href="{{ route('home') }}">Trang chủ</a></li>
+    <li>Dịch vụ Visa</li>
+    </ul>
+    <h1 style="font-size: 60px;">{!! $cateDetail->name !!}</h1>
+    </div>
+    <img src="{{ Helper::showImage($cateDetail->image_url) }}" alt="{!! $cateDetail->name !!}" title="{!! $cateDetail->name !!}">
+    </div><!-- /hdPage -->
 
-                          $total += $total_per_product = ($getlistProduct[$product->id]*$price);
-                          
-                          ?>
-                        <div class="item-cart">
-                            <div class="info-qty">
-                                <a class="qty-up" data-id="{{ $product->id }}" href="javascript:;"><i class="fa fa-plus-square" aria-hidden="true"></i></a>
-                                <input step="1" name="quantity" value="{{ $getlistProduct[$product->id] }}" class="qty-val">
-                                <a class="qty-down" data-id="{{ $product->id }}" href="javascript:;"><i class="fa fa-minus-square" aria-hidden="true"></i></a>
-                            </div>
-                            <p class="title-item">{!! $product->name !!}</p>
-                            <div class="price clearfix" style="font-size:14px">   
-                                <p class="pull-left" >{{ $getlistProduct[$product->id] }}x{{ number_format($price) }}</p>                             
-                                <p class="pull-right">{!! number_format($total_per_product) !!}đ</p>
-                            </div>
-                        </div>   
-                        
-                        @endforeach
-                        @endif                     
-                    </div>
-                    <ul class="">
-                        <li>
-                            <span class="pull-left cl_666">Cộng</span>
-                            <span class="pull-right cl_333">{!! number_format($total) !!}đ</span>
-                        </li>
-                        <!--<li>
-                            <span class="pull-left cl_ea0000">Giảm 30% tổng bill</span>
-                            <span class="pull-right cl_ea0000">66.000đ</span>
-                        </li>-->
-                        <li>
-                            <span class="pull-left cl_666">Phí phục vụ<br><small>(10% trên tổng đơn hàng)</small></span>
-                            <span class="pull-right cl_333">{{ number_format($total*10/100) }}đ</span>
-                        </li>
-                        <li class="bg_fffdee">
-                            <span class="pull-left cl_666">Tạm tính<br><small>(Giá chưa bao gồm COD)</small></span>
-                            <span class="pull-right cl_ea0000">{!! number_format($total + $total*10/100) !!}đ</span>
-                            <div class="clearfix"></div>
-                            <div class="action-cart ">
-                                <a href="{{ route('address-info') }}" class="btn btn-yellow">Đặt hàng</a>
-                                <a href="{{ route('empty-cart') }}" onclick="return confirm('Quý khách có chắc chắn bỏ hết hàng ra khỏi giỏ?'); " class="btn btn-defaultyellow">Xoá</a>
-                            </div>
-                        </li>
-                    </ul>
-                    @else
-                    <p class="cart-empty">Chưa có sản phẩm nào.</p>
-                    @endif
-                </div>
-            </div>
+    <div class="shadow" style="max-width:1300px; margin:0 auto">
+    <div class="service">
+    <div class="container">
+    <nav>
+      <div id="nav-service-wrap">
+        <ul class="nav nav-service">
+            @foreach($productList as $product)
+            <li @if($product->id == $detail->id ) class="active" @endif><a href="{{ route('cate', [$cateDetail->slug, $product->slug ]) }}" rel="bookmark">{!! $product->name !!}</a></li>
+            @endforeach
+        </ul>
+      </div>
+    </nav>
+    <div class="brief">
+      <div class="hdWiget text-center">
+        <h2>{!! $detail->description !!}</h2>
+        <hr>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 col-md-6">
+          {!! $detail->content !!}
         </div>
-    </section><!-- End product -->
-</article>
+        <div class="col-lg-6 col-md-6">
+          {!! $detail->content_2 !!}
+        </div>
+      </div>
+      <div class="text-center">
+        <button class="btn btn-info btn-lg" data-toggle="modal" data-target="#download">
+          Tải về hồ sơ chi tiết
+          <i class="fa fa-download"></i></button>
+      </div>
+    </div>
+    
+    </div>
+    </div><!-- /service -->
+   <div class="section" id="contact">
+          <div class="container">
+            <div class="text-center">
+              <h2>Bạn cần tư vấn Visa Hàn Quốc ?</h2>
+            </div>
+            <div class="contactForm">
+              <div class="inner">
+                <form action="#" method="post" class="form">
+                  <div class="row">
+                    <div class="col-lg-4 col-md-4">
+                      <span class="form-control-wrap fullname">
+                        <input type="text" name="fullname" value="" size="40" class="form-control" aria-required="true" aria-invalid="false" placeholder="Họ tên">
+                      </span>
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                      <span class="form-control-wrap phone">
+                        <input type="tel" name="phone" value="" size="40" class="form-control" aria-required="true" aria-invalid="false" placeholder="Số điện thoại">
+                      </span>
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                      <span class="form-control-wrap your-email">
+                        <input type="number" name="your-email" value="" size="40" class="form-control" aria-required="true" aria-invalid="false" placeholder="Năm sinh">
+                      </span>
+                    </div>
+                    <div class="col-lg-12 col-md-12">
+                      <div class="content">
+                         <p><strong>Nghề nghiệp</strong></p>
+                          <label class="radio-inline">
+                            <input type="radio" name="job" value="chodoanhnhiep"> Chủ doanh nghiệp
+                          </label>
+                          <label class="checkbox-inline">
+                            <input type="radio" name="job" value="lamtudo"> Làm tự do
+                          </label>
+                          <label class="checkbox-inline">
+                            <input type="radio" name="job" value="nhanvien"> Nhân viên
+                          </label>
+                      </div>
+                    </div>                   
+                    <div class="col-lg-12 col-md-12">
+                      <div class="content">
+                        <p><strong>Loại visa</strong></p>
+                        <label class="radio-inline">
+                          <input type="radio" name="job" value="dulichtutuc"> Du lịch
+                        </label>
+                        <label class="checkbox-inline">
+                          <input type="radio" name="job" value="thamthan"> Thăm thân
+                        </label>
+                        <label class="checkbox-inline">
+                          <input type="radio" name="job" value="xkld"> Xuất khẩu lao động
+                        </label>
+                        <label class="checkbox-inline">
+                          <input type="radio" name="job" value="congtac"> Công tác
+                        </label>
+                        <label class="checkbox-inline">
+                          <input type="radio" name="job" value="dinhcu"> Định cư
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12">
+                      <span class="form-control-wrap content">
+                        <textarea name="content" cols="40" rows="10" class="form-control" aria-invalid="false" placeholder="Nội dung"></textarea>
+                      </span>
+                    </div>
+                  </div>
+                  <input type="submit" value="Đăng ký tư vấn" class="btn btn-contact">
+                </form>
+              </div>
+            </div>
+            
+          </div>
+        </div><!-- /contact -->
+    <div class="section" id="news">
+    <div class="container">
+    <div class="hdWiget text-center">
+      <h2>Thông tin du lịch {!! str_replace('Visa đi ', '', $cateDetail->name ) !!}</h2>
+    </div>
+    <div class="row">
+      <div class="col-lg-3 col-md-3">
+        <a href="#">
+          <img width="270" height="190" src="imgs/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="lazyloaded" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời">
+          <noscript>&lt;img width="270" height="190" src="https://visana.cdn.vccloud.vn/wp-content/uploads/2017/02/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="attachment-thumbnail size-thumbnail wp-post-image" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời" /&gt;</noscript>
+        </a>
+        <a href="#">6 lý do khiến bạn nên du lịch Hàn Quốc 1 lần trong đời</a>
+        <p>Ngày đăng: 22/02/2017</p>
+      </div>
+      <div class="col-lg-3 col-md-3">
+        <a href="#">
+          <img width="270" height="190" src="imgs/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="lazyloaded" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời">
+          <noscript>&lt;img width="270" height="190" src="https://visana.cdn.vccloud.vn/wp-content/uploads/2017/02/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="attachment-thumbnail size-thumbnail wp-post-image" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời" /&gt;</noscript>
+        </a>
+        <a href="#">6 lý do khiến bạn nên du lịch Hàn Quốc 1 lần trong đời</a>
+        <p>Ngày đăng: 22/02/2017</p>
+      </div>
+      <div class="col-lg-3 col-md-3">
+        <a href="#">
+          <img width="270" height="190" src="imgs/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="lazyloaded" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời">
+          <noscript>&lt;img width="270" height="190" src="https://visana.cdn.vccloud.vn/wp-content/uploads/2017/02/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="attachment-thumbnail size-thumbnail wp-post-image" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời" /&gt;</noscript>
+        </a>
+        <a href="#">6 lý do khiến bạn nên du lịch Hàn Quốc 1 lần trong đời</a>
+        <p>Ngày đăng: 22/02/2017</p>
+      </div>
+      <div class="col-lg-3 col-md-3">
+        <a href="#">
+          <img width="270" height="190" src="imgs/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="lazyloaded" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời">
+          <noscript>&lt;img width="270" height="190" src="https://visana.cdn.vccloud.vn/wp-content/uploads/2017/02/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="attachment-thumbnail size-thumbnail wp-post-image" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời" /&gt;</noscript>
+        </a>
+        <a href="#">6 lý do khiến bạn nên du lịch Hàn Quốc 1 lần trong đời</a>
+        <p>Ngày đăng: 22/02/2017</p>
+      </div>
+      <div class="col-lg-3 col-md-3">
+        <a href="#">
+          <img width="270" height="190" src="imgs/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="lazyloaded" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời">
+          <noscript>&lt;img width="270" height="190" src="https://visana.cdn.vccloud.vn/wp-content/uploads/2017/02/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="attachment-thumbnail size-thumbnail wp-post-image" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời" /&gt;</noscript>
+        </a>
+        <a href="#">6 lý do khiến bạn nên du lịch Hàn Quốc 1 lần trong đời</a>
+        <p>Ngày đăng: 22/02/2017</p>
+      </div>
+      <div class="col-lg-3 col-md-3">
+        <a href="#">
+          <img width="270" height="190" src="imgs/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="lazyloaded" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời">
+          <noscript>&lt;img width="270" height="190" src="https://visana.cdn.vccloud.vn/wp-content/uploads/2017/02/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="attachment-thumbnail size-thumbnail wp-post-image" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời" /&gt;</noscript>
+        </a>
+        <a href="#">6 lý do khiến bạn nên du lịch Hàn Quốc 1 lần trong đời</a>
+        <p>Ngày đăng: 22/02/2017</p>
+      </div>
+      <div class="col-lg-3 col-md-3">
+        <a href="#">
+          <img width="270" height="190" src="imgs/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="lazyloaded" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời">
+          <noscript>&lt;img width="270" height="190" src="https://visana.cdn.vccloud.vn/wp-content/uploads/2017/02/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="attachment-thumbnail size-thumbnail wp-post-image" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời" /&gt;</noscript>
+        </a>
+        <a href="#">6 lý do khiến bạn nên du lịch Hàn Quốc 1 lần trong đời</a>
+        <p>Ngày đăng: 22/02/2017</p>
+      </div>
+      <div class="col-lg-3 col-md-3">
+        <a href="#">
+          <img width="270" height="190" src="imgs/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="lazyloaded" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời">
+          <noscript>&lt;img width="270" height="190" src="https://visana.cdn.vccloud.vn/wp-content/uploads/2017/02/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="attachment-thumbnail size-thumbnail wp-post-image" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời" /&gt;</noscript>
+        </a>
+        <a href="#">6 lý do khiến bạn nên du lịch Hàn Quốc 1 lần trong đời</a>
+        <p>Ngày đăng: 22/02/2017</p>
+      </div>
+    </div>
+     <p class="text-center"><a href="#" class="btn btn-default btn-viewall">Xem tất cả</a></p>
+    </div>
+    </div>
+    </div>
+
+</div><!-- /main -->
 <input type="hidden" id="rating-route" value="{{ route('rating') }}">
 <form id="rating-form">
 	{{ csrf_field() }}

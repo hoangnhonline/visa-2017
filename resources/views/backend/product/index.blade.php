@@ -72,9 +72,8 @@
               <th style="width: 1%">#</th>
               @if($arrSearch['is_hot'] == 1 && $arrSearch['parent_id'] > 0 )
               <th style="width: 1%;white-space:nowrap">Thứ tự</th>
-              @endif
-              <th width="210px">Hình ảnh</th>
-              <th style="text-align:center">Thông tin sản phẩm</th>                              
+              @endif              
+              <th>Thông tin sản phẩm</th>                              
               <th width="1%;white-space:nowrap">Thao tác</th>
             </tr>
             <tbody>
@@ -90,15 +89,12 @@
                 <td style="vertical-align:middle;text-align:center">
                   <img src="{{ URL::asset('backend/dist/img/move.png')}}" class="move img-thumbnail" alt="Cập nhật thứ tự"/>
                 </td>
-                @endif
-                <td>
-                  <img class="img-thumbnail lazy" width="206" data-original="{{ $item->image_url ? Helper::showImage($item->image_url) : URL::asset('backend/dist/img/no-image.jpg') }}" alt="{{ $item->name }}" title="{{ $item->name }}" />
-                </td>
+                @endif               
                 <td>                  
-                  <a style="color:#333;font-weight:bold" href="{{ route( 'product.edit', [ 'id' => $item->id ]) }}">{{ $item->name }}</a> &nbsp; @if( $item->is_hot == 1 )
+                  <a style="color:#333;font-weight:bold;font-size: 17px" href="{{ route( 'product.edit', [ 'id' => $item->id ]) }}">{{ $item->name }}</a> &nbsp; @if( $item->is_hot == 1 )
                   <label class="label label-danger">HOT</label>
                   @endif<br />
-                  <strong style="color:#337ab7;font-style:italic"> {{ $item->cate_parent_name }} / {{ $item->cate_name }}</strong>                
+                  <strong style="color:#337ab7;font-style:italic"> {{ $item->cate_name }}</strong>                
 
                   
                 </td>

@@ -74,28 +74,26 @@ class CateController extends Controller
     }
     public function cateChild(Request $request){
        
-        $slugCateChild = $request->slugCateChild;
+        $slug =  $request->slugCateChild;
+        $slugCate = $request->slugCateParent;
         
-        if(!$slugCateChild){
+        if(!$slug || !$slugCate){
             return redirect()->route('home');
-        }
-        $cateDetail = Cate::where('slug', $slugCateChild)->first();
-
-        if($cateDetail){
-            $cate_id = $cateDetail->id;
+        }        
+        $cateDetail = Cate::where('slug', $slugCate)->first();
+        $cate_id = $cateDetail->id;
+        $detail = Product::where('slug', $slug)->where('cate_id', $cate_id)->first();
+        if($cateDetail && $detail){
             
             $settingArr = Helper::setting();
-            
-            $productList = Product::getList( ['cate_id' => $cate_id, 'pagination' => $settingArr['product_per_page']] );
-            
-            if( $cateDetail->meta_id > 0){
-               $seo = MetaData::find( $cateDetail->meta_id )->toArray();
+
+            if( $detail->meta_id > 0){
+               $seo = MetaData::find( $detail->meta_id )->toArray();
             }else{
-                $seo['title'] = $seo['description'] = $seo['keywords'] = $cateDetail->name;
+                $seo['title'] = $seo['description'] = $seo['keywords'] = $detail->name;
             }  
-            $page = $request->page ? $request->page : 1;    
-            $hotProductList = Product::getList(['is_hot' => 1, 'cate_id' => $cate_id, 'limit' => 10]);    
-            return view('frontend.cate.child', compact('parent_id', 'cateDetail', 'productList', 'seo', 'page', 'hotProductList'));
+            $productList = Product::where('cate_id', $cate_id)->orderBy('is_hot', 'desc')->orderBy('display_order')->get();
+            return view('frontend.detail.index', compact('cate_id', 'cateDetail', 'detail', 'seo', 'page', 'productList'));
             
         }else{
             return redirect()->route('home');   

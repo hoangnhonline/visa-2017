@@ -35,18 +35,4 @@
   */
   $('select').select2();
 
-  /*
-   * 4. datetimepicker
-  */
-  $(function(){
-    // Determine the div width parent
-    var width = document.getElementById('nav-service-wrap').offsetWidth;
-    // Determine the div width parent
-    var mainDiv = $('.nav-service');
-    var childDivCount = mainDiv.find('li').length;
-    // Get width for li
-    var widthItem = width/childDivCount;
-    $('.nav-service li').css("width", widthItem);
-  });
-
 })(jQuery); // End of use strict

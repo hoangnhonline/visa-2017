@@ -55,7 +55,10 @@
               <p><strong> 0247.108.36.36</strong></p>
             </div>
           </div>
-          <div class="btn-group" style="margin-top:-10px;"><button class="btn btn-warning" data-toggle="modal" data-target="#consult"><i class="fa fa-envelope"></i> <strong>Email tư vấn</strong></button></div>
+          <div class="btn-group block-btn-header">
+            <p><button type="button" class="btn btn-primary login-by-facebook-popup"><i class="fa fa-facebook-square " aria-hidden="true"></i> Đăng nhập</button></p>
+            <p><button class="btn btn-warning" data-toggle="modal" data-target="#consult"><i class="fa fa-envelope"></i> <strong>Email tư vấn</strong></button></p>
+          </div>
         </div>
         <div class="clearfix"></div>
       </div><!-- /container -->
@@ -315,58 +318,64 @@
                       </span>
                     </div>
                     <div class="col-lg-12 col-md-12">
-                      <p><strong>Nghề nghiệp</strong></p>
-                      <label class="radio-inline">
-                        <input type="radio" name="job" value="chodoanhnhiep"> Chủ doanh nghiệp
-                      </label>
-                      <label class="checkbox-inline">
-                        <input type="radio" name="job" value="lamtudo"> Làm tự do
-                      </label>
-                      <label class="checkbox-inline">
-                        <input type="radio" name="job" value="nhanvien"> Nhân viên
-                      </label>
+                      <div class="content">
+                         <p><strong>Nghề nghiệp</strong></p>
+                          <label class="radio-inline">
+                            <input type="radio" name="job" value="chodoanhnhiep"> Chủ doanh nghiệp
+                          </label>
+                          <label class="checkbox-inline">
+                            <input type="radio" name="job" value="lamtudo"> Làm tự do
+                          </label>
+                          <label class="checkbox-inline">
+                            <input type="radio" name="job" value="nhanvien"> Nhân viên
+                          </label>
+                      </div>
                     </div>
                     <div class="col-lg-12 col-md-12">
-                      <p><strong>Xin Visa Đi Nước Nào?</strong></p>
-                      <label class="radio-inline">
-                        <input type="radio" name="quocgia" value="DaiLoan"> Đài Loan
-                      </label>
-                      <label class="checkbox-inline">
-                        <input type="radio" name="quocgia" value="NhatBan"> Nhật Bản
-                      </label>
-                      <label class="checkbox-inline">
-                        <input type="radio" name="quocgia" value="HanQuoc"> Hàn Quốc
-                      </label>
-                      <label class="checkbox-inline">
-                        <input type="radio" name="quocgia" value="Uc"> Úc
-                      </label>
-                      <label class="checkbox-inline">
-                        <input type="radio" name="quocgia" value="My"> Mỹ
-                      </label>
-                      <label class="checkbox-inline">
-                        <input type="radio" name="quocgia" value="Canada"> Canada
-                      </label>
-                      <label class="checkbox-inline">
-                        <input type="radio" name="quocgia" value="Other"> Khác
-                      </label>
+                      <div class="content">
+                        <p><strong>Xin Visa Đi Nước Nào?</strong></p>
+                        <label class="radio-inline">
+                          <input type="radio" name="quocgia" value="DaiLoan"> Đài Loan
+                        </label>
+                        <label class="checkbox-inline">
+                          <input type="radio" name="quocgia" value="NhatBan"> Nhật Bản
+                        </label>
+                        <label class="checkbox-inline">
+                          <input type="radio" name="quocgia" value="HanQuoc"> Hàn Quốc
+                        </label>
+                        <label class="checkbox-inline">
+                          <input type="radio" name="quocgia" value="Uc"> Úc
+                        </label>
+                        <label class="checkbox-inline">
+                          <input type="radio" name="quocgia" value="My"> Mỹ
+                        </label>
+                        <label class="checkbox-inline">
+                          <input type="radio" name="quocgia" value="Canada"> Canada
+                        </label>
+                        <label class="checkbox-inline">
+                          <input type="radio" name="quocgia" value="Other"> Khác
+                        </label>
+                      </div>
                     </div>
                     <div class="col-lg-12 col-md-12">
-                      <p><strong>Loại visa</strong></p>
-                      <label class="radio-inline">
-                        <input type="radio" name="job" value="dulichtutuc"> Du lịch tự túc
-                      </label>
-                      <label class="checkbox-inline">
-                        <input type="radio" name="job" value="thamthan"> Thăm thân
-                      </label>
-                      <label class="checkbox-inline">
-                        <input type="radio" name="job" value="xkld"> Xuất khẩu lao động
-                      </label>
-                      <label class="checkbox-inline">
-                        <input type="radio" name="job" value="congtac"> Công tác
-                      </label>
-                      <label class="checkbox-inline">
-                        <input type="radio" name="job" value="dinhcu"> Định cư
-                      </label>
+                      <div class="content">
+                        <p><strong>Loại visa</strong></p>
+                        <label class="radio-inline">
+                          <input type="radio" name="job" value="dulichtutuc"> Du lịch tự túc
+                        </label>
+                        <label class="checkbox-inline">
+                          <input type="radio" name="job" value="thamthan"> Thăm thân
+                        </label>
+                        <label class="checkbox-inline">
+                          <input type="radio" name="job" value="xkld"> Xuất khẩu lao động
+                        </label>
+                        <label class="checkbox-inline">
+                          <input type="radio" name="job" value="congtac"> Công tác
+                        </label>
+                        <label class="checkbox-inline">
+                          <input type="radio" name="job" value="dinhcu"> Định cư
+                        </label>
+                      </div>
                     </div>
                     <div class="col-lg-12 col-md-12">
                       <span class="form-control-wrap content">
@@ -546,6 +555,19 @@
     <script src="lib/sticky/jquery.sticky.js"></script>
     <!-- Js Common -->
 	<script src="js/common.js"></script>
+
+  <script>
+  $(function(){
+    // Determine the div width parent
+    var width = document.getElementById('nav-service-wrap').offsetWidth;
+    // Determine the div width parent
+    var mainDiv = $('.nav-service');
+    var childDivCount = mainDiv.find('li').length;
+    // Get width for li
+    var widthItem = width/childDivCount;
+    $('.nav-service li').css("width", widthItem);
+  });
+  </script>
 
 </body>
 </html>

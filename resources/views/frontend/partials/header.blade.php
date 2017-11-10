@@ -41,7 +41,12 @@
               @if($cateParent->cates->count())
               <ul>
               	@foreach($cateParent->cates as $cate)
-                <li><a href="#">{!! $cate->name !!}</a></li>                      
+                <?php
+                $product = DB::table('product')->where(['is_hot' => 1, 'cate_id' => $cate->id ])->first();                
+                ?>
+                @if(!empty($product))
+                <li><a href="{{ route('cate', [ $cate->slug, $product->slug] ) }}">{!! $cate->name !!}</a></li>                      
+                @endif
                 @endforeach
               </ul>
               @endif

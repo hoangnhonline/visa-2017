@@ -38,7 +38,18 @@
                           @endforeach
                       </ul>
                   </div>
-              @endif                
+              @endif
+                <div class="form-group">
+                  <label for="email">Danh mục VISA <span class="red-star">*</span></label>
+                  <select class="form-control" name="product_cate_id" id="product_cate_id">
+                    <option value="">-- chọn --</option>
+                    @if( $cateListDefault->count() > 0)
+                      @foreach( $cateListDefault as $value )
+                      <option value="{{ $value->id }}" {{ $value->id == old('product_cate_id') ? "selected" : "" }}>{{ $value->name }}</option>
+                      @endforeach
+                    @endif
+                  </select>
+                </div>              
                 <div class="form-group">
                   <label for="email">Danh mục <span class="red-star">*</span></label>
                   <select class="form-control" name="cate_id" id="cate_id">

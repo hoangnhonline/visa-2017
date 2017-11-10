@@ -570,6 +570,12 @@ img {
 .contactForm .inner div {
   margin-bottom: 6px;
 }
+.contactForm .inner div.content {
+  background: #fff;
+  padding: 0 15px;
+  border: 1px solid #ccc;
+  padding: 5px 15px;
+}
 div.wpcf7 .screen-reader-response {
   position: absolute;
   overflow: hidden;
@@ -1211,6 +1217,10 @@ div.wpcf7 .screen-reader-response {
   transition: all 0.3s;
 }
 
+.contact-page,
+.page-contact-info {
+  margin-bottom: 30px;
+}
 .contact-page .item {
   text-align: center;
   color: #9d9d9d;
@@ -1233,7 +1243,7 @@ div.wpcf7 .screen-reader-response {
 .contact-page .item .title {
   display: block;
   font-size: 14px;
-  text-transform: capitalize;
+  text-transform: uppercase;
   margin-bottom: 5px;
   color: #252525;
 }
@@ -1253,9 +1263,9 @@ div.wpcf7 .screen-reader-response {
 .about-title {
   font-size: 24px;
   font-weight: bold;
-  text-transform: capitalize;
+  text-transform: uppercase;
   margin-top: 0;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 .contact-form .form-control {
   border-radius: 0;
@@ -1265,4 +1275,55 @@ div.wpcf7 .screen-reader-response {
   -webkit-box-shadow: none;
   box-shadow: none;
   color: #707070;
+}
+
+.block-user a {
+  display: inline-flex;
+  vertical-align: top;
+  align-items: left;
+}
+.block-user .ava-img {
+  margin-right: 8px;
+  display: inline-flex;
+  vertical-align: middle;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: solid 1px #E4E4E4;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  overflow: hidden;
+  cursor: pointer;
+}
+.block-user .ava-info {
+  padding-right: 20px;
+  position: relative;
+  cursor: pointer;
+  text-align: left;
+}
+.block-user .ava-info::after {
+  position: absolute;
+  content: '';
+  background-image: url(../imgs/carret-down-small.svg);
+  background-repeat: no-repeat;
+  width: 8px;
+  height: 4px;
+  top: 8px;
+  right: 0;
+}
+.block-user .ava-info strong,
+.block-user .ava-info span {
+  display: block;
+  font-size: 12px;
+  line-height: 1;
+  color: #000;
+}
+.block-user .ava-info strong {
+  margin-bottom: 3px;
+}
+.block-user .dropdown-menu {
+  top: 30px; 
 }

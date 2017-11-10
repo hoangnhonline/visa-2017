@@ -114,7 +114,7 @@
         </a>
         <ul class="treeview-menu">
           @if(Auth::user()->role == 3)        
-          <li {{ \Request::route()->getName() == "settings.index" ? "class=active" : "" }}><a href="{{ route('settings.index') }}"><i class="fa fa-circle-o"></i> Thông tin VISA</a></li>
+          <li {{ \Request::route()->getName() == "settings.index" ? "class=active" : "" }}><a href="{{ route('settings.index') }}"><i class="fa fa-circle-o"></i> Thông tin XINVISA.COM.VN</a></li>
           <li {{ (in_array(\Request::route()->getName(), ['branch.edit', 'branch.index', 'branch.create']))? "class=active" : "" }}>
             <a href="{{ route('branch.index') }}">
               <i class="fa fa-circle-o"></i>

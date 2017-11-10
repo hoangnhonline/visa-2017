@@ -77,11 +77,13 @@ class ArticlesController extends Controller
         $dataArr = $request->all();
         
         $this->validate($request,[            
+            'product_cate_id' => 'required',
             'cate_id' => 'required',            
             'title' => 'required',            
             'slug' => 'required|unique:articles,slug',
         ],
-        [            
+        [   
+            'product_cate_id.required' => 'Bạn chưa chọn danh mục VISA',         
             'cate_id.required' => 'Bạn chưa chọn danh mục',            
             'title.required' => 'Bạn chưa nhập tiêu đề',
             'slug.required' => 'Bạn chưa nhập slug',
@@ -199,12 +201,14 @@ class ArticlesController extends Controller
     {
         $dataArr = $request->all();
         
-        $this->validate($request,[            
+        $this->validate($request,[     
+            'product_cate_id' => 'required',       
             'cate_id' => 'required',            
             'title' => 'required',            
             'slug' => 'required|unique:articles,slug,'.$dataArr['id'],
         ],
-        [            
+        [   
+            'cate_id.required' => 'Bạn chưa chọn danh mục VISA',          
             'cate_id.required' => 'Bạn chưa chọn danh mục',            
             'title.required' => 'Bạn chưa nhập tiêu đề',
             'slug.required' => 'Bạn chưa nhập slug',

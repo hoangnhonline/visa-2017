@@ -79,7 +79,7 @@
 .skin-black .wrapper,
 .skin-black .main-sidebar,
 .skin-black .left-side {
-  background-color: #222d32;
+  background-color: #FFF;
 }
 .skin-black .user-panel > .info,
 .skin-black .user-panel > .info > a {
@@ -87,7 +87,7 @@
 }
 .skin-black .sidebar-menu > li.header {
   color: #4b646f;
-  background: #1a2226;
+  background: #FFF;
 }
 .skin-black .sidebar-menu > li > a {
   border-left: 3px solid transparent;
@@ -95,7 +95,7 @@
 .skin-black .sidebar-menu > li:hover > a,
 .skin-black .sidebar-menu > li.active > a {
   color: #ffffff;
-  background: #1e282c;
+  background: #FFF;
   border-left-color: #ffffff;
 }
 .skin-black .sidebar-menu > li > .treeview-menu {

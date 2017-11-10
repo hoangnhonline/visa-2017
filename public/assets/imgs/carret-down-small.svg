@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="8px" height="4px" viewBox="0 0 8 4" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 39.1 (31720) - http://www.bohemiancoding.com/sketch -->
+    <title>Shape</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Header" transform="translate(-1244.000000, -24.000000)" fill="#C5C5C5">
+            <g id="Acc">
+                <g transform="translate(1072.000000, 13.000000)">
+                    <path d="M178.666472,11 L172.444469,11 C172.324024,11 172.219899,11.0439507 172.131925,11.1319251 C172.043951,11.2199967 172,11.3241212 172,11.4444931 C172,11.5648407 172.043951,11.6689651 172.131925,11.7569638 L175.242939,14.8679776 C175.331011,14.955952 175.435135,15 175.555483,15 C175.67583,15 175.780052,14.955952 175.867953,14.8679776 L178.978967,11.7569395 C179.066844,11.6689651 179.110965,11.5648407 179.110965,11.4444688 C179.110965,11.3241212 179.066844,11.2199967 178.978967,11.1319251 C178.891066,11.0439507 178.786868,11 178.666472,11 Z" id="Shape"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
