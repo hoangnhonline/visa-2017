@@ -7,13 +7,28 @@
 <!--[if (gt IE 9)|!(IE)]><!-->
 <html lang="vn">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
-	<title>Home</title>
-	<meta name="description" content="">
-	<meta name="keywords" content="">
-	<meta name="robots" content="index,follow" />
+	<title>@yield('title')</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="content-language" content="vi"/>
+    <meta name="description" content="@yield('site_description')"/>
+    <meta name="keywords" content="@yield('site_keywords')"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>    
+    <meta property="article:author" content="https://www.facebook.com/xinvisa.com.vn"/>   
+    <link rel="canonical" href="{{ url()->current() }}"/>        
+    <meta property="og:locale" content="vi_VN" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="@yield('title')" />
+    <meta property="og:description" content="@yield('site_description')" />
+    <meta property="og:url" content="{{ url()->current() }}" />
+    <meta property="og:site_name" content="xinvisa.com.vn" />
+    <?php $socialImage = isset($socialImage) ? $socialImage : $settingArr['banner']; ?>
+    <meta property="og:image" content="{{ Helper::showImage($socialImage) }}" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:description" content="@yield('site_description')" />
+    <meta name="twitter:title" content="@yield('title')" />     
+    <meta name="twitter:image" content="{{ Helper::showImage($socialImage) }}" />
+    <link rel="icon" href="{{ URL::asset('public/assets/favicon.ico') }}" type="image/x-icon">
 	<!-- <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 	<link rel="icon" href="images/favicon.ico" type="image/x-icon"> -->
 
@@ -112,7 +127,30 @@
     </footer><!-- /footer -->
 
 	</div><!-- /wrapper -->
+<div id="editContentModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
 
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Cập nhật nội dung</h4>
+      </div>
+      <form method="POST" action="{{ route('save-content') }}">
+      {{ csrf_field() }}
+      <input type="hidden" name="id" id="txtId" value="">
+      <div class="modal-body">
+        <textarea rows="5" class="form-control" name="content" id="txtContent"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="btnSaveContent">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+      </form>
+    </div>
+
+  </div>
+</div>
 	<!-- ===== JS ===== -->
 	<script src="{{ URL::asset('public/assets/js/jquery.min.js') }}"></script>
 	<!-- ===== JS Bootstrap ===== -->
