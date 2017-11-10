@@ -7,7 +7,7 @@
         <div id="searchBox">            
   <div id="searchBox">
     <div class="inner">
-      <h3 class="text-center">Visa trong tầm tay</h3>
+      <h3 class="text-center @if($isEdit) edit @endif" data-text="4">{!! $textList[4] !!}</h3>
       <div class="input-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <select type="text" data-placeholder="Bạn muốn xin visa đi đâu ?" name="search" id="searchSelect" class="form-control">
           <option value=""></option>
@@ -32,10 +32,10 @@
         <div id="slideBt" class="hidden-sm hidden-xs">
       <div class="container">
         <div class="row">
-          <div class="col-lg-3 col-md-3"> <span>10+</span> Năm kinh nghiệm trong xin Visa</div>
-          <div class="col-lg-3 col-md-3"> <span>100%</span> Khách hàng hài lòng</div>
-          <div class="col-lg-3 col-md-3"> <span>24/7</span> Tư vấn miễn phí</div>
-          <div class="col-lg-3 col-md-3"> <span>98.6%</span> Tỷ lệ đậu Visa cao</div>
+          <div class="col-lg-3 col-md-3"> <span @if($isEdit) class="edit" @endif" data-text="6">{!! $textList[6] !!}</span> Năm kinh nghiệm trong xin Visa</div>
+          <div class="col-lg-3 col-md-3"> <span @if($isEdit) class="edit" @endif" data-text="8">{!! $textList[8] !!}</span> Khách hàng hài lòng</div>
+          <div class="col-lg-3 col-md-3"> <span @if($isEdit) class="edit" @endif" data-text="10">{!! $textList[10] !!}</span> Tư vấn miễn phí</div>
+          <div class="col-lg-3 col-md-3"> <span @if($isEdit) class="edit" @endif" data-text="12">{!! $textList[12] !!}</span> Tỷ lệ đậu Visa cao</div>
         </div>
       </div>
     </div><!-- /slideBt -->
@@ -47,33 +47,33 @@
     <div class="section" id="whyme">
 <div class="container">
   <div class="hdWiget text-center">
-    <h2>Vì sao chọn VISANA?</h2>
+    <h2 @if($isEdit) class="edit" @endif" data-text="14">{!! $textList[14] !!}</h2>
   </div>
-  <p style="text-align: justify;">Sau 10 năm hoạt động trong lĩnh vực visa cho người nước ngoài đến Việt Nam cũng như cung cấp các dịch vụ tour du lịch, VISANA được thành lập để giải quyết nhu cầu xin visa đi nước ngoài cho người Việt Nam ngày càng gia tăng. VISANA có đội ngũ nhân viên hỗ trợ giàu <strong>kinh nghiệm xử lý các tình huống oái oăm và cấp bách</strong>, đội ngũ chuyên viên làm việc trực tiếp với Đại sứ quán lấy số hẹn, hẹn khách hàng và cùng khách hàng nộp hồ sơ xin visa cũng như lấy kết quả visa. Mọi thủ tục và quy trình dịch vụ của VISANA đều hướng đến <strong>sự thảnh thơi</strong> và <strong>tiết kiệm thời gian</strong> cho quý khách hàng.</p>
+  <p style="text-align: justify;" @if($isEdit) class="edit" @endif" data-text="15">{!! $textList[15] !!}</p>
   <div class="row">
     <div class="col-lg-3 col-md-3">
-      <h3>Thủ tục đơn giản</h3>
+      <h3 @if($isEdit) class="edit" @endif" data-text="16">{!! $textList[16] !!}</h3>
       <hr/>
       <div><span class="iconWhy"><img src="{{ URL::asset('public/assets/imgs/w1.png') }}" alt="thu tuc visana"></span></div>
-      <p>Điền thông tin trực tuyến chỉ trong 1 phút, giúp tiết kiệm tối đa thời gian của khách hàng.</p>
+      <p @if($isEdit) class="edit" @endif" data-text="17">{!! $textList[17] !!}</p>
     </div>
     <div class="col-lg-3 col-md-3">
-      <h3>Hỗ trợ 24/7</h3>
+      <h3 @if($isEdit) class="edit" @endif" data-text="18">{!! $textList[18] !!}</h3>
       <hr/>
       <div><span class="iconWhy"><img src="{{ URL::asset('public/assets/imgs/w2.png') }}" alt="ho tro visana"></span></div>
-      <p>Đội ngũ nhân viên am hiểu và giàu kinh nghiệm xử lý những tình huống đặc biệt. Tư vấn hoàn toàn miễn phí.</p>
+      <p @if($isEdit) class="edit" @endif" data-text="19">{!! $textList[19] !!}/p>
     </div>
     <div class="col-lg-3 col-md-3">
-      <h3>Xử lý nhanh chóng</h3>
+      <h3 @if($isEdit) class="edit" @endif" data-text="20">{!! $textList[20] !!}</h3>
       <hr/>
       <div><span class="iconWhy"><img src="{{ URL::asset('public/assets/imgs/w3.png') }}" alt="xu ly visana"></span></div>
-      <p>Phản hồi nhanh, xử lý yêu cầu trong ngày, có lựa chọn khẩn cấp trong trường hợp khách hàng cần.</p>
+      <p @if($isEdit) class="edit" @endif" data-text="21">{!! $textList[21] !!}</p>
     </div>
     <div class="col-lg-3 col-md-3">
-      <h3>Dịch vụ tận tâm</h3>
+      <h3 @if($isEdit) class="edit" @endif" data-text="22">{!! $textList[22] !!}</h3>
       <hr/>
       <div><span class="iconWhy"><img src="{{ URL::asset('public/assets/imgs/w4.png') }}" alt="dich vu visana"></span></div>
-      <p>Hỗ trợ lên lịch trình du lịch, booking khách sạn, booking giữ chỗ vé máy bay và bảo hiểm.</p>
+      <p @if($isEdit) class="edit" @endif" data-text="23">{!! $textList[23] !!}</p>
     </div>
   </div>
   <div class="video hide">
@@ -88,46 +88,46 @@
 <div class="section" id="stepVisa">
 <div class="container">
   <div class="hdWiget text-center">
-    <h2>Quy trình</h2>
-    <p>Chỉ mất từ 3h - 2 ngày làm việc</p>
+    <h2 @if($isEdit) class="edit" @endif" data-text="24">{!! $textList[24] !!}</h2>
+    <p @if($isEdit) class="edit" @endif" data-text="25">{!! $textList[25] !!}</p>
   </div>
   <div class="row">
     <div class="col-lg-4 col-md-4 item">
       <span class="circle">01</span> <img src="{{ URL::asset('public/assets/imgs/s1.jpg') }}" alt="visana step 1">
-      <h3>Điền thông tin (1 phút)</h3>
-      <p>Form điền thông tin đơn giản, nhanh chóng. Thông tin được bảo mật an toàn.</p>
+      <h3 @if($isEdit) class="edit" @endif" data-text="26">{!! $textList[26] !!}</h3>
+      <p @if($isEdit) class="edit" @endif" data-text="27">{!! $textList[27] !!}</p>
     </div>
     <div class="col-lg-4 col-md-4 item">
       <span class="circle">02</span> <img src="{{ URL::asset('public/assets/imgs/s2.jpg') }}" alt="visana step 2">
-      <h3>Chờ nhân viên liên hệ</h3>
-      <p>Nhân viên sẽ liên hệ lại với bạn trong vòng 4h. Bạn cũng có thể liên hệ qua số Hotline của chúng tôi.</p>
+      <h3 @if($isEdit) class="edit" @endif" data-text="28">{!! $textList[28] !!}</h3>
+      <p @if($isEdit) class="edit" @endif" data-text="29">{!! $textList[29] !!}</p>
     </div>
     <div class="col-lg-4 col-md-4 item">
       <span class="circle">03</span> <img src="{{ URL::asset('public/assets/imgs/s3.jpg') }}" alt="visana step 3">
-      <h3>Hoàn thiện hồ sơ (2-3 ngày)</h3>
-      <p>Một nhân viên giàu kinh nghiệm sẽ đồng hành hỗ trợ bạn suốt quá trình này để đảm bảo tỉ lệ cao nhất.</p>
+      <h3 @if($isEdit) class="edit" @endif" data-text="30">{!! $textList[30] !!}</h3>
+      <p @if($isEdit) class="edit" @endif" data-text="31">{!! $textList[31] !!}</p>
     </div>
   </div>
   <div class="row hidden-sm hidden-xs">
     <div class="col-lg-4 col-md-4">
       <ul>
-        <li>Hồ sơ tối giản</li>
-        <li>Bảo mật thông tin cao nhất</li>
-        <li>Giải pháp thông minh</li>
+        <li @if($isEdit) class="edit" @endif" data-text="32">{!! $textList[32] !!}</li>
+        <li @if($isEdit) class="edit" @endif" data-text="33">{!! $textList[33] !!}</li>
+        <li @if($isEdit) class="edit" @endif" data-text="34">{!! $textList[34] !!}</li>
       </ul>
     </div>
     <div class="col-lg-4 col-md-4">
       <ul>
-        <li>Hỗ trợ tối đa</li>
-        <li>Tư vấn miễn phí</li>
-        <li>Chi phí minh bạch</li>
+        <li @if($isEdit) class="edit" @endif" data-text="35">{!! $textList[35] !!}</li>
+        <li @if($isEdit) class="edit" @endif" data-text="36">{!! $textList[36] !!}</li>
+        <li @if($isEdit) class="edit" @endif" data-text="37">{!! $textList[37] !!}h</li>
       </ul>
     </div>
     <div class="col-lg-4 col-md-4">
       <ul>
-        <li>Chuẩn bị hồ sơ chuyên nghiệp</li>
-        <li>Xin Visa nhanh</li>
-        <li>Tỷ lệ đạt Visa đến 98.6%</li>
+        <li @if($isEdit) class="edit" @endif" data-text="38">{!! $textList[38] !!}p</li>
+        <li @if($isEdit) class="edit" @endif" data-text="39">{!! $textList[39] !!}</li>
+        <li @if($isEdit) class="edit" @endif" data-text="40">{!! $textList[40] !!}</li>
       </ul>
     </div>
   </div>
@@ -138,7 +138,7 @@
 <div class="contactForm">
   <div class="container">
     <div class="inner">
-      <h3 class="text-center">Bạn cần tư vấn?</h3>
+      <h3 class="text-center @if($isEdit) edit @endif" data-text="41">{!! $textList[41] !!}</h3>
       <button type="button" class="contact-toggle btn-block" data-toggle="collapse" data-target=".collapse-contact">
         <span class="fa fa-chevron-down"></span>
       </button>
@@ -179,7 +179,7 @@
 <div class="section" id="news">
 <div class="container">
   <div class="hdWiget text-center">
-    <h2>Blog du lịch</h2>
+    <h2 @if($isEdit) class="edit" @endif" data-text="42">{!! $textList[42] !!}</h2>
   </div>
   <div class="row">
     @if($articlesList)
@@ -189,7 +189,7 @@
         <img width="270" height="190" src="{{ Helper::showImage($articles->image_url) }}">          
       </a>
       <a href="{{ route('news-detail', [$articles->slug, $articles->id]) }}">{!! $articles->title !!}</a>
-      <p>Ngày đăng: 22/02/2017</p>
+      <p>Ngày đăng: {{ date('d/m/Y', strtotime($articles->created_at)) }}</p>
     </div>
     @endforeach
     @endif    

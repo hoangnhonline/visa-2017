@@ -46,7 +46,7 @@
     	<div class="container">
     		<div class="row">
     			<div class="col-lg-6 col-md-6 col-lg-push-3">
-            <h2>DỊCH VỤ VISA</h2>
+            <h2 @if($isEdit) class="edit" @endif" data-text="43">{!! $textList[43] !!}</h2>
             <ul>
               <li><a href="#">Visa đi Hàn Quốc</a></li>
               <li><a href="#">Visa đi Trung Quốc</a></li>
@@ -80,12 +80,12 @@
             </ul>
           </div>
           <div class="col-lg-3 col-md-3 col-lg-push-3">
-            <h2>Liên hệ</h2>
+            <h2 @if($isEdit) class="edit" @endif" data-text="44">{!! $textList[44] !!}</h2>
             <div>
-              <p>Tầng 23, Tòa nhà Vinaconex 9, Phạm Hùng, Mễ Trì, Nam Từ Liêm, Hà Nội.</p>
+              <p @if($isEdit) class="edit" @endif" data-text="45">{!! $textList[45] !!}</p>
               <p>Hotline:</p>
-              <p>0988.73.23.23</p>
-              <p>047.108.36.36</p>
+              <p @if($isEdit) class="edit" @endif" data-text="46">{!! $textList[46] !!}</p>
+              <p @if($isEdit) class="edit" @endif" data-text="47">{!! $textList[47] !!}</p>
             </div>
             <hr/>
             <div>
@@ -99,7 +99,7 @@
           <div class="col-lg-3 col-md-3 col-lg-pull-9">
             <div class="logoFt">
               <div><img src="https://visana.vn/wp-content/themes/twentyseventeen/assets/img/logo_w.png"></div>
-              <p>Dịch vụ làm visa đi nước ngoài chuyên nghiệp. Là một dịch vụ của Vietnam Discovery Travel, VISANA chuyên hỗ trợ công dân Việt Nam xin visa đi nước ngoài du lịch, công tác hoặc thăm thân đơn giản, nhanh chóng và dễ dàng.</p>
+              <p @if($isEdit) class="edit" @endif" data-text="48">{!! $textList[48] !!}</p>
             </div>
             <div>
               <div><img src="https://visana.vn/wp-content/themes/twentyseventeen/assets/img/logo-dis.png"></div>
@@ -108,7 +108,7 @@
           </div>
     		</div>
     	</div>
-    	<div id="ftCopy">Copyright 2016 VISANA  |  All Rights Reserved</div>
+    	<div id="ftCopy" @if($isEdit) class="edit" @endif" data-text="49">{!! $textList[49] !!}</div>
     </footer><!-- /footer -->
 
 	</div><!-- /wrapper -->
@@ -125,6 +125,35 @@
   <script src="{{ URL::asset('public/assets/lib/sticky/jquery.sticky.js') }}"></script>
   <!-- Js Common -->
 	<script src="{{ URL::asset('public/assets/js/common.js') }}"></script>
+  @yield('js')
+  <script type="text/javascript">
+        $(document).ready(function(){
+            $.ajaxSetup({
+                  headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                  }
+              });
 
+            $('.edit').click(function(){
+                $('#txtId').val($(this).data('text'));
+                $('#txtContent').val($(this).html());
+                $('#editContentModal').modal('show');
+            });
+            $('#btnSaveContent').click(function(){
+                $.ajax({
+                    url : '{{ route('save-content') }}',
+                    type : "POST",
+                    data : {
+                        id : $('#txtId').val(),
+                        content : $('#txtContent').val()
+                    },
+                    success:  function(){
+                        window.location.reload();
+                    }
+
+                });
+            });
+        });
+    </script>
 </body>
 </html>

@@ -4,19 +4,19 @@
     	<span class="fa fa-bars fa-2x"></span> 
    	</button>
    	<a class="navbar-brand" href="{{ route('home') }}">
-   		<img alt="visana_logo" src="{{ URL::asset('public/assets/imgs/logo.jpg') }}">
+   		<img alt="LOGO xinvisa.com.vn" src="{{ Helper::showImage($settingArr['logo']) }}">
    	</a>
-   	<a class="navbar-brand navbar-brand-min" href="#">
-  <img alt="visana_logo_mobile" src="#">
+   	<a class="navbar-brand navbar-brand-min" href="{{ route('home') }}">
+  <img alt="LOGO mobile visana" src="{{ Helper::showImage($settingArr['logo']) }}">
 </a>
     <div class="hdRight text-center hidden-sm hidden-xs">
   <div class="hotline btn-group">
     <div class="btn-group">
-      <p style="margin-right:5px;">Hotline:<span> </span></p>
+      <p style="margin-right:5px;" @if($isEdit) class="edit" @endif" data-text="1">{!! $textList[1] !!}:<span> </span></p>
     </div>
     <div class="btn-group">
-      <p style="margin-bottom:0px!important;"><strong> 0988.73.23.23</strong></p>
-      <p><strong> 0247.108.36.36</strong></p>
+      <p style="margin-bottom:0px!important;"><strong @if($isEdit) class="edit" @endif" data-text="2">{!! $textList[2] !!}</strong></p>
+      <p><strong @if($isEdit) class="edit" @endif" data-text="3">{!! $textList[3] !!}</strong></p>
     </div>
   </div>
   <div class="btn-group block-btn-header">
