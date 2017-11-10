@@ -3,101 +3,87 @@
 @include('frontend.partials.meta') 
 
 @section('content')
-<article class="mar-top20">
-  <div class="container">
-      <div class="breadcrumbs">
-          <ul>
-              <li><a href="{{ route('home') }}" title="Trở về trang chủ">Trang chủ</a></li> 
-              <li>{!! $cateDetail->name !!}</li>
-          </ul>
+      
+    <div id="hdPage">
+      <div class="text-center">
+        <ul class="breadcrumb">
+          <li><a href="{{ route('home') }}">Trang chủ</a></li>
+          <li>Blog du lịch</li>
+        </ul>
+        <h2>{!! str_replace('Visa đi', '', $cateDetail->name) !!}</h2>
       </div>
-  </div>
-  <section id="promotion" class="marg40 mar-top10">
-      <div class="container">
-          <div class="title-section">
-              {!! $cateDetail->name !!}
-          </div>
-      </div>
-      <div class="container">
-          <div class="list-promotions">
-              @foreach( $articlesArr as $articles )
-              <div class="item-promotion">
-                  <div class="image">
-                    <a href="{{ route('news-detail', ['slug' => $articles->slug, 'id' => $articles->id]) }}">
-                      <img title="{!! $articles->title !!}" src="{{ $articles->image_url ? Helper::showImage($articles->image_url) : URL::asset('public/assets/img/no-img.png') }}" alt="{!! $articles->title !!}">
-                    </a>
-                  </div>
-                  <div class="info-item-promotion">
-                      <div class="title-item-promotion">
-                        <a href="{{ route('news-detail', ['slug' => $articles->slug, 'id' => $articles->id]) }}">{!! $articles->title !!}</a>
-                      </div>
-                      <div class="date-item"><i class="fa fa-calendar" aria-hidden="true"></i> {{ date('d/m/Y', strtotime($articles->created_at)) }}</div>
-                      <p>{!! $articles->description!!}</p>
-                  </div>
-              </div>
-              @endforeach          
-          </div>
-          <div class="cart-info cart-side">
-              <div class="title-cart-info">THÔNG TIN GIỎ HÀNG</div>
-              <div class="content-cart-info">
-                  @if(!empty(Session::get('products')))
-                  <div class="list-items-cart">                        
-                      <?php $total = 0; ?>
-                      @if( $arrProductInfo->count() > 0)
-                          <?php $i = 0; ?>
-                        @foreach($arrProductInfo as $product)
-                        <?php 
-                        $i++;
-                        $price = $product->is_sale ? $product->price_sale : $product->price; 
+      <img src="{{ Helper::showImage($cateDetail->image_url) }}" alt="{!! $cateDetail->name !!}">
+    </div><!-- /hdPage -->
 
-                        $total += $total_per_product = ($getlistProduct[$product->id]*$price);
-                        
-                        ?>
-                      <div class="item-cart">
-                          <div class="info-qty">
-                              <a class="qty-up" data-id="{{ $product->id }}" href="javascript:;"><i class="fa fa-plus-square" aria-hidden="true"></i></a>
-                              <input step="1" name="quantity" value="{{ $getlistProduct[$product->id] }}" class="qty-val">
-                              <a class="qty-down" data-id="{{ $product->id }}" href="javascript:;"><i class="fa fa-minus-square" aria-hidden="true"></i></a>
-                          </div>
-                          <p class="title-item">{!! $product->name !!}</p>
-                          <div class="price clearfix" style="font-size:14px">   
-                              <p class="pull-left" >{{ $getlistProduct[$product->id] }}x{{ number_format($price) }}</p>                             
-                              <p class="pull-right">{!! number_format($total_per_product) !!}đ</p>
-                          </div>
-                      </div>   
-                      
-                      @endforeach
-                      @endif                     
-                  </div>
-                  <ul class="">
-                      <li>
-                          <span class="pull-left cl_666">Cộng</span>
-                          <span class="pull-right cl_333">{!! number_format($total) !!}đ</span>
-                      </li>
-                      <!--<li>
-                          <span class="pull-left cl_ea0000">Giảm 30% tổng bill</span>
-                          <span class="pull-right cl_ea0000">66.000đ</span>
-                      </li>-->
-                      <li>
-                          <span class="pull-left cl_666">Phí phục vụ<br><small>(10% trên tổng đơn hàng)</small></span>
-                          <span class="pull-right cl_333">{{ number_format($total*10/100) }}đ</span>
-                      </li>
-                      <li class="bg_fffdee">
-                          <span class="pull-left cl_666">Tạm tính<br><small>(Giá chưa bao gồm COD)</small></span>
-                          <span class="pull-right cl_ea0000">{!! number_format($total + $total*10/100) !!}đ</span>
-                          <div class="clearfix"></div>
-                          <div class="action-cart ">
-                              <a href="{{ route('address-info') }}" class="btn btn-yellow">Đặt hàng</a>
-                              <a href="{{ route('empty-cart') }}" onclick="return confirm('Quý khách có chắc chắn bỏ hết hàng ra khỏi giỏ?'); " class="btn btn-defaultyellow">Xoá</a>
-                          </div>
-                      </li>
-                  </ul>
-                  @else
-                  <p class="cart-empty">Chưa có sản phẩm nào.</p>
-                  @endif
+    <div class="section" id="blogs">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
+            <aside id="secondary" class="widget-area" role="complementary">
+
+              <section id="search-2" class="widget widget_search">
+                <form role="search" method="get" class="search-form" action="https://visana.vn/">
+                  <label for="search-form-59f946a465669">
+                    <span class="screen-reader-text">Search for:</span>
+                  </label>
+                  <input type="search" id="search-form-59f946a465669" class="search-field" placeholder="Search …" value="" name="s">
+                  <button type="submit" class="search-submit btn btn-default"></button>
+                </form>
+              </section><!-- /search-2 -->
+
+             <section id="categories-2" class="widget widget_categories">
+              <h2 class="widget-title">Danh mục</h2>
+              <ul>
+                @foreach($cateListDefault as $cate)
+                <li class="cat-item">
+                  <a href="{{ route('news-list', [str_replace('visa-di', 'du-lich', $cate->slug )]) }}" >{!! str_replace('Visa đi', '', $cate->name ) !!}</a>
+                </li>
+                @endforeach
+              </ul>
+            </section><!-- /categories-2 -->
+
+            <section id="recent-posts-2" class="widget widget_recent_entries">
+              <h2 class="widget-title">Bài viết gần đây</h2>
+              <ul>
+                @foreach($recentList as $articles)
+                <li>
+                  <a href="{{ route('news-detail', [$articles->slug, $articles->id]) }}">{!! $articles->title !!}</a>
+                  <span class="post-date">{!! date('d/m/Y', strtotime($articles->created_at)) !!}</span>
+                </li>
+                @endforeach
+              </ul>
+            </section><!-- /recent-posts-2 -->
+
+            </aside><!-- /secondary -->
+          </div><!-- /col-lg-3 col-md-3 -->
+          <div class="col-lg-9 col-md-9">
+            <div class="row">        
+        
+             @foreach($articlesList as $articles)
+              <div class="col-sm-6 col-xs-12">
+                <div class="blogList">
+                  <div class="thumb">
+                    <a href="{{ route('news-detail', [$articles->slug, $articles->id]) }}">
+                      <img style="width: 100%" src="{{ Helper::showImage($articles->image_url) }}" alt="{!! $articles->title !!}">
+                    </a>
+                  </div><!-- /thumb -->
+                  <h2><a href="{{ route('news-detail', [$articles->slug, $articles->id]) }}">{!! $articles->title !!}</a></h2>                  
+                </div><!-- /blogList -->
               </div>
-          </div>          
+              @endforeach
+            </div>
+            <!--<nav id="pagination">
+              <ul class="pagination">
+                <li class="active"><a href="https://visana.vn/blog/">1</a></li>
+                <li><a href="https://visana.vn/blog/page/2/">2</a></li>
+                <li><a href="https://visana.vn/blog/page/3/">3</a></li>
+                <li><a>...</a></li>
+                <li><a href="https://visana.vn/blog/page/38/">38</a></li>
+                <li><a href="https://visana.vn/blog/page/2/"><span class="hidden-xs">Sau&nbsp;&nbsp;</span><span class="fa fa-arrow-circle-right"></span></a></li>
+              </ul>
+            </nav><!-- /pagination -->
+          </div><!-- /col-lg-9 col-md-9 -->
+        </div>
       </div>
-  </section><!-- End product -->
-</article>
-@stop
+    </div><!-- /blogs -->
+    @stop

@@ -21,23 +21,23 @@ class NewsController extends Controller
     public function newsList(Request $request)
     {
         $slug = $request->slug;
+        $slug = str_replace("du-lich", 'visa-di', $slug);
         $cateArr = [];
-       
-        $cateDetail = ArticlesCate::where('slug' , $slug)->first();
+        $cateDetail = Cate::where('slug', $slug)->first();
+        
         if(!$cateDetail){
             return redirect()->route('home');
         }
         $title = trim($cateDetail->meta_title) ? $cateDetail->meta_title : $cateDetail->name;
         $settingArr = Helper::setting();
-        $articlesArr = Articles::where('cate_id', $cateDetail->id)->where('status', 1)->orderBy('is_hot', 'desc')->orderBy('id', 'desc')->paginate($settingArr['articles_per_page']);
-
-        $hotArr = Articles::where( ['cate_id' => $cateDetail->id, 'is_hot' => 1] )->orderBy('id', 'desc')->limit(5)->get();
+        $articlesList = Articles::where('product_cate_id', $cateDetail->id)->where('cate_id', 1)->where('status', 1)->orderBy('is_hot', 'desc')->orderBy('id', 'desc')->paginate($settingArr['articles_per_page']);
+        
         $seo['title'] = $cateDetail->meta_title ? $cateDetail->meta_title : $cateDetail->title;
         $seo['description'] = $cateDetail->meta_description ? $cateDetail->meta_description : $cateDetail->title;
         $seo['keywords'] = $cateDetail->meta_keywords ? $cateDetail->meta_keywords : $cateDetail->title;
         $socialImage = $cateDetail->image_url; 
-             
-        return view('frontend.news.index', compact('title', 'hotArr', 'articlesArr', 'cateDetail', 'seo', 'socialImage'));
+        $recentList = Articles::where('cate_id', 1)->orderBy('id', 'DESC')->limit(8)->get();    
+        return view('frontend.news.index', compact('title', 'articlesList', 'cateDetail', 'seo', 'socialImage', 'recentList'));
     }      
 
      public function newsDetail(Request $request)
@@ -64,8 +64,9 @@ class NewsController extends Controller
             $tagSelected = Articles::getListTag($id);
             $cateDetail = ArticlesCate::find($detail->cate_id);
             Helper::counter($id, 2);
-            
-            return view('frontend.news.news-detail', compact('title',  'otherList', 'detail', 'otherArr', 'seo', 'socialImage', 'tagSelected', 'cateDetail'));
+            $cateDetailProduct = Cate::find($detail->product_cate_id);
+            $recentList = Articles::where('cate_id', 1)->orderBy('id', 'DESC')->limit(8)->get();   
+            return view('frontend.news.news-detail', compact('title',  'otherList', 'detail', 'otherArr', 'seo', 'socialImage', 'tagSelected', 'cateDetail', 'cateDetailProduct', 'recentList'));
         
         }else{
             return view('erros.404');

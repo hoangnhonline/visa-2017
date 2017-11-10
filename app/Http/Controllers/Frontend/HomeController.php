@@ -62,9 +62,10 @@ class HomeController extends Controller
         $seo['keywords'] = $settingArr['site_keywords'];
         $socialImage = $settingArr['banner'];
 
+        $articlesList = Articles::where('cate_id', 1)->orderBy('id', 'DESC')->limit(8)->get();
         
         
-        return view('frontend.home.index', compact('socialImage', 'seo'));
+        return view('frontend.home.index', compact('socialImage', 'seo', 'articlesList'));
 
     }
     public function getChild(Request $request){

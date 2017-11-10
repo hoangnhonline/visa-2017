@@ -182,62 +182,17 @@
     <h2>Blog du lịch</h2>
   </div>
   <div class="row">
+    @if($articlesList)
+    @foreach($articlesList as $articles)
     <div class="col-lg-3 col-md-3">
-      <a href="#">
-        <img width="270" height="190" src="{{ URL::asset('public/assets/imgs/Cac-nuoc-de-xin-visa-feature-image-270x190.png') }}" class="attachment-thumbnail size-thumbnail wp-post-image lazyload" alt="Các nước dễ xin visa" />
+      <a href="{{ route('news-detail', [$articles->slug, $articles->id]) }}">
+        <img width="270" height="190" src="{{ Helper::showImage($articles->image_url) }}">          
       </a>
-      <a href="#" rel="bookmark">Xếp hạng các nước dễ xin visa nhất cho người Việt Nam</a>
-      <p>Ngày đăng: 20/02/2017</p>
+      <a href="{{ route('news-detail', [$articles->slug, $articles->id]) }}">{!! $articles->title !!}</a>
+      <p>Ngày đăng: 22/02/2017</p>
     </div>
-    <div class="col-lg-3 col-md-3">
-      <a href="#">
-        <img width="270" height="190" src="{{ URL::asset('public/assets/imgs/maxresdefault-850x400-270x190.jpg') }}" class="attachment-thumbnail size-thumbnail wp-post-image lazyload" alt="maxresdefault-850x400" />
-      </a>
-      <a href="#" rel="bookmark">Thủ tục xin visa du lịch Pháp</a>
-      <p>Ngày đăng: 09/03/2017</p>
-    </div>
-    <div class="col-lg-3 col-md-3">
-      <a href="$">
-        <img width="270" height="190" src="{{ URL::asset('public/assets/imgs/stock-photo-consulate-general-of-the-united-states-of-america-1304768-nowatermark-270x190.jpg') }}" class="attachment-thumbnail size-thumbnail wp-post-image lazyload" alt="stock-photo-consulate-general-of-the-united-states-of-america-1304768-nowatermark" />
-      </a>
-      <a href="#" rel="bookmark">Danh sách các Lãnh sự quán tại Hồ Chí Minh</a>
-      <p>Ngày đăng: 10/03/2017</p>
-    </div>
-    <div class="col-lg-3 col-md-3">
-      <a href="#">
-        <img width="270" height="190" src="{{ URL::asset('public/assets/imgs/taiwan-850-thumb-270x190.jpg') }}" class="attachment-thumbnail size-thumbnail wp-post-image lazyload" alt="Taiwan-thumb" />
-      </a>
-      <a href="#" rel="bookmark">Tất tần tật kinh nghiệm xin visa Đài Loan để đi du lịch</a>
-      <p>Ngày đăng: 10/03/2017</p>
-    </div>
-    <div class="col-lg-3 col-md-3">
-      <a href="#">
-        <img width="270" height="190" src="{{ URL::asset('public/assets/imgs/hong-kong-island-thumb-270x190.jpg') }}" class="attachment-thumbnail size-thumbnail wp-post-image lazyload" alt="kinh-nghiệm-du-lịch-hongkong-hong-kong-island-thumb" />
-      </a>
-      <a href="#" rel="bookmark">Cẩm nang kinh nghiệm du lịch Hongkong tự túc</a>
-      <p>Ngày đăng: 03/04/2017</p>
-    </div>
-    <div class="col-lg-3 col-md-3">
-      <a href="#">
-        <img width="270" height="190" src="{{ URL::asset('public/assets/imgs/xin-visa-schengen-anh-850-270x190.jpg') }}" class="attachment-thumbnail size-thumbnail wp-post-image lazyload" alt="xin-visa-schengen-anh-850" />
-      </a>
-      <a href="#" rel="bookmark">Giải đáp các câu hỏi thường gặp khi xin visa Schengen</a>
-      <p>Ngày đăng: 21/08/2017</p>
-    </div>
-    <div class="col-lg-3 col-md-3">
-      <a href="#">
-        <img width="270" height="190" src="{{ URL::asset('public/assets/imgs/visa-My-2017-thumb850-270x190.jpg') }}" class="attachment-thumbnail size-thumbnail wp-post-image lazyload" alt="" />
-      </a>
-      <a href="#" rel="bookmark">Kinh nghiệm xin visa Mỹ 2017 &#8211; Việc xin visa có gì thay đổi?</a>
-      <p>Ngày đăng: 09/09/2017</p>
-    </div>
-    <div class="col-lg-3 col-md-3">
-      <a href="#">
-        <img width="270" height="190" src="{{ URL::asset('public/assets/imgs/visa-Dan-Mach-tham-than-thumb-850-400-270x190.jpg') }}" class="attachment-thumbnail size-thumbnail wp-post-image lazyload" alt="visa-Dan-Mach-tham-than-thumb-850-400" />
-      </a>
-      <a href="#" rel="bookmark">Những điều không thể không biết khi xin visa Đan Mạch để thăm người thân</a>
-      <p>Ngày đăng: 09/09/2017</p>
-    </div>
+    @endforeach
+    @endif    
   </div>
   <p class="text-center"><a href="#" class="btn btn-default btn-viewall">Xem tất cả</a></p>
 </div>

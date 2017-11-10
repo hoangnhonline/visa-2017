@@ -251,8 +251,7 @@ $(document).on('click', '#btnSaveTagAjax', function(){
     });
  }); 
 $(document).ready(function(){
-      $(".select2").select2();
-      var editor = CKEDITOR.replace( 'content');
+      $(".select2").select2();      
       $('#btnUploadImage').click(function(){        
         //$('#file-image').click();
         openKCFinder_singleFile($('#image_url'));

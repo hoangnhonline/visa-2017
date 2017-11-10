@@ -1,10 +1,8 @@
 @extends('frontend.layout')
 @include('frontend.partials.meta')
 @section('content')
-<div class="main">
-            
-    <div id="hdPage">
-    <div class="text-center">
+<div id="hdPage">
+  <div class="text-center">
     <ul class="breadcrumb">
     <li><a href="{{ route('home') }}">Trang chủ</a></li>
     <li>Dịch vụ Visa</li>
@@ -125,77 +123,24 @@
       <h2>Thông tin du lịch {!! str_replace('Visa đi ', '', $cateDetail->name ) !!}</h2>
     </div>
     <div class="row">
+      @if($articlesList)
+      @foreach($articlesList as $articles)
       <div class="col-lg-3 col-md-3">
-        <a href="#">
-          <img width="270" height="190" src="imgs/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="lazyloaded" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời">
-          <noscript>&lt;img width="270" height="190" src="https://visana.cdn.vccloud.vn/wp-content/uploads/2017/02/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="attachment-thumbnail size-thumbnail wp-post-image" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời" /&gt;</noscript>
+        <a href="{{ route('news-detail', [$articles->slug, $articles->id]) }}">
+          <img width="270" height="190" src="{{ Helper::showImage($articles->image_url) }}">          
         </a>
-        <a href="#">6 lý do khiến bạn nên du lịch Hàn Quốc 1 lần trong đời</a>
-        <p>Ngày đăng: 22/02/2017</p>
+        <a href="{{ route('news-detail', [$articles->slug, $articles->id]) }}">{!! $articles->title !!}</a>
+        <p>Ngày đăng: {!! date('d/m/Y', strtotime($articles->created_at)) !!}</p>
       </div>
-      <div class="col-lg-3 col-md-3">
-        <a href="#">
-          <img width="270" height="190" src="imgs/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="lazyloaded" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời">
-          <noscript>&lt;img width="270" height="190" src="https://visana.cdn.vccloud.vn/wp-content/uploads/2017/02/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="attachment-thumbnail size-thumbnail wp-post-image" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời" /&gt;</noscript>
-        </a>
-        <a href="#">6 lý do khiến bạn nên du lịch Hàn Quốc 1 lần trong đời</a>
-        <p>Ngày đăng: 22/02/2017</p>
-      </div>
-      <div class="col-lg-3 col-md-3">
-        <a href="#">
-          <img width="270" height="190" src="imgs/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="lazyloaded" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời">
-          <noscript>&lt;img width="270" height="190" src="https://visana.cdn.vccloud.vn/wp-content/uploads/2017/02/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="attachment-thumbnail size-thumbnail wp-post-image" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời" /&gt;</noscript>
-        </a>
-        <a href="#">6 lý do khiến bạn nên du lịch Hàn Quốc 1 lần trong đời</a>
-        <p>Ngày đăng: 22/02/2017</p>
-      </div>
-      <div class="col-lg-3 col-md-3">
-        <a href="#">
-          <img width="270" height="190" src="imgs/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="lazyloaded" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời">
-          <noscript>&lt;img width="270" height="190" src="https://visana.cdn.vccloud.vn/wp-content/uploads/2017/02/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="attachment-thumbnail size-thumbnail wp-post-image" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời" /&gt;</noscript>
-        </a>
-        <a href="#">6 lý do khiến bạn nên du lịch Hàn Quốc 1 lần trong đời</a>
-        <p>Ngày đăng: 22/02/2017</p>
-      </div>
-      <div class="col-lg-3 col-md-3">
-        <a href="#">
-          <img width="270" height="190" src="imgs/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="lazyloaded" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời">
-          <noscript>&lt;img width="270" height="190" src="https://visana.cdn.vccloud.vn/wp-content/uploads/2017/02/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="attachment-thumbnail size-thumbnail wp-post-image" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời" /&gt;</noscript>
-        </a>
-        <a href="#">6 lý do khiến bạn nên du lịch Hàn Quốc 1 lần trong đời</a>
-        <p>Ngày đăng: 22/02/2017</p>
-      </div>
-      <div class="col-lg-3 col-md-3">
-        <a href="#">
-          <img width="270" height="190" src="imgs/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="lazyloaded" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời">
-          <noscript>&lt;img width="270" height="190" src="https://visana.cdn.vccloud.vn/wp-content/uploads/2017/02/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="attachment-thumbnail size-thumbnail wp-post-image" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời" /&gt;</noscript>
-        </a>
-        <a href="#">6 lý do khiến bạn nên du lịch Hàn Quốc 1 lần trong đời</a>
-        <p>Ngày đăng: 22/02/2017</p>
-      </div>
-      <div class="col-lg-3 col-md-3">
-        <a href="#">
-          <img width="270" height="190" src="imgs/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="lazyloaded" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời">
-          <noscript>&lt;img width="270" height="190" src="https://visana.cdn.vccloud.vn/wp-content/uploads/2017/02/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="attachment-thumbnail size-thumbnail wp-post-image" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời" /&gt;</noscript>
-        </a>
-        <a href="#">6 lý do khiến bạn nên du lịch Hàn Quốc 1 lần trong đời</a>
-        <p>Ngày đăng: 22/02/2017</p>
-      </div>
-      <div class="col-lg-3 col-md-3">
-        <a href="#">
-          <img width="270" height="190" src="imgs/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="lazyloaded" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời">
-          <noscript>&lt;img width="270" height="190" src="https://visana.cdn.vccloud.vn/wp-content/uploads/2017/02/Du-lich-Han-Quoc-1-lan-trong-doi-feature-image-270x190.png" class="attachment-thumbnail size-thumbnail wp-post-image" alt="Du-lịch-Hàn-Quốc-1-lần-trong-đời" /&gt;</noscript>
-        </a>
-        <a href="#">6 lý do khiến bạn nên du lịch Hàn Quốc 1 lần trong đời</a>
-        <p>Ngày đăng: 22/02/2017</p>
-      </div>
+      @endforeach
+      @endif
     </div>
      <p class="text-center"><a href="#" class="btn btn-default btn-viewall">Xem tất cả</a></p>
     </div>
-    </div>
-    </div>
+  </div>
+</div>
 
-</div><!-- /main -->
+
 <input type="hidden" id="rating-route" value="{{ route('rating') }}">
 <form id="rating-form">
 	{{ csrf_field() }}

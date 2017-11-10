@@ -117,11 +117,7 @@ class ArticlesController extends Controller
             }
         }
 
-        // store Rating
-        for($i = 1; $i <= 5 ; $i++ ){
-            $amount = $i == 5 ? 1 : 0;
-            Rating::create(['score' => $i, 'object_id' => $object_id, 'object_type' => 2, 'amount' => $amount]);
-        }
+       
 
         Session::flash('message', 'Tạo mới thành công');
 

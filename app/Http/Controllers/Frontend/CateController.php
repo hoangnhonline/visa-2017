@@ -93,7 +93,8 @@ class CateController extends Controller
                 $seo['title'] = $seo['description'] = $seo['keywords'] = $detail->name;
             }  
             $productList = Product::where('cate_id', $cate_id)->orderBy('is_hot', 'desc')->orderBy('display_order')->get();
-            return view('frontend.detail.index', compact('cate_id', 'cateDetail', 'detail', 'seo', 'page', 'productList'));
+            $articlesList = Articles::where('product_cate_id', $cate_id)->orderBy('display_order')->get();
+            return view('frontend.detail.index', compact('cate_id', 'cateDetail', 'detail', 'seo', 'page', 'productList', 'articlesList'));
             
         }else{
             return redirect()->route('home');   
