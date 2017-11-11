@@ -1,70 +1,64 @@
-<footer class="footer">
-    <div class="footer-top">
+<footer id="footer">
         <div class="container">
             <div class="row">
-                <div class="col-sm-4 col-xs-12 ft-link ft-information ft-title">
-                    <div class="block-title @if($isEdit) edit @endif" data-text="4">{!! $textList[4] !!}</div>
-                    <div class="block-cotent">
-                        <ul class="list">
-                            @if($footerLink1)
-                            @foreach($footerLink1 as $link)
-                            <li><a href="{{ $link->link_url }}" title="{!! $link->link_text !!}">{!! $link->link_text !!}</a></li>
-                            @endforeach
-                            @endif                          
-                        </ul>
-                    </div>
-                </div><!-- /ft-information-->
-                <div class="col-sm-4 col-xs-12 ft-link ft-links ft-title">
-                    <div class="item">
-                        <div class="block-title @if($isEdit) edit @endif" data-text="5">{!! $textList[5] !!}</div>
-                        <div class="block-cotent">
-                            <ul class="list">
-                                @if($footerLink2)
-                                @foreach($footerLink2 as $link)
-                                <li><a href="{{ $link->link_url }}" title="{!! $link->link_text !!}">{!! $link->link_text !!}</a></li>
-                                @endforeach
-                                @endif
-                            </ul>
-                        </div>
-                    </div><!-- /item-->
-                    <div class="item">
-                        <div class="block-title @if($isEdit) edit @endif" data-text="7">{!! $textList[7] !!}</div>
-                        <div class="block-cotent">
-                            <div class="resgis-form">
-                                
-                                <input type="input" name="txtNewsletter" id="txtNewsletter" value="" placeholder="Nhập email của bạn...">
-                                <button type="button" name="btnNewsletter" id="btnNewsletter" class="btn-regis">Đăng ký</button>
-                                
-                            </div>
-                        </div>
-                    </div><!-- /item-->
-                </div><!-- /ft-links-->
-                <div class="col-sm-4 col-xs-12 ft-contact ft-title">
-                    <div class="block-title @if($isEdit) edit @endif" data-text="6">{!! $textList[6] !!}</div>
-                    <div class="block-content">
-                        <address>
-                           {!! $settingArr['chi_nhanh_phia_nam'] !!}
-                        </address>
-                        <address>
-                            {!! $settingArr['chi_nhanh_phia_bac'] !!}
-                        </address>
-                    </div>
-                </div><!-- /ft-contact-->
+                <div class="col-lg-6 col-md-6 col-lg-push-3">
+            <h2 @if($isEdit) class="edit" @endif" data-text="43">{!! $textList[43] !!}</h2>
+            <ul>
+              <li><a href="#">Visa đi Hàn Quốc</a></li>
+              <li><a href="#">Visa đi Trung Quốc</a></li>
+              <li><a href="#">Visa đi Nhật Bản</a></li>
+              <li><a href="#">Visa đi Đài Loan</a></li>
+              <li><a href="#">Visa đi Ấn Độ</a></li>
+              <li><a href="#">Visa đi Úc</a></li>
+              <li><a href="#">Visa đi Pháp</a></li>
+              <li><a href="#">Visa đi Hong Kong</a></li>
+              <li><a href="#">Visa đi Israel</a></li>
+              <li><a href="#">Visa đi Nga</a></li>
+              <li><a href="#">Visa đi Maroc</a></li>
+              <li><a href="#">Visa đi Nam Phi</a></li>
+              <li><a href="#">Visa đi Anh</a></li>
+              <li><a href="#">Visa đi Canada</a></li>
+              <div  style="display:none;">
+                <li><a href="#">Visa đi Mỹ</a></li>
+                <li><a href="#">Visa đi Anh</a></li>
+                <li><a href="#">Visa đi Nga</a></li>
+                <li><a href="#">Visa đi Cuba</a></li>
+                <li><a href="#">Visa đi Ai Cập</a></li>
+                <li><a href="#">Visa đi Thái Lan</a></li>
+                <li><a href="#">Visa đi Malaysia</a></li>
+                <li><a href="#">Visa đi Singapore</a></li>
+                <li><a href="#">Visa đi Bangladesh</a></li>
+                <li><a href="#">Visa đi Dubai</a></li>
+                <li><a href="#">Visa đi Đức</a></li>
+                <li><a href="#">Visa đi Mexico</a></li>
+                <li><a href="#">Visa đi Thổ Nhĩ Kỳ</a></li>
+              </div>
+            </ul>
+          </div>
+          <div class="col-lg-3 col-md-3 col-lg-push-3">
+            <h2 @if($isEdit) class="edit" @endif" data-text="44">{!! $textList[44] !!}</h2>
+            <div>
+              <p @if($isEdit) class="edit" @endif" data-text="45">{!! $textList[45] !!}</p>
+              <p>Hotline:</p>
+              <p @if($isEdit) class="edit" @endif" data-text="46">{!! $textList[46] !!}</p>
+              <p @if($isEdit) class="edit" @endif" data-text="47">{!! $textList[47] !!}</p>
+            </div>
+            <hr/>
+            <div>
+              <p><a href="#">cskh@visana.vn</a></p>
+              <p><a href="#">www.facebook.com/visana.vn</a></p>
+              <p><a href="#">Blogs</a></p>
+              <p><a href="#">Điều khoản sử dụng</a></p>
+            </div>
+            <hr/>
+          </div>
+          <div class="col-lg-3 col-md-3 col-lg-pull-9">
+            <div class="logoFt">
+              <div><img src="https://visana.vn/wp-content/themes/twentyseventeen/assets/img/logo_w.png"></div>
+              <p @if($isEdit) class="edit" @endif" data-text="48">{!! $textList[48] !!}</p>
+            </div>            
+          </div>
             </div>
         </div>
-    </div><!-- /footer-top-->
-    <div class="footer-bot">
-        <div class="container">            
-            <div class="fbchatbox hidden-xs">
-                <div class="fb-page fb-page1" data-href="{{ $settingArr['facebook_fanpage'] }}" data-small-header="true" data-adapt-container-width="false" data-height="300" data-width="300" data-hide-cover="true" data-show-facepile="true" data-show-posts="false" data-tabs="messages"><div class="fb-xfbml-parse-ignore"></div></div>
-                <span id="closefbchat" style="white-space: nowrap; position: absolute; right: 2px; bottom: 0px; padding: 5px 25px; background: #f46602; color: rgb(255, 255, 255); cursor: pointer; border-radius: 4px 4px 0 0;">Tắt Chat</span>
-            </div>       
-        </div>
-    </div><!-- /footer-bot-->
-    <a id="return-to-top" class="td-scroll-up" href="javascript:void(0)">
-        <i class="fa fa-angle-up" aria-hidden="true"></i>
-    </a><!-- return to top -->
-    <div class="block-hotline-mb" href="javascript:void(0)">
-            <p><a href="tel:{{ $settingArr['hotline'] }}">{{ $settingArr['hotline'] }}</p>
-        </div><!-- return to top -->
-    </footer><!-- footer -->
+        <div id="ftCopy" @if($isEdit) class="edit" @endif" data-text="49">{!! $textList[49] !!}</div>
+    </footer><!-- /footer -->
