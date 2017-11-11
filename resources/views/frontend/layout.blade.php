@@ -16,6 +16,7 @@
     <meta property="article:author" content="https://www.facebook.com/xinvisa.com.vn"/>   
     <link rel="canonical" href="{{ url()->current() }}"/>        
     <meta property="og:locale" content="vi_VN" />
+    <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
     <meta property="og:type" content="website" />
     <meta property="og:title" content="@yield('title')" />
     <meta property="og:description" content="@yield('site_description')" />
