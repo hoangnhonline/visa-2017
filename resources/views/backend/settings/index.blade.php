@@ -81,7 +81,7 @@
                                   
                 <div class="clearfix"></div>
                 <div class="form-group col-md-12" style="margin-top:10px;margin-bottom:10px">  
-                  <label class="col-md-4 row">Logo ( 250 x 70 px )</label>    
+                  <label class="col-md-4 row">Logo ( 160 x 68 px )</label>    
                   <div class="col-md-8 div-upload">
                     <img class="show_thumbnail logo" src="{{ $settingArr['logo'] ? Helper::showImage($settingArr['logo']) : URL::asset('public/admin/dist/img/img.png') }}" class="img-logo" width="150" >
                     
