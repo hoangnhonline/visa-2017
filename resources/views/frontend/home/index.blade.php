@@ -61,7 +61,7 @@
       <h3 @if($isEdit) class="edit" @endif" data-text="18">{!! $textList[18] !!}</h3>
       <hr/>
       <div><span class="iconWhy"><img src="{{ URL::asset('public/assets/imgs/w2.png') }}" alt="ho tro visana"></span></div>
-      <p @if($isEdit) class="edit" @endif" data-text="19">{!! $textList[19] !!}/p>
+      <p @if($isEdit) class="edit" @endif" data-text="19">{!! $textList[19] !!}</p>
     </div>
     <div class="col-lg-3 col-md-3">
       <h3 @if($isEdit) class="edit" @endif" data-text="20">{!! $textList[20] !!}</h3>
